@@ -30,6 +30,47 @@
 </head>
 <body class="antialiased">
   
+  <!-- Sticky Header with Countdown -->
+  <header class="fixed top-0 left-0 right-0 bg-white shadow-sm z-50">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <!-- Logo -->
+      <div class="flex items-center gap-2">
+        <img src="https://storage.googleapis.com/media.utg-media.com/UTGlogo.png" alt="UTG Labs" class="w-8 h-8 rounded-full">
+        <span class="font-bold text-lg">UTG Labs</span>
+      </div>
+      
+      <!-- Countdown Timer -->
+      <div class="flex items-center gap-4">
+        <div class="flex gap-3 text-center">
+          <div>
+            <span id="days" class="text-xl font-bold">0</span>
+            <p class="text-xs text-gray-500 uppercase">Days</p>
+          </div>
+          <div>
+            <span id="hours" class="text-xl font-bold">2</span>
+            <p class="text-xs text-gray-500 uppercase">Hours</p>
+          </div>
+          <div>
+            <span id="minutes" class="text-xl font-bold">33</span>
+            <p class="text-xs text-gray-500 uppercase">Minutes</p>
+          </div>
+          <div>
+            <span id="seconds" class="text-xl font-bold">14</span>
+            <p class="text-xs text-gray-500 uppercase">Seconds</p>
+          </div>
+        </div>
+        
+        <!-- Buy Now Button -->
+        <button class="bg-[#007A3F] hover:bg-[#006633] text-white font-bold py-2 px-6 rounded-full transition-colors">
+          Buy Now!
+        </button>
+      </div>
+    </div>
+  </header>
+  
+  <!-- Spacer for fixed header -->
+  <div class="h-16"></div>
+  
   <main class="flex min-h-screen flex-col">
     <div class="flex-1">
       <div class="relative z-10">
@@ -73,7 +114,7 @@
                       <div class="w-full max-w-md sm:max-w-xl mx-auto md:max-w-3xl lg:max-w-4xl">
                         <div class="text-center text-black">
                           <p class="text-lg md:text-xl leading-snug">
-                            <u><em>Reviving Dead Leads for Service Businesses Selling $1k–$10k Jobs 👇 👇 </em></u>
+                            <u><em>Reviving Dead Leads for Service Businesses Selling $1k–$10k Jobs 👇 👇 👇</em></u>
                           </p>
                           <p class="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight tracking-tight mt-4">
                             We Bring Your Old Leads Back to Life and Book You Customers in 7 Days
@@ -87,7 +128,7 @@
                       <div class="w-full max-w-md sm:max-w-xl mx-auto md:max-w-3xl lg:max-w-4xl">
                         <div class="overflow-hidden rounded-2xl">
                           <video 
-                            src="https://storage.googleapis.com/media.utg-media.com/ClientDemo.mp4" 
+                            src="https://storage.googleapis.com/media.utg-media.com/New%20VSL%201-30.mp4" 
                             poster="https://storage.googleapis.com/media.utg-media.com/UTG_Labs.jpg" 
                             controls 
                             playsinline 
@@ -107,9 +148,200 @@
           </div>
         </div>
         
+        <!-- Features & Video Section -->
+        <div class="w-full py-8 px-4 lg:px-12">
+          <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              
+              <!-- Left Column: Features List -->
+              <div class="bg-white rounded-2xl p-6 sm:p-10">
+                <div class="space-y-6">
+                  
+                  <!-- Feature 1 -->
+                  <div class="flex items-start gap-6">
+                    <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center text-3xl">⚡</div>
+                    <div class="text-lg">
+                      <p><strong>Complete A–Z Installation of Your Lead Revival Machine</strong> Website, CRM, follow-up, and booking — built and connected end-to-end.</p>
+                    </div>
+                  </div>
+                  
+                  <!-- Feature 2 -->
+                  <div class="flex items-start gap-6">
+                    <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center text-3xl">📊</div>
+                    <div class="text-lg">
+                      <p><strong>Only What Actually Makes You Money</strong> Every component is practical, proven, and ready to use immediately.</p>
+                    </div>
+                  </div>
+                  
+                  <!-- Feature 3 -->
+                  <div class="flex items-start gap-6">
+                    <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center text-3xl">🎬</div>
+                    <div class="text-lg">
+                      <p><strong>Clear Walkthroughs of How Everything Works & notes</strong> So you understand it, even though we install everything for you.</p>
+                    </div>
+                  </div>
+                  
+                  <!-- Feature 4 -->
+                  <div class="flex items-start gap-6">
+                    <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center text-3xl">👤</div>
+                    <div class="text-lg">
+                      <p><strong>Built by Someone Who Does This Daily for Real Service Businesses</strong> Not templates. Not advice. Real setups used daily by service companies.</p>
+                    </div>
+                  </div>
+                  
+                </div>
+                
+                <!-- CTA Button -->
+                <div class="mt-8">
+                  <button class="w-full bg-[#007A3F] hover:bg-[#006633] text-white font-bold py-4 px-8 rounded-xl text-xl sm:text-2xl md:text-3xl transition-all transform active:scale-95">
+                    See How It Works
+                  </button>
+                </div>
+              </div>
+              
+              <!-- Right Column: Video & Quote -->
+              <div class="space-y-6">
+                <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold">Why This Isn't Just 'Another Resource'</h2>
+                
+                <!-- Video -->
+                <div class="overflow-hidden rounded-2xl">
+                  <video 
+                    src="https://storage.googleapis.com/media.utg-media.com/New%20VSL%201-30.mp4" 
+                    poster="https://storage.googleapis.com/media.utg-media.com/UTG_Labs.jpg" 
+                    controls 
+                    playsinline 
+                    preload="metadata"
+                    class="w-full aspect-video bg-black object-contain"
+                  ></video>
+                </div>
+                
+                <!-- Testimonial Quote -->
+                <p class="text-base italic text-black">
+                  "This is the only system you need to turn dead leads into revenue — consistently."
+                </p>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+        
+        <!-- Who Am I Section -->
+        <div class="w-full py-8 px-4 lg:px-12">
+          <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              
+              <!-- Left Column: Images -->
+              <div class="space-y-6">
+                <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold">Who Am I & Why Should You Listen To Me?</h2>
+                
+                <!-- Profile Image -->
+                <div class="overflow-hidden rounded-2xl">
+                  <img 
+                    src="https://storage.googleapis.com/media.utg-media.com/UTGlogo.png" 
+                    alt="Udo Onyekwere" 
+                    class="w-full object-cover"
+                  >
+                </div>
+                
+                <!-- Divider -->
+                <div class="border-t border-black"></div>
+                
+                <!-- Stats/Graph Image -->
+                <div class="overflow-hidden rounded-2xl">
+                  <img 
+                    src="https://storage.googleapis.com/facelessbroll_website/utgphoto1%20(1).png" 
+                    alt="Growth graph showing revenue increase" 
+                    class="w-full object-cover"
+                  >
+                </div>
+                
+                <p class="text-base italic text-black">
+                  We Setup High Converting Funnels & Pages To Close You More Deals
+                </p>
+              </div>
+              
+              <!-- Right Column: Bio Text -->
+              <div class="bg-white rounded-2xl p-6 sm:p-10">
+                <div class="space-y-6 text-lg md:text-xl leading-relaxed">
+                  <p>Hey — I'm Udo Onyekwere.</p>
+                  
+                  <p>Over the last few years, I've been focused on building and installing complete client-acquisition systems for service businesses.</p>
+                  
+                  <p>Instead of selling advice, templates, or retainers, <strong>I install the actual infrastructure businesses need to operate properly</strong> for our clients.</p>
+                  
+                  <p>In 2020, I began documenting the exact framework I use to set these systems up — from zero to fully operational.</p>
+                  
+                  <p>Since then, I've helped multiple <strong>6 to 7 figure businesses</strong> move their offline business online.</p>
+                  
+                  <p>I believe in installing complete client-acquisition systems <strong>— with proper follow-up</strong> and <strong>booking automation</strong> <strong>& backend LTV</strong> is the most reliable way to build a scalable service business.</p>
+                  
+                  <p>This checklist covers everything from:</p>
+                  
+                  <ul class="list-disc list-inside ml-4 space-y-2">
+                    <li>Lead intake & cleanup</li>
+                    <li>Status sorting & segmentation</li>
+                    <li>Automated weekly SMS follow-up</li>
+                    <li>Human-style conversations</li>
+                    <li>Booking automation</li>
+                    <li>No-show workflows</li>
+                    <li>Missed-call text-back</li>
+                    <li>Weekly performance dashboards</li>
+                  </ul>
+                  
+                  <p>Scale-ready foundations with zero duct tape</p>
+                  
+                  <p>This is <strong>the definitive resource</strong> for service businesses in 2026.</p>
+                  
+                  <p>Most agencies hide this behind retainers or consulting — I show you exactly how the system works before you commit.</p>
+                </div>
+                
+                <!-- CTA Button -->
+                <div class="mt-8">
+                  <button class="w-full bg-[#007A3F] hover:bg-[#006633] text-white font-bold py-4 px-8 rounded-xl text-xl sm:text-2xl md:text-3xl transition-all transform active:scale-95">
+                    See How It Works
+                  </button>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+        
       </div>
     </div>
   </main>
+
+  <!-- Countdown Timer Script -->
+  <script>
+    // Set countdown for 2 hours, 33 minutes, 14 seconds from now
+    const countdownDate = new Date().getTime() + (2 * 60 * 60 * 1000) + (33 * 60 * 1000) + (14 * 1000);
+    
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = countdownDate - now;
+      
+      if (distance < 0) {
+        document.getElementById('days').textContent = '0';
+        document.getElementById('hours').textContent = '0';
+        document.getElementById('minutes').textContent = '0';
+        document.getElementById('seconds').textContent = '0';
+        return;
+      }
+      
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      
+      document.getElementById('days').textContent = days;
+      document.getElementById('hours').textContent = hours;
+      document.getElementById('minutes').textContent = minutes;
+      document.getElementById('seconds').textContent = seconds;
+    }
+    
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
 
 </body>
 </html>
