@@ -694,24 +694,42 @@ if (unlockedEl) unlockedEl.style.display = "none";
 <style>
   .portal-video-wrapper{
     width: 100%;
-    max-width: 2400px;
-    margin: 40px auto;
+    max-width: 100%;
+    margin: 0px;
   }
+
+  <style>
+/* Make HIW section full-width so the video can grow */
+#HIW .w-layout-blockcontainer.container.w-container{
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+/* Make the video wrapper match hero width */
+#HIW .portal-video-wrapper{
+  max-width: 1400px; /* adjust to match hero exactly */
+  margin: 24px auto 0; /* center it */
+}
 
   .portal-video-shell{
     position: relative;
     width: 100%;
+    padding-top: 56.25%; /* EXACT match to hero */
     border-radius: 12px;
     overflow: hidden;
     border: 1px solid rgba(255,255,255,0.12);
     background: rgba(0,0,0,0.15);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15); /* same vibe as hero */
   }
 
   .portal-video{
+   position: absolute;
+    top: 0; left: 0;
     width: 100%;
-    height: 650px;
+    height: 100%;
     display: block;
     border-radius: 12px;
+    object-fit: cover; /* removes black bars */
   }
 
   .portal-play-overlay{
@@ -720,17 +738,13 @@ if (unlockedEl) unlockedEl.style.display = "none";
     display: grid;
     place-items: center;
     pointer-events: none;
-    background: linear-gradient(
-      to bottom,
-      rgba(0,0,0,0.15),
-      rgba(0,0,0,0.35)
-    );
+    background: linear-gradient(to bottom, rgba(0,0,0,0.15), rgba(0,0,0,0.35));
     opacity: 1;
     transition: opacity .25s ease;
   }
 
   .portal-play-btn{
-    width: 84px;
+   width: 84px;
     height: 84px;
     border-radius: 999px;
     display: grid;
@@ -743,8 +757,7 @@ if (unlockedEl) unlockedEl.style.display = "none";
   }
 
   @media (max-width: 991px){
-    .portal-video{ height: 500px; }
-    .portal-play-btn{ width: 70px; height: 70px; font-size: 24px; }
+   .portal-play-btn{ width: 70px; height: 70px; font-size: 24px; }
   }
 </style>
 
