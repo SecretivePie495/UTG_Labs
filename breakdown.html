@@ -1,348 +1,321 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Free System Breakdown</title>
 
-
-  <!-- ✅ ONLY FAVICON (JPG) -->
+  <!-- Favicon -->
   <link rel="icon" type="image/png" href="/images/UTG-Favicon.png" />
-  <meta name="description" content="We 3x'd our growth when we turned paid ads on. Learn from us.">
-  
-  <meta property="og:image" content="https://storage.googleapis.com/facelessbroll_website/UdoPIC.jpg">
-  <meta property="og:title" content="Free Agency Ads Checklist">
-  <meta property="og:description" content="We 3x'd our growth when we turned paid ads on. Learn from us.">
-  <meta property="og:type" content="website">
+  <meta name="description" content="We 3x'd our growth when we turned paid ads on. Learn from us." />
+
+  <!-- Open Graph -->
+  <meta property="og:image" content="https://storage.googleapis.com/facelessbroll_website/UdoPIC.jpg" />
+  <meta property="og:title" content="Free Agency Ads Checklist" />
+  <meta property="og:description" content="We 3x'd our growth when we turned paid ads on. Learn from us." />
+  <meta property="og:type" content="website" />
 
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet" />
+
   <style>
+    :root{
+      --brand:#007A3F;
+      --brand2:#006633;
+    }
+
+    html, body { width: 100%; overflow-x: hidden; }
     body {
       background-color: #ffffff;
       color: #000000;
       font-family: 'Roboto', system-ui, -apple-system, sans-serif;
       margin: 0;
       padding: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
+    /* Minimal clean spacing at top */
+    header, .header-spacer {
+      display: none !important;
+    }
+    
+    main {
+      margin-top: 14px !important;  /* Tiny clean gap */
+    }
+    
+    section:first-of-type {
+      margin-top: 0 !important;
+      padding-top: 0 !important;
+    }
+    
+            /* Remove hero top spacing */
+        .hero-wrap {
+          padding-top: 0 !important;
+          margin-top: 0 !important;
+        }
+    
+        /* Make Airtable embed smaller on iPhone */
+    @media (max-width: 640px) {
+      .airtable-wrap iframe {
+        height: 420px !important;
+        transform: scale(0.85);
+        transform-origin: top center;
+      }
+    }
+
+
+    /* Spacer height to match sticky header */
+    .header-spacer { height: 76px; }
+    @media (min-width: 640px){ .header-spacer { height: 86px; } }
+
+    /* Mobile-first typography */
+    .mobile-sub { font-size: 16px; line-height: 1.35; }
+    @media (min-width: 768px){ .mobile-sub { font-size: 20px; } }
+
+    .mobile-title { font-size: 32px; line-height: 1.08; }
+    @media (min-width: 640px){ .mobile-title { font-size: 44px; } }
+    @media (min-width: 768px){ .mobile-title { font-size: 54px; } }
+
+    /* Card padding that feels good on mobile */
+    .mobile-card { padding: 18px; }
+    @media (min-width: 640px){ .mobile-card { padding: 40px; } }
+
+    /* Airtable embed sizing on phones */
+    .airtable-wrap iframe { height: 560px; }
+    @media (max-width: 640px){ .airtable-wrap iframe { height: 720px; } }
   </style>
 </head>
+
 <body class="antialiased">
-  
-  <!-- Sticky Header with Countdown -->
-  <header class="fixed top-0 left-0 right-0 bg-white shadow-sm z-50">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-      <!-- Logo -->
-      <div class="flex items-center gap-2">
-        <img src="https://storage.googleapis.com/media.utg-media.com/UTGlogo.png" alt="UTG Labs" class="w-8 h-8 rounded-full">
-        <span class="font-bold text-lg">UTG Labs</span>
-      </div>
-      
-      <!-- Countdown Timer -->
-      <div class="flex items-center gap-4">
-        <div class="flex gap-3 text-center">
-          <div>
-            <span id="days" class="text-xl font-bold">0</span>
-            <p class="text-xs text-gray-500 uppercase">Days</p>
-          </div>
-          <div>
-            <span id="hours" class="text-xl font-bold">2</span>
-            <p class="text-xs text-gray-500 uppercase">Hours</p>
-          </div>
-          <div>
-            <span id="minutes" class="text-xl font-bold">33</span>
-            <p class="text-xs text-gray-500 uppercase">Minutes</p>
-          </div>
-          <div>
-            <span id="seconds" class="text-xl font-bold">14</span>
-            <p class="text-xs text-gray-500 uppercase">Seconds</p>
-          </div>
-        </div>
-        
 
-    `  <!-- Reserve Spot Button -->
-        <a href="https://utglabs.com"
-           class="inline-block bg-[#007A3F] hover:bg-[#006633] text-white font-bold py-2 px-6 rounded-full transition-colors">
-          Reserve Spot!
-        </a>
-         </button>
-      </div>
-     </div>
- </header>
-          
-  <!-- Spacer for fixed header -->
-  <div class="h-16"></div>
-  
-  <main class="flex min-h-screen flex-col">
-    <div class="flex-1">
-      <div class="relative z-10">
-        
-        <!-- Header Section -->
-        <div class="w-full bg-transparent">
-          <div class="w-full max-w-md sm:max-w-xl mx-auto md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl 2xl:max-w-screen-2xl">
-            <div class="grid grid-cols-1 gap-4 px-4 lg:px-12">
-              
-              <!-- Main Card -->
-              <div class="relative w-full bg-white rounded-2xl h-full">
-                <div class="w-full max-w-md sm:max-w-xl mx-auto md:max-w-3xl lg:max-w-4xl h-full">
-                  <div class="flex h-full flex-col p-4 sm:p-10 lg:px-0">
-                    
-                    <!-- Profile Avatars -->
-                    <div class="relative w-full bg-transparent pb-2">
-                      <div class="w-full max-w-md sm:max-w-xl mx-auto md:max-w-3xl lg:max-w-4xl">
-                        <div class="flex items-center justify-center flex-col">
-                          <div class="flex flex-shrink-0 items-center justify-center -space-x-3 mb-2">
-                            <div class="relative overflow-hidden rounded-full border-2 border-white w-10 h-10">
-                              <img src="https://storage.googleapis.com/facelessbroll_website/UdoPIC.jpg" alt="Udo Onyekwere" class="absolute inset-0 w-full h-full object-cover">
-                            </div>
-                            <div class="relative overflow-hidden rounded-full border-2 border-white w-10 h-10">
-                              <img src="https://storage.googleapis.com/media.utg-media.com/UTGlogo.png" alt="UTG Labs" class="absolute inset-0 w-full h-full object-cover">
-                            </div>
-                          </div>
-                          
-                          <!-- Name & Company -->
-                          <div class="space-y-2">
-                            <div class="text-sm text-center text-black">
-                              <p><strong>Udo Onyekwere, CEO</strong></p>
-                              <p><strong>UTG Labs</strong></p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <!-- Subheadline -->
-                    <div class="relative w-full bg-transparent pt-2 pb-4">
-                      <div class="w-full max-w-md sm:max-w-xl mx-auto md:max-w-3xl lg:max-w-4xl">
-                        <div class="text-center text-black">
-                          <p class="text-lg md:text-xl leading-snug">
-                            <u><em>Reviving Dead Leads for Service Businesses Selling $1k–$10k Jobs 👇 👇 👇</em></u>
-                          </p>
-                          <p class="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight tracking-tight mt-4">
-                            We Bring Your Old Leads Back to Life and Book You Customers in 7 Days
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <!-- Video -->
-                    <div class="relative w-full bg-transparent py-6">
-                      <div class="w-full max-w-md sm:max-w-xl mx-auto md:max-w-3xl lg:max-w-4xl">
-                        <div class="overflow-hidden rounded-2xl">
-                          <video 
-                            src="https://storage.googleapis.com/media.utg-media.com/ClientDemo.mp4" 
-                            poster="https://storage.googleapis.com/media.utg-media.com/UTG_Labs.jpg" 
-                            controls 
-                            playsinline 
-                            preload="metadata"
-                            class="w-full aspect-video bg-black object-contain"
-                          ></video>
-                        </div>
-                      </div>
-                    </div>
-                    
+  <!-- Spacer for sticky header -->
+  <div class="header-spacer"></div>
 
-                  </div>
+  <main class="min-h-screen">
+    <!-- Hero / Main Card -->
+    <section class="px-4 lg:px-12 hero-wrap">
+      <div class="max-w-6xl mx-auto">
+        <div class="bg-white rounded-2xl">
+          <div class="mobile-card pt-0">
+
+            <!-- Avatars -->
+            <div class="flex flex-col items-center justify-center pb-2">
+              <div class="flex items-center justify-center -space-x-3 mb-2">
+                <div class="relative overflow-hidden rounded-full border-2 border-white w-10 h-10">
+                  <img src="https://storage.googleapis.com/facelessbroll_website/UdoPIC.jpg" alt="Udo Onyekwere" class="absolute inset-0 w-full h-full object-cover">
+                </div>
+                <div class="relative overflow-hidden rounded-full border-2 border-white w-10 h-10">
+                  <img src="https://storage.googleapis.com/media.utg-media.com/UTGlogo.png" alt="UTG Labs" class="absolute inset-0 w-full h-full object-cover">
                 </div>
               </div>
-              
+
+              <div class="text-sm text-center text-black space-y-1">
+                <p><strong>Udo Onyekwere, CEO</strong></p>
+                <p><strong>UTG Labs</strong></p>
+              </div>
+            </div>
+
+            <!-- Subheadline + Headline -->
+            <div class="pt-2 pb-4 text-center text-black">
+              <p class="mobile-sub">
+                <u><em>Reviving Dead Leads for Service Businesses Selling $1k–$10k Jobs 👇👇</em></u>
+              </p>
+
+              <p class="mobile-title font-bold tracking-tight mt-4">
+                We Bring Your Old Leads Back to Life and Book You Customers in 7 Days
+              </p>
+            </div>
+
+            <!-- Video -->
+            <div class="py-4 sm:py-6">
+              <div class="overflow-hidden rounded-2xl">
+                <video
+                  src="https://storage.googleapis.com/media.utg-media.com/ClientDemo.mp4"
+                  poster="https://storage.googleapis.com/media.utg-media.com/UTG_Labs.jpg"
+                  controls
+                  playsinline
+                  preload="metadata"
+                  class="w-full aspect-video bg-black object-contain"
+                ></video>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features + System Preview -->
+    <section class="w-full py-8 px-4 lg:px-12">
+      <div class="max-w-6xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+          <!-- Left: Features -->
+          <div class="bg-white rounded-2xl p-6 sm:p-10">
+            <div class="space-y-6">
+
+              <div class="flex items-start gap-4 sm:gap-6">
+                <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center text-3xl">⚡</div>
+                <div class="text-base sm:text-lg">
+                  <p><strong>Revives old leads sitting in your CRM</strong> (6–24 months)</p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-4 sm:gap-6">
+                <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center text-3xl">📊</div>
+                <div class="text-base sm:text-lg">
+                  <p><strong>Segments and sorts leads into:</strong> New → Replied → Nurturing → Booked → Not Interested</p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-4 sm:gap-6">
+                <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center text-3xl">🎬</div>
+                <div class="text-base sm:text-lg">
+                  <p><strong>Nurtures buyers weekly with human-style follow-up</strong></p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-4 sm:gap-6">
+                <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center text-3xl">👤</div>
+                <div class="text-base sm:text-lg">
+                  <p><strong>Gives you a clean, organized dashboard of every conversation</strong></p>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- CTA -->
+            <div class="mt-8">
+              <a href="https://utglabs.com"
+                 class="w-full inline-flex items-center justify-center bg-[color:var(--brand)] hover:bg-[color:var(--brand2)] text-white font-bold py-4 px-8 rounded-xl text-xl sm:text-2xl transition-all active:scale-95">
+                Book A Call Today
+              </a>
             </div>
           </div>
-        </div>
-        
-        <!-- Features & Video Section -->
-        <div class="w-full py-8 px-4 lg:px-12">
-          <div class="max-w-6xl mx-auto">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-              
-              <!-- Left Column: Features List -->
-              <div class="bg-white rounded-2xl p-6 sm:p-10">
-                <div class="space-y-6">
-                  
-                  <!-- Feature 1 -->
-                  <div class="flex items-start gap-6">
-                    <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center text-3xl">⚡</div>
-                    <div class="text-lg">
-                      <p><strong>Revives old leads sitting in your CRM</strong> (6–24 months)</p>
-                    </div>
-                  </div>
-                  
-                  <!-- Feature 2 -->
-                  <div class="flex items-start gap-6">
-                    <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center text-3xl">📊</div>
-                    <div class="text-lg">
-                      <p><strong>Segments and sorts leads into:</strong> New → Replied → Nurturing → Booked → Not Interested</p>
-                    </div>
-                  </div>
-                  
-                  <!-- Feature 3 -->
-                  <div class="flex items-start gap-6">
-                    <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center text-3xl">🎬</div>
-                    <div class="text-lg">
-                      <p><strong>Nurtures buyers weekly with human-style follow-up</strong></p>
-                    </div>
-                  </div>
-                  
-                  <!-- Feature 4 -->
-                  <div class="flex items-start gap-6">
-                    <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center text-3xl">👤</div>
-                    <div class="text-lg">
-                      <p><strong>Gives you a clean, organized dashboard of every conversation</strong></p>
-                    </div>
-                  </div>
-                  
-                </div>
-                
-                <!-- CTA Button -->
-                <div class="mt-8">
-                   <a href="https://utglabs.com"
-                  <button class="w-full bg-[#007A3F] hover:bg-[#006633] text-white font-bold py-4 px-8 rounded-xl text-xl sm:text-2xl md:text-3xl transition-all transform active:scale-95">
-                    Book A Call Today
-                  </button>
-                </a>
-              </div>
-                </div>
-              <!-- Right Column: Video & Quote -->
-              <div class="space-y-6">
-                <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold">What This System Does</h2>
-                
-                         <!-- Image (replacing video) -->
-                <div class="overflow-hidden rounded-2xl">
-                  <img 
-                    src="https://storage.googleapis.com/media.utg-media.com/UTG_Labs.jpg"
-                    alt="UTG Labs System Preview"
-                    class="w-full aspect-video object-cover rounded-2xl"
-                  >
-                </div>
 
-                <!-- Testimonial Quote -->
-                <p class="text-base italic text-black">
-                  "This is the only system you need to turn dead leads into revenue — consistently."
-                </p>
-              </div>
-              
+          <!-- Right: Image + Quote -->
+          <div class="space-y-6">
+            <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold">What This System Does</h2>
+
+            <div class="overflow-hidden rounded-2xl">
+              <img src="https://storage.googleapis.com/media.utg-media.com/UTG_Labs.jpg"
+                   alt="UTG Labs System Preview"
+                   class="w-full aspect-video object-cover rounded-2xl">
             </div>
+
+            <p class="text-base italic text-black">
+              "This is the only system you need to turn dead leads into revenue — consistently."
+            </p>
           </div>
+
         </div>
-        
-        <!-- Who Am I Section -->
-        <div class="w-full py-8 px-4 lg:px-12">
-          <div class="max-w-6xl mx-auto">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-              
-              <!-- Left Column: Images -->
-              <div class="space-y-6">
-                <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold">Why This Works</h2>
-                
-                <!-- Profile Image -->
-                <div class="overflow-hidden rounded-2xl">
-                  <img 
-                    src="https://storage.googleapis.com/media.utg-media.com/phone.png" 
-                    alt="Udo Onyekwere" 
-                    class="w-full object-cover"
-                  >
-                </div>
-                
-                <!-- Divider -->
-                <div class="border-t border-black"></div>
-                
-                <!-- Stats/Graph Image -->
-                <div class="overflow-hidden rounded-2xl">
-                  <img 
-                    src="https://storage.googleapis.com/media.utg-media.com/Timeline.png" 
-                    alt="Growth graph showing revenue increase" 
-                    class="w-full object-cover"
-                  >
-                </div>
-                
-                <p class="text-base italic text-black">
-                  We Setup High Converting Funnels & Pages To Close You More Deals
-                </p>
-                
-                <!-- CTA Button -->
-                <div class="mt-6">
-                     <a href="https://utglabs.com"
-                  <button class="w-full bg-[#007A3F] hover:bg-[#006633] text-white font-bold py-4 px-8 rounded-xl text-xl sm:text-2xl md:text-3xl transition-all transform active:scale-95">
-                    Get This System Installed Today
-                  </button>
-                        </a>
-                </div>
-              </div>
-              
-              <!-- Right Column: Why This Works -->
-              <div class="space-y-6 text-lg md:text-xl leading-relaxed" style="font-weight: 400;">
-                <div class="bg-white rounded-2xl p-6 sm:p-10">
-                  <div class="space-y-6 text-lg md:text-xl leading-relaxed">
-            
-                    <p><strong>Most businesses don't need more leads</strong> — they need someone to revive the hundreds of people who already showed interest.</p>
-            
-                    <p>People get busy, forget to book, or simply never follow up again after the first conversation — <strong>not because they're bad leads</strong>, but because nobody stays consistent.</p>
-            
-                    <p>The average business stops nurturing after <strong>1–2 messages</strong>. Our system continues weekly for <strong>30–90 days</strong>, creating buying moments your competitors miss.</p>
-            
-                    <p><strong>Old leads convert better</strong> because they already showed intent — they just didn't take action the first time.</p>
-            
-                    <p>That's why most businesses have <strong>$5k–$50k of missed revenue</strong> sitting untouched in their CRM without realizing it.</p>
-            
-                    <p><strong>Our Lead Revival System brings those leads back to life</strong> by:</p>
-            
-                    <ul class="list-disc list-inside ml-4 space-y-2">
-                      <li><strong>Organizing leads</strong> into clear stages</li>
-                      <li><strong>Reviving cold leads weekly</strong> with consistent follow-up</li>
-                      <li>Using <strong>human-style conversations</strong> that feel personal</li>
-                      <li>Identifying <strong>real buying signals</strong></li>
-                      <li><strong>Moving leads into booking stages automatically</strong></li>
-                      <li>Creating <strong>consistency without adding workload</strong> to your team</li>
-                    </ul>
-                          
-                    <p>This is why reviving old leads is the fastest, cheapest way to get booked appointments — without spending more on ads.</p>
-              
-                  </div>
-                </div>
-              
-                <p>Scale-ready foundations with zero duct tape</p>
-                  
-                <p>This is <strong>the definitive resource</strong> for service businesses in 2026.</p>
-                  
-                <p>Most agencies hide this behind retainers or consulting — I show you exactly how the system works before you commit.</p>
-              </div>
-              
-            </div>
-          </div>
-        </div>
-        
-        <!-- Airtable Embed Section -->
-        <div class="w-full py-8 px-4 lg:px-12">
-          <div class="max-w-6xl mx-auto">
-            <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-8">Behind the Scenes of the Systems We Manage</h2>
-            <iframe 
-              class="airtable-embed" 
-              src="https://airtable.com/embed/apphY3bSasyyG6ZhG/shrYuvcpRjoOVOvrV?viewControls=on" 
-              frameborder="0" 
-              onmousewheel="" 
-              width="100%" 
-              height="533" 
-              style="background: transparent; border: 1px solid #ccc; border-radius: 16px;"
-            ></iframe>
-          </div>
-        </div>
-        
       </div>
-    </div>
+    </section>
+
+    <!-- Why This Works -->
+    <section class="w-full py-8 px-4 lg:px-12">
+      <div class="max-w-6xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+          <!-- Left: Images + CTA -->
+          <div class="space-y-6">
+            <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold">Why This Works</h2>
+
+            <div class="overflow-hidden rounded-2xl">
+              <img src="https://storage.googleapis.com/media.utg-media.com/phone.png" alt="Udo Onyekwere" class="w-full object-cover">
+            </div>
+
+            <div class="border-t border-black"></div>
+
+            <div class="overflow-hidden rounded-2xl">
+              <img src="https://storage.googleapis.com/media.utg-media.com/Timeline.png" alt="Growth graph showing revenue increase" class="w-full object-cover">
+            </div>
+
+            <p class="text-base italic text-black">
+              We Setup High Converting Funnels &amp; Pages To Close You More Deals
+            </p>
+
+            <div class="mt-2">
+              <a href="https://utglabs.com"
+                 class="w-full inline-flex items-center justify-center bg-[color:var(--brand)] hover:bg-[color:var(--brand2)] text-white font-bold py-4 px-8 rounded-xl text-xl sm:text-2xl transition-all active:scale-95">
+                Get This System Installed Today
+              </a>
+            </div>
+          </div>
+
+          <!-- Right: Copy -->
+          <div class="space-y-6 text-lg md:text-xl leading-relaxed" style="font-weight: 400;">
+            <div class="bg-white rounded-2xl p-6 sm:p-10">
+              <div class="space-y-6 text-base sm:text-lg md:text-xl leading-relaxed">
+
+                <p><strong>Most businesses don't need more leads</strong> — they need someone to revive the hundreds of people who already showed interest.</p>
+
+                <p>People get busy, forget to book, or simply never follow up again after the first conversation — <strong>not because they're bad leads</strong>, but because nobody stays consistent.</p>
+
+                <p>The average business stops nurturing after <strong>1–2 messages</strong>. Our system continues weekly for <strong>30–90 days</strong>, creating buying moments your competitors miss.</p>
+
+                <p><strong>Old leads convert better</strong> because they already showed intent — they just didn't take action the first time.</p>
+
+                <p>That's why most businesses have <strong>$5k–$50k of missed revenue</strong> sitting untouched in their CRM without realizing it.</p>
+
+                <p><strong>Our Lead Revival System brings those leads back to life</strong> by:</p>
+
+                <ul class="list-disc list-inside ml-4 space-y-2">
+                  <li><strong>Organizing leads</strong> into clear stages</li>
+                  <li><strong>Reviving cold leads weekly</strong> with consistent follow-up</li>
+                  <li>Using <strong>human-style conversations</strong> that feel personal</li>
+                  <li>Identifying <strong>real buying signals</strong></li>
+                  <li><strong>Moving leads into booking stages automatically</strong></li>
+                  <li>Creating <strong>consistency without adding workload</strong> to your team</li>
+                </ul>
+
+                <p>This is why reviving old leads is the fastest, cheapest way to get booked appointments — without spending more on ads.</p>
+
+              </div>
+            </div>
+
+            <p>Scale-ready foundations with zero duct tape</p>
+            <p>This is <strong>the definitive resource</strong> for service businesses in 2026.</p>
+            <p>Most agencies hide this behind retainers or consulting — I show you exactly how the system works before you commit.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Airtable Embed -->
+    <section class="w-full py-8 px-4 lg:px-12">
+      <div class="max-w-6xl mx-auto">
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-8">
+          Behind the Scenes of the Systems We Manage
+        </h2>
+
+        <div class="airtable-wrap">
+          <iframe class="airtable-embed"
+                  src="https://airtable.com/embed/apphY3bSasyyG6ZhG/shrYuvcpRjoOVOvrV?viewControls=on"
+                  frameborder="0"
+                  width="100%"
+                  style="background: transparent; border: 1px solid #ccc; border-radius: 16px;">
+          </iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer spacing -->
+    <div class="h-12"></div>
   </main>
 
   <!-- Countdown Timer Script -->
   <script>
     // Set countdown for 2 hours, 33 minutes, 14 seconds from now
     const countdownDate = new Date().getTime() + (2 * 60 * 60 * 1000) + (33 * 60 * 1000) + (14 * 1000);
-    
+
     function updateCountdown() {
       const now = new Date().getTime();
       const distance = countdownDate - now;
-      
+
       if (distance < 0) {
         document.getElementById('days').textContent = '0';
         document.getElementById('hours').textContent = '0';
@@ -350,18 +323,18 @@
         document.getElementById('seconds').textContent = '0';
         return;
       }
-      
+
       const days = Math.floor(distance / (1000 * 60 * 60 * 24));
       const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-      
+
       document.getElementById('days').textContent = days;
       document.getElementById('hours').textContent = hours;
       document.getElementById('minutes').textContent = minutes;
       document.getElementById('seconds').textContent = seconds;
     }
-    
+
     updateCountdown();
     setInterval(updateCountdown, 1000);
   </script>
