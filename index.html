@@ -991,6 +991,35 @@ if (unlockedEl) unlockedEl.style.display = "none";
 .dlc-plan li{ margin:4px 0; }
 
 </style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const calcBtn = document.getElementById("dlcCalc");
+  if (calcBtn) {
+    calcBtn.addEventListener("click", function () {
+      if (typeof fbq === "function") {
+        fbq("trackCustom", "DeadLeadCalc_Submitted");
+      }
+    });
+  }
+});
+</script>
+
+  <script>
+// Track ALL Get Started buttons that lead to your Airtable form
+document.addEventListener("DOMContentLoaded", function () {
+  // Select ANY link that goes to your Airtable form
+  const getStartedButtons = document.querySelectorAll('a[href*="airtable.com"][href*="pagk0ul8zEkafzV7x"]');
+
+  getStartedButtons.forEach(btn => {
+    btn.addEventListener("click", function () {
+      if (typeof fbq === "function") {
+        fbq("trackCustom", "Clicked_GetStarted_Airtable");
+      }
+    });
+  });
+});
+</script>
 </body>
   <browserflow-container>
   </browserflow-container>
