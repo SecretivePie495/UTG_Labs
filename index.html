@@ -1014,7 +1014,7 @@ document.addEventListener("DOMContentLoaded", function () {
   getStartedButtons.forEach(btn => {
     btn.addEventListener("click", function () {
       if (typeof fbq === "function") {
-        fbq("trackCustom", "Clicked_GetStarted_Airtable");
+        fbq("track", "Lead");
       }
     });
   });
