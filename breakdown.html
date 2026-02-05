@@ -1,21 +1,22 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Free System Breakdown</title>
+  <title>Pipeline Revival System (Free Breakdown)</title>
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="/images/UTG-Favicon.png" />
-  <meta name="description" content="We 3x'd our growth when we turned paid ads on. Learn from us." />
+  <meta name="description" content="We re-engage your existing leads and turn them into booked sales calls — without running new ads." />
 
   <!-- Open Graph -->
   <meta property="og:image" content="https://storage.googleapis.com/facelessbroll_website/UdoPIC.jpg" />
-  <meta property="og:title" content="Free Agency Ads Checklist" />
-  <meta property="og:description" content="We 3x'd our growth when we turned paid ads on. Learn from us." />
+  <meta property="og:title" content="Free Pipeline Revival System Breakdown" />
+  <meta property="og:description" content="Turn your existing lead list into booked high-ticket sales calls in 7 days." />
   <meta property="og:type" content="website" />
 
   <script src="https://cdn.tailwindcss.com"></script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet" />
@@ -36,39 +37,13 @@
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
+
     /* Minimal clean spacing at top */
-    header, .header-spacer {
-      display: none !important;
-    }
-    
-    main {
-      margin-top: 14px !important;  /* Tiny clean gap */
-    }
-    
-    section:first-of-type {
-      margin-top: 0 !important;
-      padding-top: 0 !important;
-    }
-    
-            /* Remove hero top spacing */
-        .hero-wrap {
-          padding-top: 0 !important;
-          margin-top: 0 !important;
-        }
-    
-        /* Make Airtable embed smaller on iPhone */
-    @media (max-width: 640px) {
-      .airtable-wrap iframe {
-        height: 420px !important;
-        transform: scale(0.85);
-        transform-origin: top center;
-      }
-    }
+    header, .header-spacer { display: none !important; }
 
-
-    /* Spacer height to match sticky header */
-    .header-spacer { height: 76px; }
-    @media (min-width: 640px){ .header-spacer { height: 86px; } }
+    main { margin-top: 14px !important; }
+    section:first-of-type { margin-top: 0 !important; padding-top: 0 !important; }
+    .hero-wrap { padding-top: 0 !important; margin-top: 0 !important; }
 
     /* Mobile-first typography */
     .mobile-sub { font-size: 16px; line-height: 1.35; }
@@ -82,19 +57,47 @@
     .mobile-card { padding: 18px; }
     @media (min-width: 640px){ .mobile-card { padding: 40px; } }
 
-    /* Airtable embed sizing on phones */
+    /* Airtable embed sizing */
     .airtable-wrap iframe { height: 560px; }
     @media (max-width: 640px){ .airtable-wrap iframe { height: 720px; } }
+
+    /* Make Airtable embed smaller on iPhone */
+    @media (max-width: 640px) {
+      .airtable-wrap iframe {
+        height: 420px !important;
+        transform: scale(0.85);
+        transform-origin: top center;
+      }
+    }
+
+    /* Optional: nicer link focus */
+    a:focus { outline: 3px solid rgba(0, 122, 63, .35); outline-offset: 3px; border-radius: 12px; }
+
+    /* Toggle button */
+    .toggle-btn{
+      background: #000;
+      color: #fff;
+      border-radius: 14px;
+      padding: 14px 18px;
+      font-weight: 700;
+      transition: transform .12s ease, opacity .12s ease;
+      width: 100%;
+      text-align: center;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+    .toggle-btn:active{ transform: scale(.98); }
+    .toggle-btn:hover{ opacity: .92; }
   </style>
 </head>
 
 <body class="antialiased">
 
-  <!-- Spacer for sticky header -->
-  <div class="header-spacer"></div>
-
   <main class="min-h-screen">
-    <!-- Hero / Main Card -->
+
+    <!-- HERO / VSL -->
     <section class="px-4 lg:px-12 hero-wrap">
       <div class="max-w-6xl mx-auto">
         <div class="bg-white rounded-2xl">
@@ -104,15 +107,15 @@
             <div class="flex flex-col items-center justify-center pb-2">
               <div class="flex items-center justify-center -space-x-3 mb-2">
                 <div class="relative overflow-hidden rounded-full border-2 border-white w-10 h-10">
-                  <img src="https://storage.googleapis.com/facelessbroll_website/UdoPIC.jpg" alt="Udo Onyekwere" class="absolute inset-0 w-full h-full object-cover">
+                  <img src="https://storage.googleapis.com/facelessbroll_website/UdoPIC.jpg" alt="Udo Onyekwere" class="absolute inset-0 w-full h-full object-cover" />
                 </div>
                 <div class="relative overflow-hidden rounded-full border-2 border-white w-10 h-10">
-                  <img src="https://storage.googleapis.com/media.utg-media.com/UTGlogo.png" alt="UTG Labs" class="absolute inset-0 w-full h-full object-cover">
+                  <img src="https://storage.googleapis.com/media.utg-media.com/UTGlogo.png" alt="UTG Labs" class="absolute inset-0 w-full h-full object-cover" />
                 </div>
               </div>
 
               <div class="text-sm text-center text-black space-y-1">
-                <p><strong>Udo Onyekwere, CEO</strong></p>
+                <p><strong>Udo Onyekwere</strong></p>
                 <p><strong>UTG Labs</strong></p>
               </div>
             </div>
@@ -120,15 +123,19 @@
             <!-- Subheadline + Headline -->
             <div class="pt-2 pb-4 text-center text-black">
               <p class="mobile-sub">
-                <u><em>Reviving Dead Leads for Service Businesses Selling $1k–$10k Jobs 👇👇</em></u>
+                <u><em>For high-ticket businesses with a lead list (coaches, agencies, consultants, clinics) 👇👇</em></u>
               </p>
 
               <p class="mobile-title font-bold tracking-tight mt-4">
-                We Bring Your Old Leads Back to Life and Book You Customers in 7 Days
+                We Re-Engage Your Existing Leads &amp; Turn Them Into Booked Sales Calls in 7 Days
+              </p>
+
+              <p class="mt-4 text-base sm:text-lg max-w-3xl mx-auto">
+                No new ads. No new “lead gen.” Just turning the leads you already paid for into conversations, booked calls, and revenue.
               </p>
             </div>
 
-            <!-- Video -->
+            <!-- VSL -->
             <div class="py-4 sm:py-6">
               <div class="overflow-hidden rounded-2xl">
                 <video
@@ -140,6 +147,26 @@
                   class="w-full aspect-video bg-black object-contain"
                 ></video>
               </div>
+
+              <div class="mt-4 text-center text-black">
+                <p class="text-base sm:text-lg">
+                  Watch the video first — then scroll for the exact 3-step system we install.
+                </p>
+              </div>
+            </div>
+
+            <!-- Who it's for -->
+            <div class="mt-2">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div class="rounded-xl border border-black p-4">
+                  <p class="font-bold">✅ Perfect for:</p>
+                  <p class="text-sm mt-2">High-ticket offers, retainers, programs, DFY packages, consulting, coaching, clinics</p>
+                </div>
+                <div class="rounded-xl border border-black p-4">
+                  <p class="font-bold">❌ Not for:</p>
+                  <p class="text-sm mt-2">Low-ticket e-commerce, one-time $49 offers, or businesses with no lead list</p>
+                </div>
+              </div>
             </div>
 
           </div>
@@ -147,41 +174,46 @@
       </div>
     </section>
 
-    <!-- Features + System Preview -->
+    <!-- SYSTEM BREAKDOWN + DEMO -->
     <section class="w-full py-8 px-4 lg:px-12">
       <div class="max-w-6xl mx-auto">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 
-          <!-- Left: Features -->
+          <!-- Left: 3-Step System + CTA -->
           <div class="bg-white rounded-2xl p-6 sm:p-10">
             <div class="space-y-6">
 
+              <h2 class="text-2xl sm:text-3xl font-bold">The 3-Step Pipeline Revival System</h2>
+
               <div class="flex items-start gap-4 sm:gap-6">
-                <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center text-3xl">⚡</div>
+                <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center text-3xl">①</div>
                 <div class="text-base sm:text-lg">
-                  <p><strong>Revives old leads sitting in your CRM</strong> (6–24 months)</p>
+                  <p><strong>Clean + segment your leads</strong> into clear stages (old leads, no-shows, abandoned apps, DMs, etc.).</p>
                 </div>
               </div>
 
               <div class="flex items-start gap-4 sm:gap-6">
-                <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center text-3xl">📊</div>
+                <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center text-3xl">②</div>
                 <div class="text-base sm:text-lg">
-                  <p><strong>Segments and sorts leads into:</strong> New → Replied → Nurturing → Booked → Not Interested</p>
+                  <p><strong>Restart conversations weekly</strong> with human-style follow-ups for 30–90 days (not 1–2 messages).</p>
                 </div>
               </div>
 
               <div class="flex items-start gap-4 sm:gap-6">
-                <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center text-3xl">🎬</div>
+                <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center text-3xl">③</div>
                 <div class="text-base sm:text-lg">
-                  <p><strong>Nurtures buyers weekly with human-style follow-up</strong></p>
+                  <p><strong>Convert replies into booked calls</strong> and route hot leads to your calendar with full tracking.</p>
                 </div>
               </div>
 
-              <div class="flex items-start gap-4 sm:gap-6">
-                <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center text-3xl">👤</div>
-                <div class="text-base sm:text-lg">
-                  <p><strong>Gives you a clean, organized dashboard of every conversation</strong></p>
-                </div>
+              <div class="rounded-xl border border-black p-4">
+                <p class="font-bold">What you get:</p>
+                <ul class="list-disc list-inside ml-4 mt-2 space-y-1 text-sm sm:text-base">
+                  <li>Lead segmentation + stages</li>
+                  <li>Follow-up sequences + personalization</li>
+                  <li>Conversation tracking dashboard</li>
+                  <li>Booked call routing + hot-lead alerts</li>
+                </ul>
               </div>
 
             </div>
@@ -190,119 +222,140 @@
             <div class="mt-8">
               <a href="https://calendly.com/utglabs/book-call"
                  class="w-full inline-flex items-center justify-center bg-[color:var(--brand)] hover:bg-[color:var(--brand2)] text-white font-bold py-4 px-8 rounded-xl text-xl sm:text-2xl transition-all active:scale-95">
-                Book A Call Today
+                Get My Pipeline Revival Plan
               </a>
+
+              <p class="text-sm mt-3 text-black text-center">
+                We’ll map your lead list + show you exactly where the money is.
+              </p>
             </div>
           </div>
 
-          <!-- Right: Image + Quote -->
+          <!-- Right: Demo video + quote -->
           <div class="space-y-6">
-            <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold">What This System Does</h2>
+            <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold">What This Looks Like</h2>
 
-          <div class="overflow-hidden rounded-2xl bg-black">
+            <div class="overflow-hidden rounded-2xl bg-black">
               <video
                 src="https://storage.googleapis.com/media.utg-media.com/ClientDemo.mp4"
                 poster="https://storage.googleapis.com/media.utg-media.com/ClientDemo.png"
                 controls
                 playsinline
                 preload="metadata"
-                class="w-full aspect-video object-contain bg-black rounded-2xl">
-              </video>
-           </div>
+                class="w-full aspect-video object-contain bg-black rounded-2xl"
+              ></video>
+            </div>
+
             <p class="text-base italic text-black">
-              "This is the only system you need to turn dead leads into revenue — consistently."
+              “This is the simplest way to turn old leads into booked calls — consistently.”
             </p>
+
+            <div class="rounded-xl border border-black p-4">
+              <p class="font-bold">Common lead sources this works on:</p>
+              <p class="text-sm mt-2">Webinar leads • VSL opt-ins • DMs • Form fills • No-shows • Old applications • CRM exports</p>
+            </div>
           </div>
 
         </div>
       </div>
     </section>
 
-    <!-- Why This Works -->
+    <!-- WHY THIS WORKS -->
     <section class="w-full py-8 px-4 lg:px-12">
       <div class="max-w-6xl mx-auto">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 
-          <!-- Left: Images + CTA -->
+          <!-- Left: visuals + CTA -->
           <div class="space-y-6">
             <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold">Why This Works</h2>
 
             <div class="overflow-hidden rounded-2xl">
-              <img src="https://storage.googleapis.com/media.utg-media.com/phone.png" alt="Udo Onyekwere" class="w-full object-cover">
+              <img src="https://storage.googleapis.com/media.utg-media.com/phone.png" alt="Example conversation screenshot" class="w-full object-cover" />
             </div>
 
             <div class="border-t border-black"></div>
 
             <div class="overflow-hidden rounded-2xl">
-              <img src="https://storage.googleapis.com/media.utg-media.com/Timeline.png" alt="Growth graph showing revenue increase" class="w-full object-cover">
+              <img src="https://storage.googleapis.com/media.utg-media.com/Timeline.png" alt="Timeline / process graphic" class="w-full object-cover" />
             </div>
 
             <p class="text-base italic text-black">
-              We Setup High Converting Funnels &amp; Pages To Close You More Deals
+              This works because old leads already showed intent — they just weren’t followed up consistently.
             </p>
 
             <div class="mt-2">
-              <a href=""
+              <a href="https://calendly.com/utglabs/book-call"
                  class="w-full inline-flex items-center justify-center bg-[color:var(--brand)] hover:bg-[color:var(--brand2)] text-white font-bold py-4 px-8 rounded-xl text-xl sm:text-2xl transition-all active:scale-95">
-                Get This System Installed Today
+                Get This Installed
               </a>
             </div>
           </div>
 
-          <!-- Right: Copy -->
+          <!-- Right: copy -->
           <div class="space-y-6 text-lg md:text-xl leading-relaxed" style="font-weight: 400;">
             <div class="bg-white rounded-2xl p-6 sm:p-10">
               <div class="space-y-6 text-base sm:text-lg md:text-xl leading-relaxed">
 
-                <p><strong>Most businesses don't need more leads</strong> — they need someone to revive the hundreds of people who already showed interest.</p>
+                <p><strong>Most high-ticket businesses don’t need more leads</strong> — they need someone to revive the hundreds (or thousands) of people who already showed interest.</p>
 
-                <p>People get busy, forget to book, or simply never follow up again after the first conversation — <strong>not because they're bad leads</strong>, but because nobody stays consistent.</p>
+                <p>People get busy, forget to book, or never get followed up after the first conversation — <strong>not because they’re bad leads</strong>, but because nobody stays consistent.</p>
 
                 <p>The average business stops nurturing after <strong>1–2 messages</strong>. Our system continues weekly for <strong>30–90 days</strong>, creating buying moments your competitors miss.</p>
 
-                <p><strong>Old leads convert better</strong> because they already showed intent — they just didn't take action the first time.</p>
+                <p><strong>Old leads convert better</strong> because they already raised their hand once — they just didn’t take action the first time.</p>
 
-                <p>That's why most businesses have <strong>$5k–$50k of missed revenue</strong> sitting untouched in their CRM without realizing it.</p>
+                <p>That’s why most high-ticket businesses have <strong>$5k–$50k+ of missed revenue</strong> sitting untouched in their CRM right now.</p>
 
-                <p><strong>Our Lead Revival System brings those leads back to life</strong> by:</p>
+                <p><strong>The Pipeline Revival System brings those leads back to life</strong> by:</p>
 
                 <ul class="list-disc list-inside ml-4 space-y-2">
                   <li><strong>Organizing leads</strong> into clear stages</li>
-                  <li><strong>Reviving cold leads weekly</strong> with consistent follow-up</li>
+                  <li><strong>Reactivating cold leads weekly</strong> with consistent follow-up</li>
                   <li>Using <strong>human-style conversations</strong> that feel personal</li>
                   <li>Identifying <strong>real buying signals</strong></li>
-                  <li><strong>Moving leads into booking stages automatically</strong></li>
+                  <li><strong>Routing hot leads</strong> into booking stages automatically</li>
                   <li>Creating <strong>consistency without adding workload</strong> to your team</li>
                 </ul>
 
-                <p>This is why reviving old leads is the fastest, cheapest way to get booked appointments — without spending more on ads.</p>
+                <p>This is why reviving old leads is the fastest, cheapest way to get <strong>booked sales calls</strong> — without spending more on ads.</p>
 
               </div>
             </div>
 
-            <p>Scale-ready foundations with zero duct tape</p>
-            <p>This is <strong>the definitive resource</strong> for service businesses in 2026.</p>
-            <p>Most agencies hide this behind retainers or consulting — I show you exactly how the system works before you commit.</p>
+            <p class="text-black">Scale-ready foundations with zero duct tape.</p>
+            <p class="text-black">This is <strong>the definitive resource</strong> for high-ticket businesses in 2026.</p>
+            <p class="text-black">Most agencies hide this behind retainers — we show you the full system before you commit.</p>
           </div>
 
         </div>
       </div>
     </section>
 
-    <!-- Airtable Embed -->
+    <!-- DASHBOARD (OPTIONAL TOGGLE) -->
     <section class="w-full py-8 px-4 lg:px-12">
       <div class="max-w-6xl mx-auto">
-        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-8">
-          Behind the Scenes of the Systems We Manage
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-6">
+          Optional: See the Dashboard We Manage
         </h2>
 
-        <div class="airtable-wrap">
-          <iframe class="airtable-embed"
-                  src="https://airtable.com/embed/apphY3bSasyyG6ZhG/shrYuvcpRjoOVOvrV?viewControls=on"
-                  frameborder="0"
-                  width="100%"
-                  style="background: transparent; border: 1px solid #ccc; border-radius: 16px;">
-          </iframe>
+        <div class="max-w-2xl mx-auto mb-6">
+          <button id="toggleDashboard" class="toggle-btn" type="button">
+            <span>Show Dashboard</span>
+            <span aria-hidden="true">▾</span>
+          </button>
+          <p class="text-center text-sm mt-3 text-black">
+            Some people like to see it. If you don’t care, skip it and book the call.
+          </p>
+        </div>
+
+        <div id="dashboardWrap" class="airtable-wrap hidden">
+          <iframe
+            class="airtable-embed"
+            src="https://airtable.com/embed/apphY3bSasyyG6ZhG/shrYuvcpRjoOVOvrV?viewControls=on"
+            frameborder="0"
+            width="100%"
+            style="background: transparent; border: 1px solid #ccc; border-radius: 16px;"
+          ></iframe>
         </div>
       </div>
     </section>
@@ -311,36 +364,26 @@
     <div class="h-12"></div>
   </main>
 
-  <!-- Countdown Timer Script -->
   <script>
-    // Set countdown for 2 hours, 33 minutes, 14 seconds from now
-    const countdownDate = new Date().getTime() + (2 * 60 * 60 * 1000) + (33 * 60 * 1000) + (14 * 1000);
+    // Dashboard toggle
+    const btn = document.getElementById('toggleDashboard');
+    const wrap = document.getElementById('dashboardWrap');
 
-    function updateCountdown() {
-      const now = new Date().getTime();
-      const distance = countdownDate - now;
+    btn.addEventListener('click', () => {
+      const isHidden = wrap.classList.contains('hidden');
+      wrap.classList.toggle('hidden');
 
-      if (distance < 0) {
-        document.getElementById('days').textContent = '0';
-        document.getElementById('hours').textContent = '0';
-        document.getElementById('minutes').textContent = '0';
-        document.getElementById('seconds').textContent = '0';
-        return;
+      btn.querySelector('span').textContent = isHidden ? 'Hide Dashboard' : 'Show Dashboard';
+      btn.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+
+      if (isHidden) {
+        // Smooth scroll to embed when opened
+        setTimeout(() => wrap.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
       }
+    });
 
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-      document.getElementById('days').textContent = days;
-      document.getElementById('hours').textContent = hours;
-      document.getElementById('minutes').textContent = minutes;
-      document.getElementById('seconds').textContent = seconds;
-    }
-
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
+    // If you want to keep your countdown, add the DOM IDs for days/hours/minutes/seconds first.
+    // Removing it here since your page doesn't include those elements.
   </script>
 
 </body>
