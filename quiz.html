@@ -1,8 +1,10 @@
-<html lang="en"><head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Quick Quiz</title>
-  <meta name="description" content="A quick quiz to personalize your next step.">
+  <meta name="description" content="A quick quiz to personalize your next step." />
 
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Fraunces:wght@500;650;800&family=Manrope:wght@400;600;700;800&display=swap");
@@ -11,7 +13,7 @@
       --bg: #f6f1e9;
       --ink: #111418;
       --muted: #6b7280;
-      --card: rgba(255,255,255,.85);
+      --card: rgba(255,255,255,.86);
       --stroke: rgba(17,24,39,.10);
 
       --accent: #1f6cff;
@@ -28,7 +30,7 @@
 
     body{
       margin:0;
-      font-family: "Manrope", "Segoe UI", system-ui, -apple-system, sans-serif;
+      font-family: "Manrope", system-ui, -apple-system, Segoe UI, sans-serif;
       color: var(--ink);
       background: var(--bg);
       overflow-x:hidden;
@@ -57,54 +59,25 @@
       z-index:0;
     }
 
-    .wrap{
-      min-height:100%;
-      display:flex;
-      flex-direction:column;
-      position:relative;
-      z-index:1;
-    }
+    .wrap{ min-height:100%; display:flex; flex-direction:column; position:relative; z-index:1; }
+    main{ flex:1; display:flex; justify-content:center; padding:18px 16px 44px; }
 
-    main{
-      flex:1;
-      display:flex;
-      justify-content:center;
-      padding: 18px 16px 44px; /* tightened since header is gone */
-    }
+    .card{ width:100%; max-width: 1100px; border-radius: var(--radius); }
+    .panel{ max-width: 1100px; margin: 0 auto; padding: 8px 0 0; }
 
-    .card{
-      width:100%;
-      max-width: 1100px;
-      border-radius: var(--radius);
-    }
-
-    .panel{
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 8px 0 0;
-    }
-
-    .hero{
-      text-align:center;
-      padding: 18px 0 16px;
-    }
-
+    .hero{ text-align:center; padding: 18px 0 16px; }
     .kicker{
-      display:inline-flex;
-      gap:10px;
-      align-items:center;
-      padding: 8px 14px;
-      border-radius:999px;
+      display:inline-flex; gap:10px; align-items:center;
+      padding: 8px 14px; border-radius:999px;
       background: rgba(17,24,39,.06);
       color: rgba(17,24,39,.85);
-      font-weight: 800;
-      font-size: 12px;
+      font-weight: 800; font-size: 12px;
       border: 1px solid rgba(17,24,39,.08);
     }
 
     h1{
       margin: 16px 0 10px;
-      font-family: "Fraunces", "Times New Roman", serif;
+      font-family: "Fraunces", serif;
       font-size: clamp(30px, 4.2vw, 52px);
       letter-spacing: -0.03em;
       line-height: 1.05;
@@ -113,21 +86,15 @@
 
     .sub{
       margin: 0 auto;
-      max-width: 620px;
+      max-width: 720px;
       color: rgba(17,24,39,.72);
       font-size: 15px;
       line-height: 1.6;
     }
 
-    .builder{
-      display:grid;
-      gap: 16px;
-    }
+    .builder{ display:grid; gap: 16px; }
     @media(min-width: 960px){
-      .builder{
-        grid-template-columns: 1.1fr .9fr;
-        align-items:start;
-      }
+      .builder{ grid-template-columns: 1.1fr .9fr; align-items:start; }
     }
 
     .qcard{
@@ -147,18 +114,8 @@
         linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,0));
     }
 
-    .qtitle{
-      margin:0;
-      font-size: 18px;
-      letter-spacing: -0.01em;
-      text-rendering: geometricPrecision;
-    }
-
-    .qmeta{
-      margin-top: 6px;
-      color: rgba(17,24,39,.62);
-      font-size: 13px;
-    }
+    .qtitle{ margin:0; font-size: 18px; letter-spacing: -0.01em; text-rendering: geometricPrecision; }
+    .qmeta{ margin-top: 6px; color: rgba(17,24,39,.62); font-size: 13px; }
 
     .options{
       display:grid;
@@ -167,17 +124,11 @@
       padding: 16px;
     }
     @media (min-width: 900px){
-      .options{
-        grid-template-columns: repeat(4, minmax(0,1fr));
-        gap: 14px;
-        padding: 18px;
-      }
+      .options{ grid-template-columns: repeat(4, minmax(0,1fr)); gap: 14px; padding: 18px; }
     }
 
     .opt{
-      display:flex;
-      flex-direction:column;
-      cursor:pointer;
+      display:flex; flex-direction:column; cursor:pointer;
       border-radius: 18px;
       border: 1px solid rgba(17,24,39,.10);
       background: rgba(255,255,255,.82);
@@ -187,33 +138,22 @@
       box-shadow: var(--shadow2);
       transform: translateZ(0);
     }
-
     .opt:hover{
       transform: translateY(-2px);
       border-color: rgba(31,108,255,.35);
       box-shadow: 0 20px 60px rgba(17,24,39,.14);
     }
     .opt:active{ transform: scale(.985); }
-
     .opt:focus-visible{
       outline:none;
       border-color: rgba(31,108,255,.35);
       box-shadow: 0 0 0 4px rgba(31,108,255,.18), var(--shadow2);
     }
 
-    .opt-top{
-      flex:1;
-      display:grid;
-      place-items:center;
-      padding: 18px 10px;
-    }
-
+    .opt-top{ flex:1; display:grid; place-items:center; padding: 18px 10px; }
     .icon{
-      width: 56px;
-      height: 56px;
-      border-radius: 16px;
-      display:grid;
-      place-items:center;
+      width: 56px; height: 56px; border-radius: 16px;
+      display:grid; place-items:center;
       background: rgba(31,108,255,.10);
       border: 1px solid rgba(31,108,255,.18);
     }
@@ -221,7 +161,6 @@
 
     .opt-bottom{
       padding: 12px 12px;
-      background: transparent;
       border-top: 1px solid rgba(17,24,39,.08);
       text-align:center;
       font-weight: 900;
@@ -230,10 +169,7 @@
     }
 
     .footer{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
+      display:flex; justify-content:space-between; align-items:center; gap:12px;
       padding: 14px 16px 18px;
       border-top: 1px solid rgba(17,24,39,.08);
       background: rgba(255,255,255,.50);
@@ -246,57 +182,26 @@
       font-weight: 900;
       cursor:pointer;
       transition: transform .15s ease, background .15s ease, opacity .15s ease, box-shadow .15s ease;
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      user-select:none;
-      line-height: 1;
-      justify-content:center;
+      display:inline-flex; align-items:center; gap:10px;
+      user-select:none; line-height: 1; justify-content:center;
     }
     .btn:active{ transform: scale(.985); }
     .btn[disabled]{ opacity:.45; cursor:not-allowed; }
 
-    .btn.secondary{
-      background: rgba(255,255,255,.85);
-      color: rgba(17,24,39,.86);
-    }
+    .btn.secondary{ background: rgba(255,255,255,.85); color: rgba(17,24,39,.86); }
     .btn.primary{
-      background: var(--ink);
-      color: #fff;
-      border-color: rgba(17,24,39,.12);
+      background: var(--ink); color: #fff; border-color: rgba(17,24,39,.12);
       box-shadow: 0 12px 26px rgba(17,24,39,.18);
     }
-    .btn.primary:hover{
-      background: #0b1220;
-      box-shadow: 0 18px 44px rgba(17,24,39,.22);
-    }
+    .btn.primary:hover{ background: #0b1220; box-shadow: 0 18px 44px rgba(17,24,39,.22); }
 
-    .stepnote{
-      font-size: 13px;
-      color: rgba(17,24,39,.62);
-      font-weight: 700;
-    }
+    .stepnote{ font-size: 13px; color: rgba(17,24,39,.62); font-weight: 700; }
 
-    .form{
-      display:grid;
-      gap: 12px;
-      padding: 16px 16px 6px;
-    }
-    .row{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-    }
-    @media(min-width:720px){
-      .row.two{ grid-template-columns: 1fr 1fr; }
-    }
+    .form{ display:grid; gap: 12px; padding: 16px 16px 6px; }
+    .row{ display:grid; grid-template-columns: 1fr; gap: 10px; }
+    @media(min-width:720px){ .row.two{ grid-template-columns: 1fr 1fr; } }
 
-    label{
-      font-size: 12px;
-      color: rgba(17,24,39,.70);
-      font-weight: 800;
-    }
-
+    label{ font-size: 12px; color: rgba(17,24,39,.70); font-weight: 800; }
     input, textarea{
       width:100%;
       padding: 12px 12px;
@@ -306,72 +211,34 @@
       color: rgba(17,24,39,.92);
       outline: none;
     }
-
     input:focus, textarea:focus{
       border-color: rgba(31,108,255,.45);
       box-shadow: 0 0 0 4px rgba(31,108,255,.16);
     }
     textarea{ min-height: 88px; resize: vertical; }
 
-    .results{
-      padding: 12px 2px 4px;
-      color: rgba(17,24,39,.78);
-      font-size: 14px;
-      line-height: 1.55;
-    }
-
-    .taglist{
-      display:flex;
-      flex-wrap:wrap;
-      gap: 8px;
-      padding: 0 2px 6px;
-    }
-
+    .results{ padding: 12px 2px 4px; color: rgba(17,24,39,.78); font-size: 14px; line-height: 1.55; }
+    .taglist{ display:flex; flex-wrap:wrap; gap: 8px; padding: 0 2px 6px; }
     .tag{
-      padding: 7px 10px;
-      border-radius:999px;
+      padding: 7px 10px; border-radius:999px;
       background: rgba(31,108,255,.08);
       border: 1px solid rgba(31,108,255,.18);
       color: rgba(31,108,255,.95);
-      font-weight: 900;
-      font-size: 12px;
+      font-weight: 900; font-size: 12px;
     }
 
     .miniStep{
-      display:inline-flex;
-      align-self:flex-start;
-      margin-top: 2px;
-      padding: 7px 12px;
-      border-radius: 999px;
+      display:inline-flex; align-self:flex-start; margin-top: 2px;
+      padding: 7px 12px; border-radius: 999px;
       background: rgba(17,24,39,.06);
       border: 1px solid rgba(17,24,39,.10);
-      font-weight: 900;
-      font-size: 12px;
+      font-weight: 900; font-size: 12px;
       color: rgba(17,24,39,.72);
     }
-    .hintTitle{
-      font-weight: 950;
-      font-size: 16px;
-      letter-spacing: -0.02em;
-      margin-top: 6px;
-    }
-    .hintSub{
-      color: rgba(17,24,39,.68);
-      font-size: 13px;
-      margin-top: 4px;
-      line-height: 1.45;
-    }
-    .fieldHint{
-      margin-top: 6px;
-      font-size: 12px;
-      color: rgba(17,24,39,.55);
-      font-weight: 700;
-    }
-    .formStep{
-      display:grid;
-      gap: 12px;
-    }
-
+    .hintTitle{ font-weight: 950; font-size: 16px; letter-spacing: -0.02em; margin-top: 6px; }
+    .hintSub{ color: rgba(17,24,39,.68); font-size: 13px; margin-top: 4px; line-height: 1.45; }
+    .fieldHint{ margin-top: 6px; font-size: 12px; color: rgba(17,24,39,.55); font-weight: 700; }
+    .formStep{ display:grid; gap: 12px; }
     .hidden{ display:none; }
 
     .sidecard{
@@ -381,28 +248,19 @@
       box-shadow: var(--shadow2);
       padding: 18px;
       position:sticky;
-      top: 24px; /* updated since header is removed */
+      top: 24px;
     }
     .sideTitle{
-      font-family: "Fraunces", "Times New Roman", serif;
+      font-family: "Fraunces", serif;
       font-size: 22px;
       letter-spacing: -0.02em;
       margin: 0 0 8px;
     }
-    .sideSub{
-      color: rgba(17,24,39,.68);
-      font-size: 13px;
-      line-height: 1.5;
-      margin: 0 0 14px;
-    }
-    .checklist{
-      display:grid;
-      gap: 10px;
-    }
+    .sideSub{ color: rgba(17,24,39,.68); font-size: 13px; line-height: 1.5; margin: 0 0 14px; }
+
+    .checklist{ display:grid; gap: 10px; }
     .check{
-      display:flex;
-      align-items:center;
-      gap:10px;
+      display:flex; align-items:center; gap:10px;
       padding: 10px 12px;
       border-radius: 14px;
       background: rgba(17,24,39,.04);
@@ -416,10 +274,8 @@
       background: rgba(17,24,39,.25);
       border: 1px solid rgba(17,24,39,.20);
     }
-    .dot.active{
-      background: var(--accent3);
-      border-color: #e0b740;
-    }
+    .dot.active{ background: var(--accent3); border-color: #e0b740; }
+
     .previewBlock{
       margin-top: 16px;
       padding: 14px;
@@ -429,19 +285,17 @@
       font-size: 13px;
       color: rgba(17,24,39,.78);
       line-height: 1.5;
+      white-space: pre-wrap;
     }
 
     @media (max-width: 420px){
       .hero{ padding: 16px 0 12px; }
       .sub{ font-size: 14px; }
-
       .opt{ min-height: 132px; border-radius: 16px; }
       .icon{ width: 50px; height: 50px; border-radius: 14px; }
       .opt-bottom{ padding: 10px 10px; font-size: 14px; }
-
       .footer{ flex-wrap: wrap; justify-content:center; }
       .stepnote{ width: 100%; text-align:center; }
-
       .sidecard{ position:static; }
     }
   </style>
@@ -454,15 +308,15 @@
         <div class="panel">
           <div class="hero">
             <div class="kicker">60-second quiz</div>
-            <h1 id="headline">How many leads do you have sitting cold?</h1>
-            <p class="sub" id="subtitle">Answer a few quick questions so we can point you to the best next step.</p>
+            <h1 id="headline">What are you mainly looking for?</h1>
+            <p class="sub" id="subtitle">Answer 3 questions. We’ll show you the best next step to turn cold leads into booked calls.</p>
           </div>
 
           <div class="builder">
             <section class="qcard" aria-live="polite">
               <div class="qhead">
-                <p class="qtitle" id="questionTitle">How many leads do you have sitting cold?</p>
-                <div class="qmeta" id="questionMeta">Rough estimate is fine.</div>
+                <p class="qtitle" id="questionTitle">Loading…</p>
+                <div class="qmeta" id="questionMeta"></div>
               </div>
 
               <div class="options" id="options"></div>
@@ -474,19 +328,19 @@
                 <div class="miniStep" id="miniStep">Step A of B</div>
 
                 <div class="formStep" id="formStepA">
-                  <div class="hintTitle">Where should we send your next step?</div>
-                  <div class="hintSub">This is how you get your personalized plan. Email is optional.</div>
+                  <div class="hintTitle">Where should we send your plan?</div>
+                  <div class="hintSub">Phone is required (so we can send your summary). Email is optional.</div>
 
                   <div class="row two">
                     <div>
-                      <label for="name">Name</label>
-                      <input id="name" placeholder="Your name" autocomplete="name">
-                      <div class="fieldHint">So we can personalize the plan.</div>
+                      <label for="phone">Phone (required)</label>
+                      <input id="phone" placeholder="(555) 555-5555" autocomplete="tel" inputmode="tel">
+                      <div class="fieldHint">We’ll text your summary + next step.</div>
                     </div>
                     <div>
-                      <label for="email">Email (optional)</label>
-                      <input id="email" placeholder="you@email.com" autocomplete="email">
-                      <div class="fieldHint">We will send your summary and next step here.</div>
+                      <label for="name">Name (optional)</label>
+                      <input id="name" placeholder="Your name" autocomplete="name">
+                      <div class="fieldHint">Helps personalize the follow-up.</div>
                     </div>
                   </div>
 
@@ -497,25 +351,25 @@
                 </div>
 
                 <div class="formStep hidden" id="formStepB">
-                  <div class="hintTitle">Optional (but helps a lot)</div>
-                  <div class="hintSub">If you want faster results, add your phone and a quick note.</div>
+                  <div class="hintTitle">Optional details</div>
+                  <div class="hintSub">This helps us tailor your recommendation.</div>
 
                   <div class="row two">
                     <div>
-                      <label for="phone">Phone (optional)</label>
-                      <input id="phone" placeholder="(555) 555-5555" autocomplete="tel">
-                      <div class="fieldHint">Best for quick follow-up or SMS.</div>
+                      <label for="email">Email (optional)</label>
+                      <input id="email" placeholder="you@email.com" autocomplete="email" inputmode="email">
+                      <div class="fieldHint">We’ll send your summary here too.</div>
                     </div>
                     <div>
                       <label for="company">Business / Company (optional)</label>
                       <input id="company" placeholder="Company name">
-                      <div class="fieldHint">Helps tailor recommendations.</div>
+                      <div class="fieldHint">So we can tailor examples.</div>
                     </div>
                   </div>
 
                   <div class="row">
                     <div>
-                      <label for="notes">What are you trying to achieve?</label>
+                      <label for="notes">What are you trying to achieve? (optional)</label>
                       <textarea id="notes" placeholder="Example: We have 2,000 old leads and want 20 bookings/month."></textarea>
                       <div class="fieldHint">One sentence is perfect.</div>
                     </div>
@@ -523,32 +377,34 @@
 
                   <div class="row two" style="align-items:center;">
                     <button class="btn secondary" id="backFormBtn" type="button">Back</button>
-                    <button class="btn primary" id="submitBtn" type="button">Get My Plan</button>
+                    <button class="btn primary" id="submitBtn" type="button">Show My Next Step</button>
                   </div>
 
                   <div class="stepnote">
-                    This stores quiz data in <b>localStorage</b>. You can also send it to a webhook.
+                    Saves a copy in <b>localStorage</b> and posts to your webhook (if set).
                   </div>
                 </div>
               </div>
 
               <div class="footer">
-                <button class="btn secondary" id="backBtn" type="button">Back</button>
+                <button class="btn secondary" id="backBtn" type="button" disabled>Back</button>
                 <div class="stepnote" id="stepNote">Step 1 of 4</div>
                 <button class="btn primary" id="skipBtn" type="button">Skip</button>
               </div>
             </section>
 
             <aside class="sidecard">
-              <h3 class="sideTitle">Plan Builder</h3>
-              <p class="sideSub">As you answer, we assemble a plan preview on the right. This mirrors the Perspective form flow.</p>
+              <h3 class="sideTitle">Plan Preview</h3>
+              <p class="sideSub">As they answer, this builds the “why” before the VSL.</p>
+
               <div class="checklist" id="checklist">
-                <div class="check"><span class="dot active"></span><span>Choose your focus</span></div>
-                <div class="check"><span class="dot"></span><span>Estimate lead volume</span></div>
-                <div class="check"><span class="dot"></span><span>Set timeline</span></div>
-                <div class="check"><span class="dot"></span><span>Confirm contact</span></div>
+                <div class="check"><span class="dot active"></span><span>Where leads get stuck</span></div>
+                <div class="check"><span class="dot"></span><span>Cold lead volume</span></div>
+                <div class="check"><span class="dot"></span><span>Average ticket</span></div>
+                <div class="check"><span class="dot"></span><span>Contact</span></div>
               </div>
-              <div class="previewBlock" id="previewBlock">Fill out the quiz to see a tailored plan summary here.</div>
+
+              <div class="previewBlock" id="previewBlock">Answer the quiz to see a tailored summary here.</div>
             </aside>
           </div>
         </div>
@@ -557,21 +413,30 @@
   </div>
 
   <script>
+    /***********************
+     * CONFIG
+     ***********************/
+    const WEBHOOK_URL = "https://hook.us1.make.com/REPLACE_ME";
+    const VSL_URL = "https://YOURDOMAIN.com/vsl";
+
+    /***********************
+     * QUIZ (3 questions)
+     ***********************/
     const quiz = [
       {
-        key: "goal",
-        title: "What are you mainly looking for?",
-        subtitle: "This helps us personalize your next step.",
+        key: "bottleneck",
+        title: "Where are most of your leads getting stuck?",
+        subtitle: "Pick the closest match — we’ll tailor the next step.",
         options: [
-          { label: "More Leads", icon: "bolt" },
-          { label: "More Bookings", icon: "calendar" },
-          { label: "Better Follow-Up", icon: "chat" },
-          { label: "Fix Conversion", icon: "chart" },
+          { label: "They’re sitting cold (not being contacted)", icon: "stack" },
+          { label: "They respond, but don’t book a call", icon: "calendar" },
+          { label: "They ghost after the first conversation", icon: "chat" },
+          { label: "We don’t have a real follow-up system", icon: "clock" },
         ]
       },
       {
         key: "volume",
-        title: "How many leads do you have sitting cold?",
+        title: "How many leads are currently sitting cold?",
         subtitle: "Rough estimate is fine.",
         options: [
           { label: "0–200", icon: "stack" },
@@ -581,21 +446,20 @@
         ]
       },
       {
-        key: "timeline",
-        title: "When do you want results?",
-        subtitle: "Be honest — it helps set the right plan.",
+        key: "ticket",
+        title: "What’s your average sale value?",
+        subtitle: "This helps estimate how much revenue is hiding in your lead list.",
         options: [
-          { label: "ASAP", icon: "clock" },
-          { label: "2–4 weeks", icon: "clock" },
-          { label: "1–2 months", icon: "clock" },
-          { label: "Not sure", icon: "clock" },
+          { label: "< $500", icon: "chart" },
+          { label: "$500–$2,000", icon: "chart" },
+          { label: "$2,000–$5,000", icon: "chart" },
+          { label: "$5,000+", icon: "chart" },
         ]
       }
     ];
 
     function iconSvg(name){
       const common = {
-        bolt: `<svg viewBox="0 0 24 24"><path d="M13 2L3 14h7l-1 8 12-14h-7l-1-6z"/></svg>`,
         calendar: `<svg viewBox="0 0 24 24"><path d="M7 2v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2V2h-2v2H9V2H7zm12 8H5v10h14V10z"/></svg>`,
         chat: `<svg viewBox="0 0 24 24"><path d="M4 4h16v12H7l-3 3V4zm3 5h10v2H7V9zm0-4h10v2H7V5z"/></svg>`,
         chart: `<svg viewBox="0 0 24 24"><path d="M4 19h16v2H2V3h2v16zm4-8h2v6H8v-6zm4-4h2v10h-2V7zm4 2h2v8h-2V9z"/></svg>`,
@@ -605,6 +469,9 @@
       return common[name] || common.stack;
     }
 
+    /***********************
+     * STATE + DOM
+     ***********************/
     const state = { step: 0, answers: {} };
 
     const els = {
@@ -613,19 +480,18 @@
       questionTitle: document.getElementById("questionTitle"),
       questionMeta: document.getElementById("questionMeta"),
       options: document.getElementById("options"),
+
       backBtn: document.getElementById("backBtn"),
       skipBtn: document.getElementById("skipBtn"),
       stepNote: document.getElementById("stepNote"),
+
       leadForm: document.getElementById("leadForm"),
       resultsText: document.getElementById("resultsText"),
       tagList: document.getElementById("tagList"),
-      submitBtn: document.getElementById("submitBtn"),
-      previewBlock: document.getElementById("previewBlock"),
-      checklist: document.getElementById("checklist"),
 
+      phone: document.getElementById("phone"),
       name: document.getElementById("name"),
       email: document.getElementById("email"),
-      phone: document.getElementById("phone"),
       company: document.getElementById("company"),
       notes: document.getElementById("notes"),
 
@@ -634,18 +500,15 @@
       formStepB: document.getElementById("formStepB"),
       nextFormBtn: document.getElementById("nextFormBtn"),
       backFormBtn: document.getElementById("backFormBtn"),
+      submitBtn: document.getElementById("submitBtn"),
+
+      previewBlock: document.getElementById("previewBlock"),
+      checklist: document.getElementById("checklist"),
     };
 
     function totalSteps(){ return quiz.length + 1; }
-
     function setProgress(){
-      // stepNote only (header progress removed)
       els.stepNote.textContent = `Step ${Math.min(state.step+1, totalSteps())} of ${totalSteps()}`;
-    }
-
-    function isValidEmail(v){
-      if(!v) return true;
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
     }
 
     function showFormStep(which){
@@ -655,36 +518,60 @@
       els.miniStep.textContent = a ? "Step A of B" : "Step B of B";
     }
 
+    function isValidEmail(v){
+      if(!v) return true;
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+    }
+
+    function normalizePhone(raw){
+      return (raw || "").replace(/[^\d+]/g, "");
+    }
+
     function validateStepA(){
-      const nameOk = els.name.value.trim().length >= 2;
-      const emailOk = isValidEmail(els.email.value.trim());
-      if(!nameOk){
-        els.name.focus();
-        return false;
-      }
-      if(!emailOk){
-        els.email.focus();
+      const phone = normalizePhone(els.phone.value.trim());
+      const phoneOk = phone.length >= 10;
+      if(!phoneOk){
+        els.phone.focus();
+        alert("Please enter a valid phone number.");
         return false;
       }
       return true;
     }
 
-    function updatePreview(){
-      const pieces = [];
-      if(state.answers.goal) pieces.push(`Goal: ${state.answers.goal}`);
-      if(state.answers.volume) pieces.push(`Lead volume: ${state.answers.volume}`);
-      if(state.answers.timeline) pieces.push(`Timeline: ${state.answers.timeline}`);
+    function updateChecklist(){
+      const dots = els.checklist.querySelectorAll(".dot");
+      dots.forEach((dot, idx) => dot.classList.toggle("active", idx <= Math.min(state.step, 3)));
+    }
 
-      if(pieces.length){
-        els.previewBlock.textContent = `Plan preview based on your answers: ${pieces.join(" • ")}`;
-      } else {
-        els.previewBlock.textContent = "Fill out the quiz to see a tailored plan summary here.";
+    function estimateRange(volumeLabel, ticketLabel){
+      const volMap = { "0–200": 120, "200–1,000": 600, "1,000–5,000": 2500, "5,000+": 6500 };
+      const ticketMap = { "< $500": 350, "$500–$2,000": 1200, "$2,000–$5,000": 3500, "$5,000+": 7000 };
+      const leads = volMap[volumeLabel] ?? 0;
+      const ticket = ticketMap[ticketLabel] ?? 0;
+
+      // Conservative assumptions: 0.3%–1.2% of cold leads become sales after revival
+      const low = Math.round(leads * 0.003 * ticket);
+      const high = Math.round(leads * 0.012 * ticket);
+
+      const fmt = (n)=> n.toLocaleString(undefined, { maximumFractionDigits: 0 });
+      return { low: fmt(low), high: fmt(high) };
+    }
+
+    function updatePreview(){
+      const b = state.answers.bottleneck ? `Stuck point: ${state.answers.bottleneck}` : "";
+      const v = state.answers.volume ? `Cold leads: ${state.answers.volume}` : "";
+      const t = state.answers.ticket ? `Avg ticket: ${state.answers.ticket}` : "";
+
+      let text = "Answer the quiz to see a tailored summary here.";
+      if(b || v || t) text = [b, v, t].filter(Boolean).join("\n");
+
+      if(state.answers.volume && state.answers.ticket){
+        const r = estimateRange(state.answers.volume, state.answers.ticket);
+        text += `\n\nEstimated “missed revenue” range:\n$${r.low} – $${r.high}`;
       }
 
-      const dots = els.checklist.querySelectorAll(".dot");
-      dots.forEach((dot, idx) => {
-        dot.classList.toggle("active", idx <= Math.min(state.step, 3));
-      });
+      els.previewBlock.textContent = text;
+      updateChecklist();
     }
 
     function render(){
@@ -698,34 +585,31 @@
       els.backBtn.disabled = state.step === 0;
 
       if(onForm){
-        els.headline.textContent = "You're almost done";
-        els.subtitle.textContent = "Drop your info to see your summary and next step.";
-        els.questionTitle.textContent = "Where should we send your next step?";
-        els.questionMeta.textContent = "This takes about 10 seconds.";
+        const r = estimateRange(state.answers.volume, state.answers.ticket);
 
-        const tags = [];
-        for(const q of quiz){
-          if(state.answers[q.key]) tags.push(`${q.title}: ${state.answers[q.key]}`);
-        }
+        els.questionTitle.textContent = "Get your personalized next step";
+        els.questionMeta.textContent = "Takes ~10 seconds.";
 
+        // Tags
         els.tagList.innerHTML = "";
-        tags.forEach(t=>{
-          const span = document.createElement("span");
-          span.className = "tag";
-          span.textContent = t;
-          els.tagList.appendChild(span);
+        quiz.forEach(q=>{
+          if(state.answers[q.key]){
+            const span = document.createElement("span");
+            span.className = "tag";
+            span.textContent = `${q.title}: ${state.answers[q.key]}`;
+            els.tagList.appendChild(span);
+          }
         });
 
+        // Results priming copy
         els.resultsText.innerHTML =
-          "Based on your answers, we will recommend a next step that fits your situation. " +
-          "You can also wire this to a webhook to capture leads automatically.";
+          `Based on your answers, you may be sitting on <b>$${r.low} – $${r.high}</b> in missed revenue from cold leads. ` +
+          `Next, we’ll show you the 3-step system to revive them into booked calls.`;
 
         showFormStep("A");
         els.skipBtn.textContent = "Reset";
       } else {
         const q = quiz[state.step];
-        els.headline.textContent = q.title;
-        els.subtitle.textContent = "Answer a few quick questions so we can point you to the best next step.";
         els.questionTitle.textContent = q.title;
         els.questionMeta.textContent = q.subtitle;
 
@@ -736,9 +620,7 @@
           btn.setAttribute("role","button");
           btn.tabIndex = 0;
           btn.innerHTML = `
-            <div class="opt-top">
-              <div class="icon">${iconSvg(opt.icon)}</div>
-            </div>
+            <div class="opt-top"><div class="icon">${iconSvg(opt.icon)}</div></div>
             <div class="opt-bottom">${opt.label}</div>
           `;
           btn.addEventListener("click", ()=> choose(opt.label));
@@ -768,41 +650,55 @@
       render();
     }
 
+    function resetAll(){
+      state.step = 0;
+      state.answers = {};
+      els.phone.value = "";
+      els.name.value = "";
+      els.email.value = "";
+      els.company.value = "";
+      els.notes.value = "";
+      localStorage.removeItem("quizLeadData_minimal");
+      render();
+    }
+
     function skip(){
-      if(state.step >= quiz.length){
-        state.step = 0;
-        state.answers = {};
-        els.name.value = "";
-        els.email.value = "";
-        els.phone.value = "";
-        els.company.value = "";
-        els.notes.value = "";
-        localStorage.removeItem("quizLeadData");
-        render();
-        return;
-      }
+      if(state.step >= quiz.length){ resetAll(); return; }
       state.step++;
       render();
     }
 
     async function submit(){
+      const phone = normalizePhone(els.phone.value.trim());
+      const email = els.email.value.trim();
+
+      if(!phone || phone.length < 10){
+        alert("Please enter a valid phone number.");
+        els.phone.focus();
+        return;
+      }
+      if(email && !isValidEmail(email)){
+        alert("Please enter a valid email (or leave it blank).");
+        els.email.focus();
+        return;
+      }
+
       const payload = {
         submittedAt: new Date().toISOString(),
         answers: state.answers,
         lead: {
+          phone,
           name: els.name.value.trim(),
-          email: els.email.value.trim(),
-          phone: els.phone.value.trim(),
+          email,
           company: els.company.value.trim(),
           notes: els.notes.value.trim()
-        }
+        },
+        meta: { userAgent: navigator.userAgent, url: location.href }
       };
 
-      localStorage.setItem("quizLeadData", JSON.stringify(payload));
+      localStorage.setItem("quizLeadData_minimal", JSON.stringify(payload));
 
-      const WEBHOOK_URL = "https://hook.us1.make.com/s21z4pjd33o3ldqid3aqakay2dr0fwik";
-
-      if(WEBHOOK_URL){
+      if(WEBHOOK_URL && WEBHOOK_URL.includes("http")){
         try{
           await fetch(WEBHOOK_URL, {
             method:"POST",
@@ -814,20 +710,25 @@
         }
       }
 
-      window.location.href = "https://utglabs.com/breakdown";
+      if(VSL_URL && VSL_URL.includes("http")){
+        window.location.href = VSL_URL;
+      } else {
+        alert("Done! Set VSL_URL at the top of the script to redirect.");
+      }
     }
 
-    els.backBtn.addEventListener("click", back);
-    els.skipBtn.addEventListener("click", skip);
-    els.submitBtn.addEventListener("click", submit);
-
+    // Form buttons
     els.nextFormBtn.addEventListener("click", ()=>{
-      if(validateStepA()){
-        showFormStep("B");
-      }
+      if(validateStepA()) showFormStep("B");
     });
     els.backFormBtn.addEventListener("click", ()=> showFormStep("A"));
+    els.submitBtn.addEventListener("click", submit);
+
+    // Footer buttons
+    els.backBtn.addEventListener("click", back);
+    els.skipBtn.addEventListener("click", skip);
 
     render();
   </script>
-</body></html>
+</body>
+</html>
