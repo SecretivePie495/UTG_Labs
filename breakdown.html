@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -962,7 +963,7 @@
           const leads = document.getElementById("leads").value;
           const offer = document.getElementById("offer").value;
 
-            // Always show Calendly regardless of answer
+          if (ads !== "" && offer === "yes" && leads !== "") {
             document.getElementById("calendlySection").style.display = "block";
             document.getElementById("applyCard").style.display = "none";
             document.getElementById("notQualified").style.display = "none";
