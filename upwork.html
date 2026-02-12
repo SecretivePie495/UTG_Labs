@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Automation Builder (Zapier / n8n) — Book a Call</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/images/UTG-Favicon.png" />
+    <meta
+      name="description"
+      content="I build reliable AI + automation workflows (Zapier/n8n/Sheets/CRMs) that save hours and route leads into booked calls. Book a call."
+    />
+
+    <!-- Open Graph -->
+    <meta
+      property="og:image"
+      content="https://storage.googleapis.com/facelessbroll_website/UdoPIC.jpg"
+    />
+    <meta property="og:title" content="AI Automation Builder — Book a Call" />
+    <meta
+      property="og:description"
+      content="Zapier • n8n • AI routing • Sheets/CRM dashboards • Follow-up automations. Book a call."
+    />
+    <meta property="og:type" content="website" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --brand: #007a3f;
+        --brand2: #006633;
+      }
+
+      html,
+      body {
+        width: 100%;
+        overflow-x: hidden;
+      }
+      body {
+        background-color: #ffffff;
+        color: #000000;
+        font-family: "Roboto", system-ui, -apple-system, sans-serif;
+        margin: 0;
+        padding: 0;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      /* Minimal clean spacing at top */
+      header,
+      .header-spacer {
+        display: none !important;
+      }
+
+      main {
+        margin-top: 14px !important;
+      }
+      section:first-of-type {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+      }
+      .hero-wrap {
+        padding-top: 0 !important;
+        margin-top: 0 !important;
+      }
+
+      /* Mobile-first typography */
+      .mobile-sub {
+        font-size: 16px;
+        line-height: 1.35;
+      }
+      @media (min-width: 768px) {
+        .mobile-sub {
+          font-size: 20px;
+        }
+      }
+
+      .mobile-title {
+        font-size: 32px;
+        line-height: 1.08;
+      }
+      @media (min-width: 640px) {
+        .mobile-title {
+          font-size: 44px;
+        }
+      }
+      @media (min-width: 768px) {
+        .mobile-title {
+          font-size: 54px;
+        }
+      }
+
+      /* Card padding that feels good on mobile */
+      .mobile-card {
+        padding: 18px;
+      }
+      @media (min-width: 640px) {
+        .mobile-card {
+          padding: 40px;
+        }
+      }
+
+      /* Optional: nicer link focus */
+      a:focus {
+        outline: 3px solid rgba(0, 122, 63, 0.35);
+        outline-offset: 3px;
+        border-radius: 12px;
+      }
+
+      /* Toggle button */
+      .toggle-btn {
+        background: #000;
+        color: #fff;
+        border-radius: 14px;
+        padding: 14px 18px;
+        font-weight: 700;
+        transition: transform 0.12s ease, opacity 0.12s ease;
+        width: 100%;
+        text-align: center;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+      }
+      .toggle-btn:active {
+        transform: scale(0.98);
+      }
+      .toggle-btn:hover {
+        opacity: 0.92;
+      }
+
+      /* Calendly embed responsiveness */
+      .calendly-inline-widget {
+        width: 100%;
+      }
+      @media (max-width: 640px) {
+        .calendly-inline-widget {
+          height: 860px !important;
+        }
+      }
+
+      /* =========================================================
+         AUTOMATION ROI CALCULATOR (Floating button + modal)
+         ========================================================= */
+      .dlc-fab {
+        position: fixed;
+        right: 16px;
+        bottom: 16px;
+        z-index: 9998;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 14px;
+        border-radius: 999px;
+        background: #000;
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
+        font-weight: 800;
+        letter-spacing: 0.1px;
+        transition: transform 0.12s ease, opacity 0.12s ease;
+        user-select: none;
+      }
+      .dlc-fab:hover {
+        opacity: 0.93;
+      }
+      .dlc-fab:active {
+        transform: scale(0.98);
+      }
+      .dlc-fab .dlc-ic {
+        width: 34px;
+        height: 34px;
+        border-radius: 999px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, var(--brand), var(--brand2));
+        font-size: 16px;
+      }
+      .dlc-fab small {
+        display: block;
+        font-weight: 700;
+        opacity: 0.82;
+        margin-top: -2px;
+        font-size: 12px;
+      }
+
+      .dlc-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.55);
+        z-index: 9999;
+        display: none;
+        padding: 18px;
+        overflow: auto;
+      }
+      .dlc-overlay[data-open="1"] {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .dlc-dialog {
+        width: min(980px, 100%);
+        background: #fff;
+        border-radius: 20px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        box-shadow: 0 28px 80px rgba(0, 0, 0, 0.25);
+        position: relative;
+        padding: 18px;
+      }
+      @media (min-width: 640px) {
+        .dlc-dialog {
+          padding: 22px;
+        }
+      }
+
+      .dlc-close {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        background: #fff;
+        font-weight: 900;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.12s ease, opacity 0.12s ease;
+      }
+      .dlc-close:hover {
+        opacity: 0.92;
+      }
+      .dlc-close:active {
+        transform: scale(0.98);
+      }
+
+      .dlc-head {
+        padding-right: 52px;
+      }
+      .dlc-badge {
+        display: inline-flex;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-weight: 800;
+        font-size: 12px;
+        background: rgba(0, 122, 63, 0.1);
+        border: 1px solid rgba(0, 122, 63, 0.25);
+        color: #0f5132;
+        margin-bottom: 10px;
+      }
+      .dlc-title {
+        font-size: 24px;
+        line-height: 1.1;
+        font-weight: 900;
+        letter-spacing: -0.3px;
+        margin: 0;
+      }
+      .dlc-sub {
+        margin: 8px 0 0;
+        color: rgba(0, 0, 0, 0.68);
+        line-height: 1.4;
+      }
+
+      .dlc-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 14px;
+        margin-top: 16px;
+      }
+      @media (min-width: 840px) {
+        .dlc-grid {
+          grid-template-columns: 1fr 1fr;
+          gap: 16px;
+        }
+      }
+
+      .dlc-card {
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 18px;
+        padding: 14px;
+        background: #fff;
+      }
+      @media (min-width: 640px) {
+        .dlc-card {
+          padding: 16px;
+        }
+      }
+
+      .dlc-label {
+        display: block;
+        font-weight: 800;
+        font-size: 13px;
+        margin: 10px 0 6px;
+      }
+      .dlc-label span {
+        font-weight: 700;
+        opacity: 0.65;
+        margin-left: 4px;
+      }
+
+      .dlc-input {
+        width: 100%;
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        border-radius: 14px;
+        padding: 12px 12px;
+        font-size: 15px;
+        outline: none;
+        background: #fff;
+      }
+      .dlc-input:focus {
+        border-color: rgba(0, 122, 63, 0.45);
+        box-shadow: 0 0 0 4px rgba(0, 122, 63, 0.12);
+      }
+
+      .dlc-range {
+        width: 100%;
+        margin-top: 6px;
+        accent-color: var(--brand);
+      }
+
+      .dlc-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .dlc-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .dlc-btn {
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        background: #fff;
+        color: #000;
+        border-radius: 14px;
+        padding: 12px 14px;
+        font-weight: 900;
+        width: 100%;
+        text-align: center;
+        transition: transform 0.12s ease, opacity 0.12s ease;
+        cursor: pointer;
+      }
+      .dlc-btn:hover {
+        opacity: 0.93;
+      }
+      .dlc-btn:active {
+        transform: scale(0.98);
+      }
+      .dlc-btn.primary {
+        background: var(--brand);
+        border-color: rgba(0, 0, 0, 0);
+        color: #fff;
+      }
+      .dlc-btn.primary:hover {
+        background: var(--brand2);
+      }
+      .dlc-btn.ghost {
+        background: #fff;
+      }
+
+      .dlc-err {
+        display: none;
+        margin-top: 10px;
+        color: #b91c1c;
+        font-weight: 800;
+        font-size: 13px;
+      }
+
+      .dlc-results {
+        background: #0b0b0f;
+        color: #fff;
+        border-color: rgba(255, 255, 255, 0.08);
+      }
+      .dlc-kicker {
+        color: rgba(255, 255, 255, 0.75);
+        font-weight: 800;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+      }
+      .dlc-big {
+        font-size: clamp(34px, 4.5vw, 54px);
+        font-weight: 950;
+        letter-spacing: -0.9px;
+        margin-top: 10px;
+        line-height: 1.05;
+      }
+      .dlc-mini {
+        margin-top: 10px;
+        color: rgba(255, 255, 255, 0.78);
+        font-size: 13px;
+        line-height: 1.45;
+      }
+      .dlc-ohshit {
+        margin-top: 12px;
+        padding: 12px;
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.06);
+        color: rgba(255, 255, 255, 0.92);
+        font-size: 13px;
+        line-height: 1.45;
+      }
+    </style>
+  </head>
+
+  <body class="antialiased">
+    <main class="min-h-screen">
+      <!-- HERO -->
+      <section class="px-4 lg:px-12 hero-wrap">
+        <div class="max-w-6xl mx-auto">
+          <div class="bg-white rounded-2xl">
+            <div class="mobile-card pt-0">
+              <!-- Avatars -->
+              <div class="flex flex-col items-center justify-center pb-2">
+                <div class="flex items-center justify-center -space-x-3 mb-2">
+                  <div
+                    class="relative overflow-hidden rounded-full border-2 border-white w-10 h-10"
+                  >
+                    <img
+                      src="https://storage.googleapis.com/facelessbroll_website/UdoPIC.jpg"
+                      alt="Udo Onyekwere"
+                      class="absolute inset-0 w-full h-full object-cover"
+                    />
+                  </div>
+                  <div
+                    class="relative overflow-hidden rounded-full border-2 border-white w-10 h-10"
+                  >
+                    <img
+                      src="https://storage.googleapis.com/media.utg-media.com/UTGlogo.png"
+                      alt="UTG Labs"
+                      class="absolute inset-0 w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+
+                <div class="text-sm text-center text-black space-y-1">
+                  <p><strong>Udo Onyekwere</strong></p>
+                  <p><strong>Automation + AI Workflows</strong></p>
+                </div>
+              </div>
+
+              <!-- Subheadline + Headline -->
+              <div class="pt-2 pb-4 text-center text-black">
+                <p class="mobile-sub">
+                  <u
+                    ><em
+                      >For founders & small teams who want Zapier/n8n automations
+                      built correctly 👇👇</em
+                    ></u
+                  >
+                </p>
+
+                <p class="mobile-title font-bold tracking-tight mt-4">
+                  I Build AI Automation Systems That Save You Hours & Turn Leads
+                  Into Booked Calls
+                </p>
+
+                <p class="mt-4 text-base sm:text-lg max-w-3xl mx-auto">
+                  Zapier • n8n • Google Sheets • Airtable • CRMs • AI
+                  summarization & routing • notifications • follow-up systems —
+                  clean build, documented handoff.
+                </p>
+              </div>
+
+              <!-- Optional intro video (keep or replace) -->
+              <div class="py-4 sm:py-6">
+                <div class="overflow-hidden rounded-2xl">
+                  <video
+                    src="https://storage.googleapis.com/media.utg-media.com/New%20VSL%201-30.mp4"
+                    poster="https://storage.googleapis.com/media.utg-media.com/Lead%20System.png"
+                    controls
+                    playsinline
+                    preload="metadata"
+                    class="w-full aspect-video bg-black object-contain"
+                  ></video>
+                </div>
+
+                <!-- BOOK CALL -->
+                <div class="mt-8 text-center" id="book-call">
+                  <h2 class="text-2xl sm:text-3xl font-bold mb-2">Book A Call</h2>
+                  <p class="text-sm sm:text-base mb-6">
+                    Tell me what you want automated — I’ll confirm scope, tools,
+                    timeline, and give a clear plan.
+                  </p>
+
+                  <!-- FORM CARD -->
+                  <div id="applyCard" style="max-width: 520px; margin: 0 auto">
+                    <div
+                      style="
+                        background: #fff;
+                        width: 100%;
+                        padding: 40px;
+                        border-radius: 12px;
+                        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+                        text-align: left;
+                      "
+                    >
+                      <h3
+                        style="
+                          margin: 0 0 14px;
+                          font-weight: 600;
+                          color: #1a1a1a;
+                        "
+                      >
+                        Quick Project Fit Check (30 seconds)
+                      </h3>
+
+                      <form id="qualifyForm">
+                        <label
+                          style="
+                            font-size: 14px;
+                            font-weight: 500;
+                            margin-bottom: 6px;
+                            display: block;
+                            color: #1a1a1a;
+                          "
+                        >
+                          What do you want automated?
+                        </label>
+                        <select
+                          id="need"
+                          required
+                          style="
+                            width: 100%;
+                            padding: 12px;
+                            border-radius: 8px;
+                            border: 1px solid #d0d7de;
+                            margin-bottom: 20px;
+                            font-size: 14px;
+                            background: #fff;
+                          "
+                        >
+                          <option value="">Select</option>
+                          <option value="lead-routing">Lead intake + routing</option>
+                          <option value="ai-triage">AI summary / tagging / triage</option>
+                          <option value="follow-up">Follow-up automation</option>
+                          <option value="dashboards">Sheets/Airtable dashboard pipeline</option>
+                          <option value="integrations">Tool integrations / API connections</option>
+                          <option value="other">Other</option>
+                        </select>
+
+                        <label
+                          style="
+                            font-size: 14px;
+                            font-weight: 500;
+                            margin-bottom: 6px;
+                            display: block;
+                            color: #1a1a1a;
+                          "
+                        >
+                          What tools are you using?
+                        </label>
+                        <select
+                          id="tools"
+                          required
+                          style="
+                            width: 100%;
+                            padding: 12px;
+                            border-radius: 8px;
+                            border: 1px solid #d0d7de;
+                            margin-bottom: 20px;
+                            font-size: 14px;
+                            background: #fff;
+                          "
+                        >
+                          <option value="">Select</option>
+                          <option value="zapier">Zapier</option>
+                          <option value="n8n">n8n</option>
+                          <option value="both">Zapier + n8n</option>
+                          <option value="sheets">Google Sheets / Airtable</option>
+                          <option value="crm">CRM (HubSpot / GHL / Salesforce / etc.)</option>
+                          <option value="not-sure">Not sure yet</option>
+                        </select>
+
+                        <label
+                          style="
+                            font-size: 14px;
+                            font-weight: 500;
+                            margin-bottom: 6px;
+                            display: block;
+                            color: #1a1a1a;
+                          "
+                        >
+                          When do you want it live?
+                        </label>
+                        <select
+                          id="timeline"
+                          required
+                          style="
+                            width: 100%;
+                            padding: 12px;
+                            border-radius: 8px;
+                            border: 1px solid #d0d7de;
+                            margin-bottom: 20px;
+                            font-size: 14px;
+                            background: #fff;
+                          "
+                        >
+                          <option value="">Select</option>
+                          <option value="asap">ASAP (this week)</option>
+                          <option value="1-2w">1–2 weeks</option>
+                          <option value="month">This month</option>
+                          <option value="flex">Flexible</option>
+                        </select>
+
+                        <button
+                          type="submit"
+                          style="
+                            width: 100%;
+                            padding: 14px;
+                            background: #0069ff;
+                            color: #fff;
+                            border: none;
+                            border-radius: 8px;
+                            font-size: 15px;
+                            font-weight: 600;
+                            cursor: pointer;
+                            transition: background 0.2s ease;
+                          "
+                        >
+                          Continue to Scheduling
+                        </button>
+                      </form>
+
+                      <div
+                        id="notQualified"
+                        style="
+                          display: none;
+                          margin-top: 20px;
+                          color: #d93025;
+                          font-size: 14px;
+                          font-weight: 600;
+                        "
+                      >
+                        Please select all fields to continue.
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- CALENDLY (hidden until form submit) -->
+                  <div id="calendlySection" style="display: none; margin-top: 28px">
+                    <div class="rounded-xl border border-black p-4 mb-4 max-w-3xl mx-auto text-left">
+                      <p class="font-bold">What we’ll cover on the call:</p>
+                      <ul class="list-disc list-inside ml-4 mt-2 space-y-1 text-sm sm:text-base">
+                        <li>Your current workflow + what’s breaking</li>
+                        <li>Best tool choice (Zapier vs n8n) + approach</li>
+                        <li>Scope + timeline + deliverables</li>
+                        <li>Next steps to get it live</li>
+                      </ul>
+                    </div>
+
+                    <div
+                      class="calendly-inline-widget"
+                      data-url="https://calendly.com/utglabs/book-call"
+                      style="position: relative; min-width: 320px; height: 700px"
+                    ></div>
+                  </div>
+                </div>
+                <!-- /BOOK CALL -->
+
+                <div class="mt-4 text-center text-black">
+                  <p class="text-base sm:text-lg">
+                    Scroll for exactly what I build + common use cases.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Who it's for -->
+              <div class="mt-2">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div class="rounded-xl border border-black p-4">
+                    <p class="font-bold">✅ Great fit for:</p>
+                    <p class="text-sm mt-2">
+                      Founders & small teams who want reliable automations:
+                      lead routing, AI triage, follow-ups, dashboards, integrations.
+                    </p>
+                  </div>
+                  <div class="rounded-xl border border-black p-4">
+                    <p class="font-bold">❌ Not a fit for:</p>
+                    <p class="text-sm mt-2">
+                      “Cheap quick hacks”, no access to your tools, or projects that
+                      need heavy custom backend apps (not automation).
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <!-- /Who it's for -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- WHAT I DO + PROCESS -->
+      <section class="w-full py-8 px-4 lg:px-12">
+        <div class="max-w-6xl mx-auto">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Left: 3-Step Process + CTA -->
+            <div class="bg-white rounded-2xl p-6 sm:p-10">
+              <div class="space-y-6">
+                <h2 class="text-2xl sm:text-3xl font-bold">
+                  The 3-Step Automation Build I Deliver
+                </h2>
+
+                <div class="flex items-start gap-4 sm:gap-6">
+                  <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center text-3xl">①</div>
+                  <div class="text-base sm:text-lg">
+                    <p>
+                      <strong>Audit + map the workflow</strong> into a clean blueprint:
+                      inputs → logic → outputs (and what success looks like).
+                    </p>
+                  </div>
+                </div>
+
+                <div class="flex items-start gap-4 sm:gap-6">
+                  <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center text-3xl">②</div>
+                  <div class="text-base sm:text-lg">
+                    <p>
+                      <strong>Build the automation</strong> in Zapier/n8n with
+                      filters, AI steps, data cleanup, error handling, and tracking.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="flex items-start gap-4 sm:gap-6">
+                  <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center text-3xl">③</div>
+                  <div class="text-base sm:text-lg">
+                    <p>
+                      <strong>Launch + handoff</strong> with testing, walkthrough,
+                      documentation, and support for tweaks.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="rounded-xl border border-black p-4">
+                  <p class="font-bold">Common deliverables:</p>
+                  <ul class="list-disc list-inside ml-4 mt-2 space-y-1 text-sm sm:text-base">
+                    <li>Lead capture → AI summary → routing (Slack/Email/CRM)</li>
+                    <li>Calendly booking + qualification logic</li>
+                    <li>Google Sheets/Airtable pipelines as “source of truth”</li>
+                    <li>Notifications + follow-ups + escalation rules</li>
+                    <li>Dashboards + logging + retries for reliability</li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- CTA -->
+              <div class="mt-8">
+                <a
+                  href="#book-call"
+                  class="w-full inline-flex items-center justify-center bg-[color:var(--brand)] hover:bg-[color:var(--brand2)] text-white font-bold py-4 px-8 rounded-xl text-xl sm:text-2xl transition-all active:scale-95"
+                >
+                  Book A Call
+                </a>
+
+                <p class="text-sm mt-3 text-black text-center">
+                  You’ll leave with a clear plan (even if we don’t work together).
+                </p>
+              </div>
+            </div>
+
+            <!-- Right: Demo video + quick proof -->
+            <div class="space-y-6">
+              <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold">
+                Examples of What I Build
+              </h2>
+
+              <div class="overflow-hidden rounded-2xl bg-black">
+                <video
+                  src="https://storage.googleapis.com/media.utg-media.com/ClientDemo.mp4"
+                  poster="https://storage.googleapis.com/media.utg-media.com/ClientDemo.png"
+                  controls
+                  playsinline
+                  preload="metadata"
+                  class="w-full aspect-video object-contain bg-black rounded-2xl"
+                ></video>
+              </div>
+
+              <p class="text-base italic text-black">
+                “Automations should be boring: reliable, trackable, and easy to maintain.”
+              </p>
+
+              <div class="rounded-xl border border-black p-4">
+                <p class="font-bold">Tooling I work with:</p>
+                <p class="text-sm mt-2">
+                  Zapier • n8n • Google Sheets • Airtable • Webhooks • APIs • Calendly • Slack • Email • CRMs
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- WHY THIS WORKS -->
+      <section class="w-full py-8 px-4 lg:px-12">
+        <div class="max-w-6xl mx-auto">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Left: visuals + CTA -->
+            <div class="space-y-6">
+              <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold">
+                Why This Works (and Saves Money)
+              </h2>
+
+              <div class="overflow-hidden rounded-2xl">
+                <img
+                  src="https://storage.googleapis.com/media.utg-media.com/phone.png"
+                  alt="Example automated conversation / routing"
+                  class="w-full object-cover"
+                />
+              </div>
+
+              <div class="border-t border-black"></div>
+
+              <div class="overflow-hidden rounded-2xl">
+                <img
+                  src="https://storage.googleapis.com/media.utg-media.com/Timeline.png"
+                  alt="Automation timeline / process"
+                  class="w-full object-cover"
+                />
+              </div>
+
+              <p class="text-base italic text-black">
+                Most teams don’t need “more tools” — they need one workflow that
+                runs consistently without manual babysitting.
+              </p>
+
+              <div class="mt-2">
+                <a
+                  href="#book-call"
+                  class="w-full inline-flex items-center justify-center bg-[color:var(--brand)] hover:bg-[color:var(--brand2)] text-white font-bold py-4 px-8 rounded-xl text-xl sm:text-2xl transition-all active:scale-95"
+                >
+                  Let’s Build Yours
+                </a>
+              </div>
+            </div>
+
+            <!-- Right: copy -->
+            <div class="space-y-6 text-lg md:text-xl leading-relaxed" style="font-weight: 400">
+              <div class="bg-white rounded-2xl p-6 sm:p-10">
+                <div class="space-y-6 text-base sm:text-lg md:text-xl leading-relaxed">
+                  <p>
+                    <strong>Automation is leverage.</strong> It removes manual steps,
+                    reduces mistakes, and routes work to the right place instantly.
+                  </p>
+
+                  <p>
+                    The most common problem I see: tools exist, but the workflow is
+                    stitched together and breaks under real usage.
+                  </p>
+
+                  <p>
+                    I build automations with <strong>clear logic</strong>, solid
+                    <strong>edge case handling</strong>, and <strong>tracking</strong>
+                    so you can actually rely on it.
+                  </p>
+
+                  <p><strong>Typical wins:</strong></p>
+
+                  <ul class="list-disc list-inside ml-4 space-y-2">
+                    <li>Leads get followed up instantly (not “later”)</li>
+                    <li>Less time spent copy/pasting and updating Sheets/CRMs</li>
+                    <li>AI summaries reduce manual review</li>
+                    <li>Routing rules stop leads falling through cracks</li>
+                    <li>Automations stay maintainable as you scale</li>
+                  </ul>
+
+                  <p>
+                    If you have a workflow that’s repetitive, messy, or slow —
+                    that’s usually a great automation candidate.
+                  </p>
+                </div>
+              </div>
+
+              <p class="text-black">Clean builds. Clear handoff. No duct tape.</p>
+              <p class="text-black">
+                Book a call and I’ll map the quickest win first.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- OPTIONAL: SHOW DASHBOARD / EXAMPLES -->
+      <section class="w-full py-8 px-4 lg:px-12">
+        <div class="max-w-6xl mx-auto">
+          <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-6">
+            Optional: See a Dashboard / Tracker Example
+          </h2>
+
+          <div class="max-w-2xl mx-auto mb-6">
+            <button id="toggleDashboard" class="toggle-btn" type="button">
+              <span>Show Example</span>
+              <span aria-hidden="true">▾</span>
+            </button>
+            <p class="text-center text-sm mt-3 text-black">
+              If you don’t care, skip it and book the call.
+            </p>
+          </div>
+
+          <div id="dashboardWrap" class="airtable-wrap hidden">
+            <iframe
+              class="airtable-embed"
+              src="https://airtable.com/embed/apphY3bSasyyG6ZhG/shrYuvcpRjoOVOvrV?viewControls=on"
+              frameborder="0"
+              width="100%"
+              style="background: transparent; border: 1px solid #ccc; border-radius: 16px; height: 560px"
+            ></iframe>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer spacing -->
+      <div class="h-12"></div>
+    </main>
+
+    <!-- =========================================================
+         FLOATING BUTTON
+         ========================================================= -->
+    <button
+      class="dlc-fab"
+      id="dlcOpen"
+      type="button"
+      aria-haspopup="dialog"
+      aria-controls="dlcOverlay"
+    >
+      <span class="dlc-ic">⚡</span>
+      <span>
+        <strong>Automation ROI</strong>
+        <small>Estimate time + $ saved</small>
+      </span>
+    </button>
+
+    <!-- =========================================================
+         MODAL OVERLAY
+         ========================================================= -->
+    <div class="dlc-overlay" id="dlcOverlay" aria-hidden="true">
+      <div
+        class="dlc-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="dlcTitle"
+      >
+        <button
+          class="dlc-close"
+          type="button"
+          data-close="1"
+          aria-label="Close"
+        >
+          ✕
+        </button>
+
+        <div class="dlc-head">
+          <div class="dlc-badge">Free Tool</div>
+          <h2 id="dlcTitle" class="dlc-title">Automation ROI Calculator</h2>
+          <p class="dlc-sub">
+            Quick estimate: how much time (and cost) a workflow could save monthly.
+          </p>
+        </div>
+
+        <div class="dlc-grid">
+          <!-- Inputs -->
+          <div class="dlc-card">
+            <label class="dlc-label">Repetitive tasks per week <span>(count)</span></label>
+            <input
+              id="dlcLeads"
+              class="dlc-input"
+              type="number"
+              min="0"
+              step="1"
+              placeholder="e.g., 120"
+            />
+
+            <label class="dlc-label">Minutes per task <span>(avg)</span></label>
+            <input
+              id="dlcValue"
+              class="dlc-input"
+              type="number"
+              min="0"
+              step="0.01"
+              placeholder="e.g., 6"
+            />
+
+            <label class="dlc-label">How automated will it be?</label>
+            <select id="dlcFollow" class="dlc-input">
+              <option value="0.15">Partial (assist only)</option>
+              <option value="0.35">Mostly automated</option>
+              <option value="0.50" selected>Automated + checks</option>
+              <option value="0.70">Fully automated</option>
+              <option value="0.85">Fully automated + routing/escalation</option>
+            </select>
+
+            <div class="dlc-mini" style="margin-top: 10px; opacity: 0.85">
+              <div><b>Automation factor:</b> <span id="dlcLift">50%</span></div>
+              <div style="opacity: 0.75">(Estimated % of the work removed.)</div>
+            </div>
+
+            <div class="dlc-row">
+              <label class="dlc-label" style="margin: 0"
+                >Hourly cost <span id="dlcRateLabel">$35/hr</span></label
+              >
+            </div>
+            <input id="dlcRate" class="dlc-range" type="range" min="10" max="250" value="35" />
+
+            <div class="dlc-actions">
+              <button id="dlcCalc" class="dlc-btn primary" type="button">Calculate</button>
+              <button id="dlcReset" class="dlc-btn ghost" type="button">Reset</button>
+            </div>
+
+            <div id="dlcErr" class="dlc-err">Enter tasks + minutes per task.</div>
+          </div>
+
+          <!-- Results -->
+          <div class="dlc-card dlc-results">
+            <div class="dlc-kicker">Estimated monthly savings</div>
+            <div id="dlcRevenue" class="dlc-big">$0</div>
+
+            <div class="dlc-mini">
+              <div><b id="dlcDeals">0</b> hours saved / month</div>
+              <div><b id="dlcPer100">$0</b> saved per week</div>
+            </div>
+
+            <div class="dlc-ohshit">
+              <b>Reality check:</b> Most teams leak time in the same 3–5 workflows.
+              Automate one and you feel it immediately.
+            </div>
+
+            <a
+              href="#book-call"
+              class="dlc-btn primary"
+              style="display: flex; justify-content: center; margin-top: 14px; text-decoration: none"
+            >
+              Book a call → get a build plan
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Calendly script (load once) -->
+    <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+
+    <script>
+      // Dashboard toggle
+      const btn = document.getElementById("toggleDashboard");
+      const wrap = document.getElementById("dashboardWrap");
+      if (btn && wrap) {
+        btn.addEventListener("click", () => {
+          const isHidden = wrap.classList.contains("hidden");
+          wrap.classList.toggle("hidden");
+
+          btn.querySelector("span").textContent = isHidden ? "Hide Example" : "Show Example";
+          btn.setAttribute("aria-expanded", isHidden ? "true" : "false");
+
+          if (isHidden) {
+            setTimeout(() => wrap.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
+          }
+        });
+      }
+
+      // Qualification form -> show Calendly
+      const qualifyForm = document.getElementById("qualifyForm");
+      if (qualifyForm) {
+        qualifyForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const need = document.getElementById("need").value;
+          const tools = document.getElementById("tools").value;
+          const timeline = document.getElementById("timeline").value;
+
+          if (need && tools && timeline) {
+            document.getElementById("calendlySection").style.display = "block";
+            document.getElementById("applyCard").style.display = "none";
+            document.getElementById("notQualified").style.display = "none";
+
+            setTimeout(() => {
+              document
+                .getElementById("calendlySection")
+                .scrollIntoView({ behavior: "smooth", block: "start" });
+            }, 50);
+          } else {
+            document.getElementById("notQualified").style.display = "block";
+          }
+        });
+      }
+
+      /* =========================================================
+         AUTOMATION ROI CALCULATOR JS
+         ========================================================= */
+      const dlcOpen = document.getElementById("dlcOpen");
+      const dlcOverlay = document.getElementById("dlcOverlay");
+      const dlcCloseBtn = dlcOverlay?.querySelector('[data-close="1"]');
+
+      // Re-using ids from your original for simplicity:
+      // dlcLeads = tasks/week, dlcValue = minutes/task, dlcRate = hourly cost
+      const dlcLeads = document.getElementById("dlcLeads");
+      const dlcValue = document.getElementById("dlcValue");
+      const dlcFollow = document.getElementById("dlcFollow");
+      const dlcLift = document.getElementById("dlcLift");
+
+      const dlcRate = document.getElementById("dlcRate");
+      const dlcRateLabel = document.getElementById("dlcRateLabel");
+
+      const dlcCalc = document.getElementById("dlcCalc");
+      const dlcReset = document.getElementById("dlcReset");
+      const dlcErr = document.getElementById("dlcErr");
+
+      const dlcRevenue = document.getElementById("dlcRevenue");
+      const dlcDeals = document.getElementById("dlcDeals"); // hours/month
+      const dlcPer100 = document.getElementById("dlcPer100"); // $/week
+
+      let lastFocus = null;
+
+      function fmtMoney(n) {
+        const x = Number.isFinite(n) ? n : 0;
+        return x.toLocaleString(undefined, {
+          style: "currency",
+          currency: "USD",
+          maximumFractionDigits: 0,
+        });
+      }
+
+      function openDlc() {
+        lastFocus = document.activeElement;
+        dlcOverlay.setAttribute("data-open", "1");
+        dlcOverlay.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+        dlcErr.style.display = "none";
+        setTimeout(() => dlcLeads.focus(), 50);
+      }
+
+      function closeDlc() {
+        dlcOverlay.removeAttribute("data-open");
+        dlcOverlay.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+        dlcErr.style.display = "none";
+        if (lastFocus) lastFocus.focus();
+      }
+
+      function updateLift() {
+        const factor = parseFloat(dlcFollow.value || "0");
+        dlcLift.textContent = `${Math.round(factor * 100)}%`;
+      }
+
+      function updateRateLabels() {
+        const r = parseInt(dlcRate.value || "0", 10);
+        dlcRateLabel.textContent = `$${r}/hr`;
+      }
+
+      function calculate() {
+        const tasksPerWeek = parseFloat(dlcLeads.value || "0");
+        const minutesPerTask = parseFloat(String(dlcValue.value || "0"));
+        const hourlyCost = parseFloat(dlcRate.value || "0");
+        const automationFactor = parseFloat(dlcFollow.value || "0");
+
+        if (!tasksPerWeek || !minutesPerTask) {
+          dlcErr.style.display = "block";
+          return;
+        }
+        dlcErr.style.display = "none";
+
+        // baseline minutes/week
+        const minutesPerWeek = tasksPerWeek * minutesPerTask;
+
+        // minutes removed by automation
+        const minutesSavedPerWeek = minutesPerWeek * automationFactor;
+
+        // hours/month (4.33 weeks avg)
+        const hoursSavedPerMonth = (minutesSavedPerWeek / 60) * 4.33;
+
+        // $ saved
+        const monthlySavings = hoursSavedPerMonth * hourlyCost;
+        const weeklySavings = (minutesSavedPerWeek / 60) * hourlyCost;
+
+        dlcDeals.textContent = Math.round(hoursSavedPerMonth).toLocaleString();
+        dlcRevenue.textContent = fmtMoney(monthlySavings);
+        dlcPer100.textContent = fmtMoney(weeklySavings);
+      }
+
+      function resetDlc() {
+        dlcLeads.value = "";
+        dlcValue.value = "";
+        dlcFollow.value = "0.50";
+        dlcRate.value = "35";
+        dlcErr.style.display = "none";
+
+        updateLift();
+        updateRateLabels();
+
+        dlcRevenue.textContent = "$0";
+        dlcDeals.textContent = "0";
+        dlcPer100.textContent = "$0";
+      }
+
+      // Open/close events
+      dlcOpen?.addEventListener("click", openDlc);
+      dlcCloseBtn?.addEventListener("click", closeDlc);
+
+      // Click outside dialog closes
+      dlcOverlay?.addEventListener("click", (e) => {
+        if (e.target === dlcOverlay) closeDlc();
+      });
+
+      // Escape closes
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && dlcOverlay?.getAttribute("data-open") === "1") closeDlc();
+      });
+
+      // Live label updates
+      dlcFollow?.addEventListener("change", updateLift);
+      dlcRate?.addEventListener("input", updateRateLabels);
+
+      // Buttons
+      dlcCalc?.addEventListener("click", calculate);
+      dlcReset?.addEventListener("click", resetDlc);
+
+      // Init
+      updateLift();
+      updateRateLabels();
+
+      // Smooth scroll for anchor jumps
+      document.addEventListener("click", (e) => {
+        const a = e.target.closest('a[href^="#"]');
+        if (!a) return;
+        const id = a.getAttribute("href").slice(1);
+        const el = document.getElementById(id);
+        if (!el) return;
+        e.preventDefault();
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    </script>
+  </body>
+</html>
