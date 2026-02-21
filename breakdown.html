@@ -928,30 +928,90 @@ fbq('track', 'PageView');
 
     <script>
       // ==============================
-// VIDEO VIEW TRACKING (VSL COMPLETED WITH PARAMETERS)
+// VIDEO VIEW TRACKING (VSL MILESTONES + PARAMETERS)
 // ==============================
 (function () {
   const video = document.getElementById("vslVideo");
   if (!video) return;
 
+  let firedStart = false;
+  let fired25 = false;
+  let fired50 = false;
+  let fired75 = false;
   let firedComplete = false;
 
+  function baseParams(extra = {}) {
+    const durationSeconds = Math.round(video.duration || 0);
+    return {
+      page: "breakdown_vsl",
+      video_name: "pipeline_rev_vsl",
+      duration_seconds: durationSeconds,
+      ...extra
+    };
+  }
+
+  // 🔥 When video starts
+  video.addEventListener("play", function () {
+    if (firedStart) return;
+    firedStart = true;
+
+    if (typeof fbq === "function") {
+      fbq("trackCustom", "VSL_Started", baseParams({
+        milestone: "0",
+        progress_percent: 0,
+        started: true
+      }));
+    }
+  });
+
+  // 🔥 25%, 50%, 75% milestones
+  video.addEventListener("timeupdate", function () {
+    if (!video.duration) return;
+
+    const percent = (video.currentTime / video.duration) * 100;
+
+    if (percent >= 25 && !fired25) {
+      fired25 = true;
+      if (typeof fbq === "function") {
+        fbq("trackCustom", "VSL_25_Percent", baseParams({
+          milestone: "25",
+          progress_percent: 25
+        }));
+      }
+    }
+
+    if (percent >= 50 && !fired50) {
+      fired50 = true;
+      if (typeof fbq === "function") {
+        fbq("trackCustom", "VSL_50_Percent", baseParams({
+          milestone: "50",
+          progress_percent: 50
+        }));
+      }
+    }
+
+    if (percent >= 75 && !fired75) {
+      fired75 = true;
+      if (typeof fbq === "function") {
+        fbq("trackCustom", "VSL_75_Percent", baseParams({
+          milestone: "75",
+          progress_percent: 75
+        }));
+      }
+    }
+  });
+
+  // 🔥 Video completed (100%)
   video.addEventListener("ended", function () {
     if (firedComplete) return;
     firedComplete = true;
 
-    // Safely grab duration (in seconds)
-    const durationSeconds = Math.round(video.duration || 0);
-
-    // 🔥 Send VSL_Completed with custom parameters
     if (typeof fbq === "function") {
-      fbq("trackCustom", "VSL_Completed", {
-        page: "breakdown_vsl",              // identify this funnel
-        video_name: "pipeline_rev_vsl",     // so you can track if you add more videos later
-        milestone: "100",                   // 100% watched
-        duration_seconds: durationSeconds,  // length of the VSL
+      fbq("trackCustom", "VSL_Completed", baseParams({
+        milestone: "100",
+        progress_percent: 100,
         completed: true
-      });
+      }));
     }
   });
 })();
