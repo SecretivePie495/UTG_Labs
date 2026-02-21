@@ -508,6 +508,7 @@ fbq('track', 'PageView');
               <div class="py-4 sm:py-6">
                 <div class="overflow-hidden rounded-2xl">
                   <video
+                    id="vslVideo"
                     src="https://storage.googleapis.com/media.utg-media.com/New%20VSL%201-30.mp4"
                     poster="https://storage.googleapis.com/media.utg-media.com/Lead%20System.png"
                     controls
@@ -926,6 +927,34 @@ fbq('track', 'PageView');
     <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
 
     <script>
+      // ==============================
+// VIDEO VIEW TRACKING (VSL COMPLETED WITH PARAMETERS)
+// ==============================
+(function () {
+  const video = document.getElementById("vslVideo");
+  if (!video) return;
+
+  let firedComplete = false;
+
+  video.addEventListener("ended", function () {
+    if (firedComplete) return;
+    firedComplete = true;
+
+    // Safely grab duration (in seconds)
+    const durationSeconds = Math.round(video.duration || 0);
+
+    // 🔥 Send VSL_Completed with custom parameters
+    if (typeof fbq === "function") {
+      fbq("trackCustom", "VSL_Completed", {
+        page: "breakdown_vsl",              // identify this funnel
+        video_name: "pipeline_rev_vsl",     // so you can track if you add more videos later
+        milestone: "100",                   // 100% watched
+        duration_seconds: durationSeconds,  // length of the VSL
+        completed: true
+      });
+    }
+  });
+})();
       // Dashboard toggle
       const btn = document.getElementById("toggleDashboard");
       const wrap = document.getElementById("dashboardWrap");
