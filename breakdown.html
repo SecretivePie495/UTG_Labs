@@ -923,99 +923,146 @@ fbq('track', 'PageView');
       </div>
     </div>
 
-    <!-- Calendly script (load once) -->
+      <!-- Calendly script (load once) -->
     <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
 
     <script>
-      // ==============================
-// VIDEO VIEW TRACKING (VSL MILESTONES + PARAMETERS)
-// ==============================
-(function () {
-  const video = document.getElementById("vslVideo");
-  if (!video) return;
+      // ============================================================
+      // SHARED HELPER: BASE FBQ PARAMETERS
+      // ============================================================
+      function getFbqBaseParams(extra = {}) {
+        try {
+          const url = new URL(window.location.href);
+          const params = url.searchParams;
 
-  let firedStart = false;
-  let fired25 = false;
-  let fired50 = false;
-  let fired75 = false;
-  let firedComplete = false;
+          const utm_source = params.get("utm_source") || null;
+          const utm_medium = params.get("utm_medium") || null;
+          const utm_campaign = params.get("utm_campaign") || null;
+          const utm_term = params.get("utm_term") || null;
+          const utm_content = params.get("utm_content") || null;
 
-  function baseParams(extra = {}) {
-    const durationSeconds = Math.round(video.duration || 0);
-    return {
-      page: "breakdown_vsl",
-      video_name: "pipeline_rev_vsl",
-      duration_seconds: durationSeconds,
-      ...extra
-    };
-  }
+          const device = window.innerWidth <= 768 ? "mobile" : "desktop";
 
-  // 🔥 When video starts
-  video.addEventListener("play", function () {
-    if (firedStart) return;
-    firedStart = true;
-
-    if (typeof fbq === "function") {
-      fbq("trackCustom", "VSL_Started", baseParams({
-        milestone: "0",
-        progress_percent: 0,
-        started: true
-      }));
-    }
-  });
-
-  // 🔥 25%, 50%, 75% milestones
-  video.addEventListener("timeupdate", function () {
-    if (!video.duration) return;
-
-    const percent = (video.currentTime / video.duration) * 100;
-
-    if (percent >= 25 && !fired25) {
-      fired25 = true;
-      if (typeof fbq === "function") {
-        fbq("trackCustom", "VSL_25_Percent", baseParams({
-          milestone: "25",
-          progress_percent: 25
-        }));
+          return {
+            page: "breakdown_vsl",
+            funnel: "pipeline_revival_system",
+            url: url.href,
+            path: url.pathname,
+            referrer: document.referrer || null,
+            utm_source,
+            utm_medium,
+            utm_campaign,
+            utm_term,
+            utm_content,
+            device,
+            action_source: "website",
+            ...extra,
+          };
+        } catch (e) {
+          // Fallback if URL parsing fails
+          return {
+            page: "breakdown_vsl",
+            funnel: "pipeline_revival_system",
+            url: window.location.href,
+            referrer: document.referrer || null,
+            action_source: "website",
+            ...extra,
+          };
+        }
       }
-    }
 
-    if (percent >= 50 && !fired50) {
-      fired50 = true;
-      if (typeof fbq === "function") {
-        fbq("trackCustom", "VSL_50_Percent", baseParams({
-          milestone: "50",
-          progress_percent: 50
-        }));
-      }
-    }
+      // ============================================================
+      // VIDEO VIEW TRACKING (VSL MILESTONES + PARAMETERS)
+      // ============================================================
+      (function () {
+        const video = document.getElementById("vslVideo");
+        if (!video) return;
 
-    if (percent >= 75 && !fired75) {
-      fired75 = true;
-      if (typeof fbq === "function") {
-        fbq("trackCustom", "VSL_75_Percent", baseParams({
-          milestone: "75",
-          progress_percent: 75
-        }));
-      }
-    }
-  });
+        let firedStart = false;
+        let fired25 = false;
+        let fired50 = false;
+        let fired75 = false;
+        let firedComplete = false;
 
-  // 🔥 Video completed (100%)
-  video.addEventListener("ended", function () {
-    if (firedComplete) return;
-    firedComplete = true;
+        function baseParams(extra = {}) {
+          const durationSeconds = Math.round(video.duration || 0);
+          return getFbqBaseParams({
+            event_type: "video",
+            video_name: "pipeline_rev_vsl",
+            duration_seconds: durationSeconds,
+            ...extra,
+          });
+        }
 
-    if (typeof fbq === "function") {
-      fbq("trackCustom", "VSL_Completed", baseParams({
-        milestone: "100",
-        progress_percent: 100,
-        completed: true
-      }));
-    }
-  });
-})();
-      // Dashboard toggle
+        // 🔥 When video starts
+        video.addEventListener("play", function () {
+          if (firedStart) return;
+          firedStart = true;
+
+          if (typeof fbq === "function") {
+            fbq("trackCustom", "VSL_Started", baseParams({
+              milestone: "0",
+              progress_percent: 0,
+              started: true,
+            }));
+          }
+        });
+
+        // 🔥 25%, 50%, 75% milestones
+        video.addEventListener("timeupdate", function () {
+          if (!video.duration) return;
+
+          const percent = (video.currentTime / video.duration) * 100;
+
+          if (percent >= 25 && !fired25) {
+            fired25 = true;
+            if (typeof fbq === "function") {
+              fbq("trackCustom", "VSL_25_Percent", baseParams({
+                milestone: "25",
+                progress_percent: 25,
+              }));
+            }
+          }
+
+          if (percent >= 50 && !fired50) {
+            fired50 = true;
+            if (typeof fbq === "function") {
+              fbq("trackCustom", "VSL_50_Percent", baseParams({
+                milestone: "50",
+                progress_percent: 50,
+              }));
+            }
+          }
+
+          if (percent >= 75 && !fired75) {
+            fired75 = true;
+            if (typeof fbq === "function") {
+              fbq("trackCustom", "VSL_75_Percent", baseParams({
+                milestone: "75",
+                progress_percent: 75,
+              }));
+            }
+          }
+        });
+
+        // 🔥 Video completed (100%)
+        video.addEventListener("ended", function () {
+          if (firedComplete) return;
+          firedComplete = true;
+
+          if (typeof fbq === "function") {
+            fbq("trackCustom", "VSL_Completed", baseParams({
+              milestone: "100",
+              progress_percent: 100,
+              completed: true,
+            }));
+          }
+        });
+      })();
+
+      // ============================================================
+      // DASHBOARD TOGGLE
+      // ============================================================
       const btn = document.getElementById("toggleDashboard");
       const wrap = document.getElementById("dashboardWrap");
       if (btn && wrap) {
@@ -1032,7 +1079,9 @@ fbq('track', 'PageView');
         });
       }
 
-      // Qualification form -> show Calendly
+      // ============================================================
+      // QUALIFICATION FORM -> show Calendly + Qualified_Lead EVENT
+      // ============================================================
       const qualifyForm = document.getElementById("qualifyForm");
       if (qualifyForm) {
         qualifyForm.addEventListener("submit", function (e) {
@@ -1042,13 +1091,28 @@ fbq('track', 'PageView');
           const leads = document.getElementById("leads").value;
           const offer = document.getElementById("offer").value;
 
-          if (ads !== "" && offer === "yes" && leads !== "") {
+          const qualified = ads !== "" && offer === "yes" && leads !== "";
+
+          if (qualified) {
             document.getElementById("calendlySection").style.display = "block";
             document.getElementById("applyCard").style.display = "none";
             document.getElementById("notQualified").style.display = "none";
 
+            // 🔥 Qualified_Lead with custom parameters
+            if (typeof fbq === "function") {
+              fbq("trackCustom", "Qualified_Lead", getFbqBaseParams({
+                event_type: "lead",
+                funnel_step: "qualified_form",
+                runs_ads: ads,          // "yes"/"no"
+                leads_bucket: leads,    // "1000", "5000", "10000"
+                high_ticket: offer,     // "yes"/"no"
+              }));
+            }
+
             setTimeout(() => {
-              document.getElementById("calendlySection").scrollIntoView({ behavior: "smooth", block: "start" });
+              document
+                .getElementById("calendlySection")
+                .scrollIntoView({ behavior: "smooth", block: "start" });
             }, 50);
           } else {
             document.getElementById("notQualified").style.display = "block";
@@ -1057,7 +1121,7 @@ fbq('track', 'PageView');
       }
 
       /* =========================================================
-         DEAD LEAD CALCULATOR JS
+         DEAD LEAD CALCULATOR JS + DLC_Opened EVENT
          ========================================================= */
       const dlcOpen = document.getElementById("dlcOpen");
       const dlcOverlay = document.getElementById("dlcOverlay");
@@ -1093,6 +1157,15 @@ fbq('track', 'PageView');
         dlcOverlay.setAttribute("aria-hidden", "false");
         document.body.style.overflow = "hidden";
         dlcErr.style.display = "none";
+
+        // 🔥 DLC_Opened tracking
+        if (typeof fbq === "function") {
+          fbq("trackCustom", "DLC_Opened", getFbqBaseParams({
+            event_type: "tool",
+            tool_name: "dead_lead_calculator",
+          }));
+        }
+
         setTimeout(() => dlcLeads.focus(), 50);
       }
 
@@ -1180,7 +1253,9 @@ fbq('track', 'PageView');
       updateLift();
       updateRateLabels();
 
-      // Smooth scroll for anchor jumps
+      // ============================================================
+      // SMOOTH SCROLL FOR ANCHOR JUMPS
+      // ============================================================
       document.addEventListener("click", (e) => {
         const a = e.target.closest('a[href^="#"]');
         if (!a) return;
