@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>You're Booked — UTG Labs</title>
+  <link rel="icon" type="image/png" href="/images/UTG-Favicon.png">
+  <meta name="description" content="Your call is booked. Here's what happens next.">
+
+  <!-- Meta Pixel -->
+  <script>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '2303911926762923');
+    fbq('track', 'PageView');
+    fbq('track', 'Schedule');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=2303911926762923&ev=PageView&noscript=1"/></noscript>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --brand: #007a3f;
+      --brand2: #006633;
+      --black: #0a0a0a;
+      --white: #ffffff;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body {
+      background: var(--white);
+      color: var(--black);
+      font-family: "Roboto", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Background texture ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 50% at 80% 10%, rgba(0,122,63,0.06) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 40% at 10% 90%, rgba(0,122,63,0.04) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 48px 20px 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0;
+    }
+
+    /* ── Logo row ── */
+    .logo-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: -8px;
+      margin-bottom: 36px;
+      opacity: 0;
+      animation: fadeUp 0.5s ease 0.05s forwards;
+    }
+    .avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid var(--white);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .avatar:nth-child(2) { margin-left: -10px; }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    /* ── Checkmark ── */
+    .check-wrap {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: var(--brand);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 28px;
+      box-shadow: 0 0 0 0 rgba(0,122,63,0.35);
+      opacity: 0;
+      animation: fadeUp 0.5s ease 0.1s forwards, pulse 2.4s ease 0.7s infinite;
+    }
+    .check-wrap svg {
+      width: 38px;
+      height: 38px;
+      stroke: #fff;
+      stroke-width: 3;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .check-path {
+      stroke-dasharray: 60;
+      stroke-dashoffset: 60;
+      animation: drawCheck 0.55s ease 0.55s forwards;
+    }
+
+    /* ── Headline ── */
+    .headline {
+      font-size: clamp(30px, 6vw, 48px);
+      font-weight: 900;
+      letter-spacing: -1px;
+      line-height: 1.08;
+      margin-bottom: 16px;
+      opacity: 0;
+      animation: fadeUp 0.5s ease 0.2s forwards;
+    }
+    .headline em {
+      font-style: normal;
+      color: var(--brand);
+    }
+
+    .sub {
+      font-size: clamp(15px, 2.5vw, 18px);
+      line-height: 1.55;
+      color: rgba(0,0,0,0.62);
+      max-width: 480px;
+      margin-bottom: 40px;
+      opacity: 0;
+      animation: fadeUp 0.5s ease 0.3s forwards;
+    }
+
+    /* ── What Happens Next card ── */
+    .next-card {
+      width: 100%;
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 20px;
+      overflow: hidden;
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: fadeUp 0.55s ease 0.4s forwards;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.05);
+    }
+
+    .next-header {
+      background: var(--black);
+      color: var(--white);
+      padding: 14px 20px;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .steps {
+      padding: 8px 0;
+    }
+
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 18px 22px;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      text-align: left;
+    }
+    .step:last-child { border-bottom: none; }
+
+    .step-num {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(0,122,63,0.1);
+      border: 1px solid rgba(0,122,63,0.25);
+      color: var(--brand);
+      font-weight: 900;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .step-body strong {
+      display: block;
+      font-weight: 800;
+      font-size: 15px;
+      margin-bottom: 3px;
+    }
+    .step-body p {
+      font-size: 13px;
+      color: rgba(0,0,0,0.6);
+      line-height: 1.45;
+    }
+
+    /* ── Reminder box ── */
+    .reminder {
+      width: 100%;
+      border-radius: 16px;
+      border: 1px solid rgba(0,122,63,0.25);
+      background: rgba(0,122,63,0.05);
+      padding: 18px 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      text-align: left;
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: fadeUp 0.55s ease 0.5s forwards;
+    }
+    .reminder-icon {
+      font-size: 22px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .reminder p {
+      font-size: 14px;
+      line-height: 1.5;
+      color: rgba(0,0,0,0.72);
+    }
+    .reminder strong { color: var(--black); }
+
+    /* ── CTA (back to VSL or share) ── */
+    .cta-row {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      opacity: 0;
+      animation: fadeUp 0.55s ease 0.6s forwards;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--black);
+      color: var(--white);
+      font-weight: 800;
+      font-size: 16px;
+      padding: 16px 28px;
+      border-radius: 14px;
+      text-decoration: none;
+      transition: transform 0.12s ease, opacity 0.12s ease;
+    }
+    .btn-primary:hover { opacity: 0.88; }
+    .btn-primary:active { transform: scale(0.98); }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: transparent;
+      border: 1px solid rgba(0,0,0,0.15);
+      color: var(--black);
+      font-weight: 700;
+      font-size: 15px;
+      padding: 14px 24px;
+      border-radius: 14px;
+      text-decoration: none;
+      transition: transform 0.12s ease, opacity 0.12s ease;
+    }
+    .btn-ghost:hover { opacity: 0.75; }
+    .btn-ghost:active { transform: scale(0.98); }
+
+    /* ── Footer ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 0 20px 32px;
+      font-size: 12px;
+      color: rgba(0,0,0,0.38);
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes drawCheck {
+      to { stroke-dashoffset: 0; }
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(0,122,63,0.35); }
+      50%       { box-shadow: 0 0 0 14px rgba(0,122,63,0); }
+    }
+
+    /* ── Confetti canvas ── */
+    #confetti {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 99;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="confetti"></canvas>
+
+<main>
+
+  <!-- Logos -->
+  <div class="logo-row">
+    <div class="avatar">
+      <img src="https://storage.googleapis.com/facelessbroll_website/UdoPIC.jpg" alt="Udo Onyekwere">
+    </div>
+    <div class="avatar">
+      <img src="https://storage.googleapis.com/media.utg-media.com/UTGlogo.png" alt="UTG Labs">
+    </div>
+  </div>
+
+  <!-- Check -->
+  <div class="check-wrap" aria-hidden="true">
+    <svg viewBox="0 0 48 48">
+      <polyline class="check-path" points="10,26 20,36 38,14"/>
+    </svg>
+  </div>
+
+  <!-- Headline -->
+  <h1 class="headline">You're <em>Officially</em> Booked.</h1>
+  <p class="sub">
+    Your Pipeline Revival Strategy Call is confirmed.<br>
+    Check your email for the calendar invite &amp; details.
+  </p>
+
+  <!-- What Happens Next -->
+  <div class="next-card">
+    <div class="next-header">What Happens Next</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <strong>Check Your Email</strong>
+          <p>You'll receive a calendar invite + confirmation from Calendly. Add it to your calendar now so you don't forget.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <strong>Prepare Your Lead Count</strong>
+          <p>Before the call, have a rough idea of how many old leads you have and where they're stored (CRM, spreadsheet, email list, etc.).</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <strong>We Map Your Lead List Live</strong>
+          <p>On the call, we'll walk through your specific pipeline, identify where the money is, and show you exactly how we'd revive it.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reminder -->
+  <div class="reminder">
+    <div class="reminder-icon">📅</div>
+    <p>
+      <strong>Can't make it?</strong> No worries — just use the reschedule link in your confirmation email. We only ask you give at least <strong>24 hours notice</strong> so we can free up the slot for someone else.
+    </p>
+  </div>
+
+  <!-- CTA Row -->
+  <div class="cta-row">
+    <a href="/" class="btn-primary">
+      ← Re-watch the Breakdown
+    </a>
+    <a
+      href="https://www.facebook.com/sharer/sharer.php?u=https://utglabs.com"
+      target="_blank"
+      rel="noopener"
+      class="btn-ghost"
+    >
+      Share with a Friend
+    </a>
+  </div>
+
+</main>
+
+<footer>
+  © 2026 UTG Labs · All rights reserved
+</footer>
+
+<script>
+  // ── Confetti ──────────────────────────────────────────────────
+  (function () {
+    const canvas = document.getElementById('confetti');
+    const ctx = canvas.getContext('2d');
+    const W = () => canvas.width = window.innerWidth;
+    const H = () => canvas.height = window.innerHeight;
+    W(); H();
+    window.addEventListener('resize', () => { W(); H(); });
+
+    const COLORS = ['#007a3f','#00b359','#000000','#cccccc','#ffffff','#e0ffe6'];
+    const PIECES = 130;
+    let particles = [];
+
+    function rand(min, max) { return Math.random() * (max - min) + min; }
+
+    function spawn() {
+      particles = [];
+      for (let i = 0; i < PIECES; i++) {
+        particles.push({
+          x: rand(0, canvas.width),
+          y: rand(-canvas.height * 0.5, -10),
+          w: rand(7, 13),
+          h: rand(4, 8),
+          color: COLORS[Math.floor(Math.random() * COLORS.length)],
+          r: rand(0, Math.PI * 2),
+          rSpeed: rand(-0.04, 0.04),
+          vx: rand(-1.2, 1.2),
+          vy: rand(2.5, 5),
+          opacity: 1,
+        });
+      }
+    }
+
+    let frame = 0;
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      let alive = false;
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.r += p.rSpeed;
+        if (p.y > canvas.height * 0.6) p.opacity -= 0.018;
+        if (p.opacity <= 0) return;
+        alive = true;
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, p.opacity);
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.r);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        ctx.restore();
+      });
+      frame++;
+      if (alive || frame < 120) requestAnimationFrame(draw);
+      else ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    setTimeout(() => { spawn(); draw(); }, 400);
+  })();
+
+  // ── Meta Pixel — Schedule event ──────────────────────────────
+  if (typeof fbq === 'function') {
+    fbq('trackCustom', 'BookingConfirmed', {
+      page: 'thank_you',
+      funnel: 'pipeline_revival_system',
+    });
+  }
+</script>
+
+</body>
+</html>
