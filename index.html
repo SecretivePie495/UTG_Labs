@@ -1183,6 +1183,24 @@ fbq('track', 'PageView');
         el.scrollIntoView({ behavior: "smooth", block: "start" });
       });
     </script>
-  
+  <script>
+  // Calendly redirect to thank-you page after booking
+  window.addEventListener("message", function (e) {
+    if (e.data && e.data.event === "calendly.event_scheduled") {
+      // Track booking
+      if (typeof fbq === "function") {
+        fbq("track", "Schedule", {
+          action_source: "website",
+          funnel_step: "call_booked",
+          page: "breakdown_vsl"
+        });
+      }
 
+      // Redirect after small delay for pixel
+      setTimeout(function () {
+        window.location.href = "https://utglabs.com/thank-you-page";
+      }, 300);
+    }
+  });
+</script>
 </body><browserflow-container></browserflow-container></html>
