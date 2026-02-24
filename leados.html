@@ -1,419 +1,800 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Lead Revival OS — UTG Labs</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Tailwind CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-      :root {
-        --utg-bg: #020617;
-        --utg-card: #020617;
-        --utg-border: #1f2937;
-        --utg-accent: #38bdf8;
-        --utg-accent-soft: rgba(56, 189, 248, 0.12);
-      }
+<head>
+  <meta charset="UTF-8" />
+  <title>Lead Revival OS — UTG Labs</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:          #05080b;
+      --panel:       #080d11;
+      --panel-2:     #0b1117;
+      --line:        rgba(255,255,255,0.055);
+      --line-accent: rgba(56,189,248,0.18);
+      --tx:          #dce8f0;
+      --tx-2:        #6b8294;
+      --tx-3:        #3a4f5e;
+      --sky:         #38bdf8;
+      --sky-bg:      rgba(56,189,248,0.08);
+      --grn:         #34d399;
+      --grn-bg:      rgba(52,211,153,0.08);
+      --amb:         #fbbf24;
+      --amb-bg:      rgba(251,191,36,0.08);
+      --vio:         #a78bfa;
+      --vio-bg:      rgba(167,139,250,0.08);
+      --r:           6px;
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
-      body {
-        background: radial-gradient(circle at top, #0f172a 0, #020617 45%, #000 100%);
-      }
+    body {
+      font-family: 'IBM Plex Sans', sans-serif;
+      background: var(--bg);
+      color: var(--tx);
+      min-height: 100vh;
+      font-size: 13px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
 
-      .pill {
-        border-radius: 999px;
-      }
+    /* ── LAYOUT ── */
+    .shell {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      min-height: 100vh;
+    }
 
-      .gradient-text {
-        background: linear-gradient(120deg, #38bdf8, #22c55e, #eab308);
-        -webkit-background-clip: text;
-        color: transparent;
-      }
-    </style>
-  </head>
-  <body class="min-h-screen text-slate-50 antialiased">
-    <div class="flex min-h-screen">
-      <!-- Sidebar -->
-      <aside
-        class="hidden w-64 flex-col border-r border-slate-800/80 bg-slate-950/90 px-5 py-6 md:flex"
-      >
-        <div class="mb-8 space-y-2">
-          <div class="pill border border-slate-800 bg-slate-900/60 px-3 py-1 inline-flex items-center gap-2">
-            <span class="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_12px_#4ade80]"></span>
-            <span class="text-[11px] tracking-[0.18em] uppercase text-slate-400">
-              Live ops
-            </span>
-          </div>
-          <div>
-            <p class="text-[11px] uppercase tracking-[0.22em] text-slate-500">
-              UTG Labs
-            </p>
-            <h1 class="mt-1 text-xl font-semibold">
-              Lead <span class="gradient-text">Revival</span> OS
-            </h1>
-          </div>
-        </div>
+    /* ── SIDEBAR ── */
+    .sidebar {
+      background: var(--panel);
+      border-right: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: hidden;
+    }
 
-        <nav class="space-y-1 text-sm">
-          <a
-            href="#"
-            class="flex items-center justify-between rounded-xl bg-slate-900/80 px-3 py-2 text-slate-50"
-          >
-            <span>Dashboard</span>
-            <span class="pill bg-slate-800 px-2 py-0.5 text-[10px] uppercase tracking-wide text-slate-400">
-              Overview
-            </span>
-          </a>
-          <a
-            href="#"
-            class="flex items-center justify-between rounded-xl px-3 py-2 text-slate-400 hover:bg-slate-900/60 hover:text-slate-50"
-          >
-            <span>Clients</span>
-            <span class="text-[11px] text-slate-600">6 active</span>
-          </a>
-          <a
-            href="#"
-            class="flex items-center justify-between rounded-xl px-3 py-2 text-slate-400 hover:bg-slate-900/60 hover:text-slate-50"
-          >
-            <span>Conversations</span>
-            <span class="pill bg-slate-900 px-2 py-0.5 text-[10px] text-slate-400">
-              Inbox
-            </span>
-          </a>
-          <a
-            href="#"
-            class="flex items-center justify-between rounded-xl px-3 py-2 text-slate-400 hover:bg-slate-900/60 hover:text-slate-50"
-          >
-            <span>Playbooks</span>
-            <span class="text-[11px] text-slate-600">7 templates</span>
-          </a>
-        </nav>
+    .sb-top {
+      padding: 20px 16px 18px;
+      border-bottom: 1px solid var(--line);
+    }
 
-        <div class="mt-auto space-y-3 pt-8 text-xs text-slate-500">
-          <div class="border-t border-slate-800/80 pt-4">
-            <p class="text-[11px] uppercase tracking-[0.24em] text-slate-500">
-              Today
-            </p>
-            <p class="mt-1 text-sm text-slate-300">
-              27 booked calls • 314 replies
-            </p>
-          </div>
-          <p class="text-[11px] text-slate-600">
-            “No new ads. No new funnels. Just your dead leads waking back up.”
-          </p>
-        </div>
-      </aside>
+    .sb-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 2px 7px;
+      border-radius: 3px;
+      background: var(--grn-bg);
+      border: 1px solid rgba(52,211,153,0.15);
+      margin-bottom: 11px;
+    }
+    .sb-badge-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--grn);
+      box-shadow: 0 0 6px var(--grn);
+      animation: blink 2.4s ease-in-out infinite;
+    }
+    @keyframes blink {
+      0%,100% { opacity:1; } 50% { opacity:.45; }
+    }
+    .sb-badge-txt {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--grn);
+    }
 
-      <!-- Main -->
-      <main class="flex-1 px-4 py-4 md:px-8 md:py-6">
-        <!-- Top Bar (mobile brand) -->
-        <div class="mb-4 flex items-center justify-between md:hidden">
-          <div>
-            <p class="text-[11px] uppercase tracking-[0.22em] text-slate-500">
-              UTG Labs
-            </p>
-            <h1 class="text-lg font-semibold">
-              Lead <span class="gradient-text">Revival</span> OS
-            </h1>
-          </div>
-          <div class="pill border border-slate-800 bg-slate-900/60 px-3 py-1 text-[11px] text-slate-400">
-            Live snapshot
-          </div>
-        </div>
+    .sb-wordmark {
+      font-size: 9px;
+      font-family: 'IBM Plex Mono', monospace;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--tx-3);
+      margin-bottom: 3px;
+    }
+    .sb-title {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -.01em;
+      color: var(--tx);
+    }
+    .sb-title em {
+      font-style: normal;
+      background: linear-gradient(90deg, var(--sky), var(--grn));
+      -webkit-background-clip: text;
+      color: transparent;
+    }
 
-        <!-- Header -->
-        <header
-          class="mb-6 flex flex-col gap-4 border-b border-slate-800/80 pb-4 md:flex-row md:items-center md:justify-between"
-        >
-          <div>
-            <h2 class="text-xl font-semibold md:text-2xl">
-              Pipeline Revival Overview
-            </h2>
-            <p class="mt-1 text-sm text-slate-400">
-              At-a-glance view of all client revivals, booked calls, and replies.
-            </p>
-          </div>
+    .sb-nav {
+      padding: 12px 10px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
 
-          <!-- "Client" selector -->
-          <div class="flex flex-col gap-2 text-sm md:flex-row md:items-center">
-            <div class="flex items-center gap-2">
-              <span class="text-xs uppercase tracking-[0.18em] text-slate-500">
-                Viewing client
-              </span>
-              <span
-                class="pill border border-slate-700 bg-slate-900/80 px-3 py-1 text-xs text-slate-200"
-              >
-                ✦ Phoenix Solar & Home
-              </span>
-            </div>
-            <button
-              class="pill border border-slate-700 bg-slate-900/80 px-3 py-1 text-xs text-slate-300 hover:border-slate-500"
-            >
-              Switch client
-            </button>
-          </div>
-        </header>
+    .nav-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 8.5px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--tx-3);
+      padding: 6px 8px 4px;
+    }
 
-        <!-- Stats -->
-        <section class="mb-6 grid gap-3 md:grid-cols-4">
-          <!-- Card 1 -->
-          <article
-            class="relative overflow-hidden rounded-2xl border border-slate-800/80 bg-slate-950/80 p-4"
-          >
-            <div
-              class="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-sky-500/10 blur-2xl"
-            ></div>
-            <p class="text-[11px] uppercase tracking-[0.2em] text-slate-500">
-              Total leads imported
-            </p>
-            <p class="mt-3 text-2xl font-semibold">18,492</p>
-            <p class="mt-2 text-xs text-emerald-400">
-              +1,204 this week from 3 new clients
-            </p>
-          </article>
+    .nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 7px 8px;
+      border-radius: var(--r);
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--tx-2);
+      text-decoration: none;
+      transition: background .12s, color .12s;
+      border: 1px solid transparent;
+    }
+    .nav-item:hover { background: var(--panel-2); color: var(--tx); }
+    .nav-item.active {
+      background: var(--sky-bg);
+      border-color: var(--line-accent);
+      color: var(--sky);
+      font-weight: 500;
+    }
+    .nav-chip {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 8.5px;
+      padding: 1px 5px;
+      border-radius: 3px;
+      background: var(--panel-2);
+      color: var(--tx-3);
+    }
+    .nav-item.active .nav-chip {
+      background: rgba(56,189,248,.1);
+      color: var(--sky);
+    }
 
-          <!-- Card 2 -->
-          <article
-            class="relative overflow-hidden rounded-2xl border border-slate-800/80 bg-slate-950/80 p-4"
-          >
-            <div
-              class="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-emerald-500/10 blur-2xl"
-            ></div>
-            <p class="text-[11px] uppercase tracking-[0.2em] text-slate-500">
-              Conversations started
-            </p>
-            <p class="mt-3 text-2xl font-semibold">3,126</p>
-            <p class="mt-2 text-xs text-emerald-400">
-              16.9% reply rate across all campaigns
-            </p>
-          </article>
+    .sb-footer {
+      border-top: 1px solid var(--line);
+      padding: 14px 16px;
+    }
+    .sb-footer-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 8.5px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--tx-3);
+      margin-bottom: 8px;
+    }
+    .sb-stat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 4px;
+    }
+    .sb-stat-row .k { font-size: 11px; color: var(--tx-2); }
+    .sb-stat-row .v {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: var(--tx);
+    }
+    .sb-stat-row .v.g { color: var(--grn); }
+    .sb-tagline {
+      margin-top: 11px;
+      padding-top: 11px;
+      border-top: 1px solid var(--line);
+      font-size: 10px;
+      color: var(--tx-3);
+      font-style: italic;
+      line-height: 1.55;
+    }
 
-          <!-- Card 3 -->
-          <article
-            class="relative overflow-hidden rounded-2xl border border-slate-800/80 bg-slate-950/80 p-4"
-          >
-            <div
-              class="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-amber-500/10 blur-2xl"
-            ></div>
-            <p class="text-[11px] uppercase tracking-[0.2em] text-slate-500">
-              Booked calls (revived)
-            </p>
-            <p class="mt-3 text-2xl font-semibold">274</p>
-            <p class="mt-2 text-xs text-amber-300">
-              1.4% of dormant leads converted to calls
-            </p>
-          </article>
+    /* ── MAIN ── */
+    main {
+      padding: 28px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      overflow-y: auto;
+    }
 
-          <!-- Card 4 -->
-          <article
-            class="relative overflow-hidden rounded-2xl border border-slate-800/80 bg-slate-950/80 p-4"
-          >
-            <div
-              class="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-fuchsia-500/10 blur-2xl"
-            ></div>
-            <p class="text-[11px] uppercase tracking-[0.2em] text-slate-500">
-              Active revival campaigns
-            </p>
-            <p class="mt-3 text-2xl font-semibold">7</p>
-            <p class="mt-2 text-xs text-slate-400">
-              Mix of 7-day “wake up” and 14-day “nurture” flows
-            </p>
-          </article>
-        </section>
+    /* ── PAGE HEADER ── */
+    .pg-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--line);
+    }
+    .pg-title {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: -.02em;
+      color: var(--tx);
+    }
+    .pg-sub {
+      font-size: 11px;
+      color: var(--tx-2);
+      margin-top: 3px;
+    }
+    .pg-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .client-tag {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 10px;
+      border-radius: var(--r);
+      background: var(--sky-bg);
+      border: 1px solid var(--line-accent);
+      font-size: 11px;
+      color: var(--sky);
+      font-weight: 500;
+    }
+    .client-tag-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--sky);
+      box-shadow: 0 0 5px var(--sky);
+    }
+    .btn {
+      padding: 5px 11px;
+      border-radius: var(--r);
+      font-size: 11px;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all .12s;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: var(--tx-2);
+    }
+    .btn:hover { border-color: rgba(255,255,255,.1); color: var(--tx); }
+    .btn-accent {
+      border-color: var(--line-accent);
+      background: var(--sky-bg);
+      color: var(--sky);
+    }
+    .btn-accent:hover { background: rgba(56,189,248,.13); }
 
-        <div class="grid gap-6 lg:grid-cols-3">
-          <!-- Leads Card -->
-          <section class="lg:col-span-2 space-y-3">
-            <div class="flex items-center justify-between">
-              <div>
-                <h3 class="text-sm font-semibold uppercase tracking-[0.16em] text-slate-300">
-                  Latest imported leads
-                </h3>
-                <p class="text-xs text-slate-500">
-                  Sample of the last 20 records pulled from CRM / CSV.
-                </p>
-              </div>
-              <button
-                class="pill bg-sky-500/10 px-3 py-1 text-xs font-medium text-sky-300 border border-sky-500/30 hover:bg-sky-500/20"
-              >
-                + Import leads
-              </button>
-            </div>
+    /* ── STAT CARDS ── */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: 10px;
+    }
 
-            <div class="overflow-hidden rounded-2xl border border-slate-800/80 bg-slate-950/80">
-              <table class="min-w-full text-xs">
-                <thead class="border-b border-slate-800 bg-slate-900/60">
-                  <tr>
-                    <th class="px-3 py-2 text-left font-medium text-slate-400">
-                      Name
-                    </th>
-                    <th class="px-3 py-2 text-left font-medium text-slate-400">
-                      Phone
-                    </th>
-                    <th class="px-3 py-2 text-left font-medium text-slate-400">
-                      Status
-                    </th>
-                    <th class="px-3 py-2 text-left font-medium text-slate-400">
-                      Source
-                    </th>
-                    <th class="px-3 py-2 text-right font-medium text-slate-400">
-                      Last touched
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr class="border-b border-slate-800/60">
-                    <td class="px-3 py-2 text-slate-50">Maria Gonzalez</td>
-                    <td class="px-3 py-2 text-slate-300">+1 (623) 555-1902</td>
-                    <td class="px-3 py-2">
-                      <span class="pill bg-emerald-500/10 px-2 py-0.5 text-[10px] uppercase tracking-wide text-emerald-300">
-                        Qualified
-                      </span>
-                    </td>
-                    <td class="px-3 py-2 text-slate-400">FB Lead Form</td>
-                    <td class="px-3 py-2 text-right text-slate-400">
-                      2h ago
-                    </td>
-                  </tr>
-                  <tr class="border-b border-slate-800/60">
-                    <td class="px-3 py-2 text-slate-50">James Carter</td>
-                    <td class="px-3 py-2 text-slate-300">+1 (480) 555-8873</td>
-                    <td class="px-3 py-2">
-                      <span class="pill bg-amber-500/10 px-2 py-0.5 text-[10px] uppercase tracking-wide text-amber-300">
-                        Booked
-                      </span>
-                    </td>
-                    <td class="px-3 py-2 text-slate-400">Old CRM Export</td>
-                    <td class="px-3 py-2 text-right text-slate-400">
-                      1d ago
-                    </td>
-                  </tr>
-                  <tr class="border-b border-slate-800/60">
-                    <td class="px-3 py-2 text-slate-50">Ashley Patel</td>
-                    <td class="px-3 py-2 text-slate-300">+1 (602) 555-4412</td>
-                    <td class="px-3 py-2">
-                      <span class="pill bg-slate-800 px-2 py-0.5 text-[10px] uppercase tracking-wide text-slate-300">
-                        Contacted
-                      </span>
-                    </td>
-                    <td class="px-3 py-2 text-slate-400">Google Ads</td>
-                    <td class="px-3 py-2 text-right text-slate-400">
-                      3d ago
-                    </td>
-                  </tr>
-                  <tr>
-                    <td
-                      colspan="5"
-                      class="px-3 py-3 text-center text-[11px] text-slate-500"
-                    >
-                      Showing 4 of 18,492 dormant leads. In production this
-                      would be scrollable / filterable by status, source, and
-                      last contact.
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
+    .stat {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      padding: 16px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color .15s;
+    }
+    .stat:hover { border-color: rgba(255,255,255,.09); }
+    .stat::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      opacity: .6;
+    }
+    .stat.s { --c: var(--sky); }
+    .stat.g { --c: var(--grn); }
+    .stat.a { --c: var(--amb); }
+    .stat.v { --c: var(--vio); }
+    .stat::before { background: var(--c); }
 
-          <!-- Campaigns Card -->
-          <section class="space-y-3">
-            <div class="flex items-center justify-between">
-              <div>
-                <h3 class="text-sm font-semibold uppercase tracking-[0.16em] text-slate-300">
-                  Revival campaigns
-                </h3>
-                <p class="text-xs text-slate-500">
-                  Active + recent sequences running on this list.
-                </p>
-              </div>
-              <button
-                class="pill border border-slate-700 bg-slate-900/80 px-3 py-1 text-xs text-slate-300 hover:border-slate-500"
-              >
-                + New campaign
-              </button>
-            </div>
+    .stat-lbl {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 8.5px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--tx-2);
+      margin-bottom: 8px;
+    }
+    .stat-num {
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: -.03em;
+      color: var(--c);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat-note {
+      font-size: 10.5px;
+      color: var(--tx-2);
+      line-height: 1.4;
+    }
+    .stat-note strong { color: var(--c); font-weight: 500; }
+    .stat-bar {
+      margin-top: 10px;
+      height: 2px;
+      background: var(--line);
+      border-radius: 1px;
+      overflow: hidden;
+    }
+    .stat-fill {
+      height: 100%;
+      background: var(--c);
+      border-radius: 1px;
+      width: 0;
+      opacity: .7;
+    }
 
-            <div class="space-y-3">
-              <!-- Campaign row -->
-              <article
-                class="rounded-2xl border border-slate-800/80 bg-slate-950/80 p-3 text-xs"
-              >
-                <div class="flex items-center justify-between">
-                  <div>
-                    <p class="text-slate-50">
-                      7-Day “Wake Up” — Dormant 90–365 days
-                    </p>
-                    <p class="mt-1 text-[11px] text-slate-500">
-                      Target: old FB + Google leads not contacted in 3+ months.
-                    </p>
-                  </div>
-                  <span
-                    class="pill bg-emerald-500/10 px-2 py-0.5 text-[10px] uppercase tracking-wide text-emerald-300"
-                  >
-                    Running
-                  </span>
-                </div>
-                <div class="mt-2 flex items-center justify-between text-[11px]">
-                  <p class="text-slate-400">
-                    8,120 leads • 1,342 replies • 119 booked calls
-                  </p>
-                  <p class="text-sky-300">View flow →</p>
-                </div>
-              </article>
+    /* ── BODY GRID ── */
+    .body-grid {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 16px;
+      align-items: start;
+    }
 
-              <article
-                class="rounded-2xl border border-slate-800/80 bg-slate-950/80 p-3 text-xs"
-              >
-                <div class="flex items-center justify-between">
-                  <div>
-                    <p class="text-slate-50">
-                      No-Show Reactivation — 14 days after missed call
-                    </p>
-                    <p class="mt-1 text-[11px] text-slate-500">
-                      Pulls from “no-show” pipeline and rebooks them.
-                    </p>
-                  </div>
-                  <span
-                    class="pill bg-amber-500/10 px-2 py-0.5 text-[10px] uppercase tracking-wide text-amber-300"
-                  >
-                    Paused
-                  </span>
-                </div>
-                <div class="mt-2 flex items-center justify-between text-[11px]">
-                  <p class="text-slate-400">
-                    421 leads • 79 replies • 18 rebooked calls
-                  </p>
-                  <p class="text-sky-300">View flow →</p>
-                </div>
-              </article>
+    /* ── SECTION HEADER ── */
+    .section-hd {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .sec-lbl {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--tx-2);
+      margin-bottom: 1px;
+    }
+    .sec-sub { font-size: 10.5px; color: var(--tx-3); }
 
-              <article
-                class="rounded-2xl border border-slate-800/80 bg-slate-950/80 p-3 text-xs"
-              >
-                <div class="flex items-center justify-between">
-                  <div>
-                    <p class="text-slate-50">One-off Promo — Summer tune-up</p>
-                    <p class="mt-1 text-[11px] text-slate-500">
-                      Quick revenue bump campaign to warm list.
-                    </p>
-                  </div>
-                  <span
-                    class="pill bg-slate-800 px-2 py-0.5 text-[10px] uppercase tracking-wide text-slate-300"
-                  >
-                    Completed
-                  </span>
-                </div>
-                <div class="mt-2 flex items-center justify-between text-[11px]">
-                  <p class="text-slate-400">
-                    2,013 leads • 243 replies • $38.4k est. revived revenue
-                  </p>
-                  <p class="text-sky-300">View report →</p>
-                </div>
-              </article>
-            </div>
-          </section>
-        </div>
-      </main>
+    /* ── TABLE ── */
+    .tbl-wrap {
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      overflow: hidden;
+      background: var(--panel);
+    }
+
+    table { width: 100%; border-collapse: collapse; }
+
+    thead tr { background: var(--panel-2); }
+    thead th {
+      padding: 9px 13px;
+      text-align: left;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 8.5px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--tx-3);
+      font-weight: 500;
+      border-bottom: 1px solid var(--line);
+    }
+    thead th:last-child { text-align: right; }
+
+    tbody tr {
+      border-bottom: 1px solid rgba(255,255,255,.03);
+      transition: background .1s;
+    }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--panel-2); }
+
+    td { padding: 10px 13px; vertical-align: middle; }
+    td:last-child { text-align: right; }
+
+    .td-name { font-size: 12px; font-weight: 500; color: var(--tx); }
+    .td-phone {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--tx-2);
+    }
+    .td-src { font-size: 11px; color: var(--tx-2); }
+    .td-time {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10.5px;
+      color: var(--tx-3);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 7px;
+      border-radius: 3px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 8.5px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .pill-dot { width: 4px; height: 4px; border-radius: 50%; flex-shrink: 0; }
+
+    .pill-q { background: var(--grn-bg); border: 1px solid rgba(52,211,153,.18); color: var(--grn); }
+    .pill-q .pill-dot { background: var(--grn); }
+    .pill-b { background: var(--amb-bg); border: 1px solid rgba(251,191,36,.18); color: var(--amb); }
+    .pill-b .pill-dot { background: var(--amb); }
+    .pill-c { background: var(--panel-2); border: 1px solid var(--line); color: var(--tx-2); }
+    .pill-c .pill-dot { background: var(--tx-3); }
+
+    .tbl-foot {
+      padding: 8px 13px;
+      border-top: 1px solid var(--line);
+      background: var(--panel-2);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9.5px;
+      color: var(--tx-3);
+    }
+
+    /* ── CAMPAIGN CARDS ── */
+    .camp-list { display: flex; flex-direction: column; gap: 8px; }
+
+    .camp {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      padding: 13px;
+      transition: border-color .15s;
+      cursor: pointer;
+    }
+    .camp:hover { border-color: rgba(255,255,255,.09); }
+
+    .camp-row1 {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 9px;
+    }
+    .camp-name { font-size: 12px; font-weight: 500; color: var(--tx); line-height: 1.3; }
+    .camp-desc { font-size: 10.5px; color: var(--tx-3); margin-top: 2px; }
+
+    .status-tag {
+      flex-shrink: 0;
+      padding: 2px 7px;
+      border-radius: 3px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 8.5px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .st-run { background: var(--grn-bg); border: 1px solid rgba(52,211,153,.18); color: var(--grn); }
+    .st-pau { background: var(--amb-bg); border: 1px solid rgba(251,191,36,.18); color: var(--amb); }
+    .st-don { background: var(--panel-2); border: 1px solid var(--line); color: var(--tx-3); }
+
+    .camp-metrics {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      border-top: 1px solid var(--line);
+      padding-top: 9px;
+      gap: 4px;
+    }
+    .cm { text-align: center; }
+    .cm-val {
+      display: block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      color: var(--tx);
+      line-height: 1;
+      margin-bottom: 2px;
+    }
+    .cm-val.g { color: var(--grn); }
+    .cm-val.a { color: var(--amb); }
+    .cm-val.d { color: var(--tx-3); }
+    .cm-lbl { font-size: 9.5px; color: var(--tx-3); }
+
+    .camp-bar {
+      margin-top: 9px;
+      height: 2px;
+      background: var(--line);
+      border-radius: 1px;
+      overflow: hidden;
+    }
+    .camp-bar-fill { height: 100%; border-radius: 1px; }
+    .cbf-run { background: var(--grn); }
+    .cbf-pau { background: var(--amb); }
+    .cbf-don { background: var(--tx-3); }
+
+    .rev-box {
+      margin-top: 9px;
+      padding: 7px 10px;
+      background: var(--grn-bg);
+      border: 1px solid rgba(52,211,153,.14);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .rev-lbl { font-size: 10px; color: var(--tx-2); }
+    .rev-val {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      color: var(--grn);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes up {
+      from { opacity:0; transform:translateY(8px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    .stat { animation: up .45s ease both; }
+    .stat:nth-child(1) { animation-delay: .04s; }
+    .stat:nth-child(2) { animation-delay: .08s; }
+    .stat:nth-child(3) { animation-delay: .12s; }
+    .stat:nth-child(4) { animation-delay: .16s; }
+    .tbl-wrap { animation: up .45s ease .2s both; }
+    .camp:nth-child(1) { animation: up .45s ease .22s both; }
+    .camp:nth-child(2) { animation: up .45s ease .28s both; }
+    .camp:nth-child(3) { animation: up .45s ease .34s both; }
+
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-top">
+      <div class="sb-badge">
+        <span class="sb-badge-dot"></span>
+        <span class="sb-badge-txt">Live ops</span>
+      </div>
+      <p class="sb-wordmark">UTG Labs</p>
+      <p class="sb-title">Lead <em>Revival</em> OS</p>
     </div>
-  </body>
+
+    <nav class="sb-nav">
+      <p class="nav-label">Menu</p>
+      <a href="#" class="nav-item active">
+        Dashboard <span class="nav-chip">Overview</span>
+      </a>
+      <a href="#" class="nav-item">
+        Clients <span class="nav-chip">6</span>
+      </a>
+      <a href="#" class="nav-item">
+        Conversations <span class="nav-chip">Inbox</span>
+      </a>
+      <a href="#" class="nav-item">
+        Playbooks <span class="nav-chip">7</span>
+      </a>
+      <a href="#" class="nav-item">
+        Analytics <span class="nav-chip">Reports</span>
+      </a>
+    </nav>
+
+    <div class="sb-footer">
+      <p class="sb-footer-label">Today</p>
+      <div class="sb-stat-row">
+        <span class="k">Booked calls</span>
+        <span class="v g">+27</span>
+      </div>
+      <div class="sb-stat-row">
+        <span class="k">Replies</span>
+        <span class="v">314</span>
+      </div>
+      <div class="sb-stat-row">
+        <span class="k">New leads</span>
+        <span class="v">+84</span>
+      </div>
+      <p class="sb-tagline">"No new ads. No new funnels. Just your dead leads waking back up."</p>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main>
+
+    <div class="pg-header">
+      <div>
+        <h1 class="pg-title">Pipeline Revival</h1>
+        <p class="pg-sub">All clients — revivals, booked calls &amp; replies</p>
+      </div>
+      <div class="pg-controls">
+        <div class="client-tag">
+          <span class="client-tag-dot"></span>
+          Phoenix Solar &amp; Home
+        </div>
+        <button class="btn">Switch client ↓</button>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat s">
+        <p class="stat-lbl">Leads imported</p>
+        <p class="stat-num" id="n1">0</p>
+        <p class="stat-note"><strong>+1,204</strong> this week · 3 new clients</p>
+        <div class="stat-bar"><div class="stat-fill" id="b1"></div></div>
+      </div>
+      <div class="stat g">
+        <p class="stat-lbl">Conversations</p>
+        <p class="stat-num" id="n2">0</p>
+        <p class="stat-note"><strong>16.9%</strong> reply rate across all campaigns</p>
+        <div class="stat-bar"><div class="stat-fill" id="b2"></div></div>
+      </div>
+      <div class="stat a">
+        <p class="stat-lbl">Booked calls</p>
+        <p class="stat-num" id="n3">0</p>
+        <p class="stat-note"><strong>1.4%</strong> of dormant leads converted</p>
+        <div class="stat-bar"><div class="stat-fill" id="b3"></div></div>
+      </div>
+      <div class="stat v">
+        <p class="stat-lbl">Active campaigns</p>
+        <p class="stat-num" id="n4">0</p>
+        <p class="stat-note">Wake-up and nurture flows running</p>
+        <div class="stat-bar"><div class="stat-fill" id="b4"></div></div>
+      </div>
+    </div>
+
+    <div class="body-grid">
+
+      <!-- TABLE -->
+      <div>
+        <div class="section-hd">
+          <div>
+            <p class="sec-lbl">Latest imported leads</p>
+            <p class="sec-sub">Last 5 of 18,492 · filterable by status, source, date</p>
+          </div>
+          <button class="btn btn-accent">+ Import leads</button>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Status</th>
+                <th>Source</th>
+                <th>Last touched</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="td-name">Maria Gonzalez</td>
+                <td class="td-phone">+1 (623) 555-1902</td>
+                <td><span class="pill pill-q"><span class="pill-dot"></span>Qualified</span></td>
+                <td class="td-src">FB Lead Form</td>
+                <td class="td-time">2h ago</td>
+              </tr>
+              <tr>
+                <td class="td-name">James Carter</td>
+                <td class="td-phone">+1 (480) 555-8873</td>
+                <td><span class="pill pill-b"><span class="pill-dot"></span>Booked</span></td>
+                <td class="td-src">Old CRM Export</td>
+                <td class="td-time">1d ago</td>
+              </tr>
+              <tr>
+                <td class="td-name">Ashley Patel</td>
+                <td class="td-phone">+1 (602) 555-4412</td>
+                <td><span class="pill pill-c"><span class="pill-dot"></span>Contacted</span></td>
+                <td class="td-src">Google Ads</td>
+                <td class="td-time">3d ago</td>
+              </tr>
+              <tr>
+                <td class="td-name">Derek Okonkwo</td>
+                <td class="td-phone">+1 (512) 555-7710</td>
+                <td><span class="pill pill-q"><span class="pill-dot"></span>Qualified</span></td>
+                <td class="td-src">Email Drip</td>
+                <td class="td-time">5h ago</td>
+              </tr>
+              <tr>
+                <td class="td-name">Samantha Liu</td>
+                <td class="td-phone">+1 (714) 555-3309</td>
+                <td><span class="pill pill-b"><span class="pill-dot"></span>Booked</span></td>
+                <td class="td-src">Referral</td>
+                <td class="td-time">12h ago</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="tbl-foot">Showing 5 of 18,492 records</div>
+        </div>
+      </div>
+
+      <!-- CAMPAIGNS -->
+      <div>
+        <div class="section-hd">
+          <div>
+            <p class="sec-lbl">Revival campaigns</p>
+            <p class="sec-sub">Active &amp; recent sequences</p>
+          </div>
+          <button class="btn">+ New</button>
+        </div>
+        <div class="camp-list">
+
+          <div class="camp">
+            <div class="camp-row1">
+              <div>
+                <p class="camp-name">7-Day "Wake Up"</p>
+                <p class="camp-desc">Dormant 90–365 days · FB &amp; Google leads</p>
+              </div>
+              <span class="status-tag st-run">Running</span>
+            </div>
+            <div class="camp-metrics">
+              <div class="cm"><span class="cm-val">8,120</span><span class="cm-lbl">Leads</span></div>
+              <div class="cm"><span class="cm-val">1,342</span><span class="cm-lbl">Replies</span></div>
+              <div class="cm"><span class="cm-val g">119</span><span class="cm-lbl">Booked</span></div>
+            </div>
+            <div class="camp-bar"><div class="camp-bar-fill cbf-run" style="width:65%"></div></div>
+          </div>
+
+          <div class="camp">
+            <div class="camp-row1">
+              <div>
+                <p class="camp-name">No-Show Reactivation</p>
+                <p class="camp-desc">14-day follow-up · rebooks missed calls</p>
+              </div>
+              <span class="status-tag st-pau">Paused</span>
+            </div>
+            <div class="camp-metrics">
+              <div class="cm"><span class="cm-val">421</span><span class="cm-lbl">Leads</span></div>
+              <div class="cm"><span class="cm-val">79</span><span class="cm-lbl">Replies</span></div>
+              <div class="cm"><span class="cm-val a">18</span><span class="cm-lbl">Rebooked</span></div>
+            </div>
+            <div class="camp-bar"><div class="camp-bar-fill cbf-pau" style="width:42%"></div></div>
+          </div>
+
+          <div class="camp">
+            <div class="camp-row1">
+              <div>
+                <p class="camp-name">Summer Tune-up Promo</p>
+                <p class="camp-desc">One-off revenue bump · warm list</p>
+              </div>
+              <span class="status-tag st-don">Completed</span>
+            </div>
+            <div class="camp-metrics">
+              <div class="cm"><span class="cm-val">2,013</span><span class="cm-lbl">Leads</span></div>
+              <div class="cm"><span class="cm-val">243</span><span class="cm-lbl">Replies</span></div>
+              <div class="cm"><span class="cm-val d">100%</span><span class="cm-lbl">Done</span></div>
+            </div>
+            <div class="camp-bar"><div class="camp-bar-fill cbf-don" style="width:100%"></div></div>
+            <div class="rev-box">
+              <span class="rev-lbl">Estimated revived revenue</span>
+              <span class="rev-val">$38,400</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script>
+  function countUp(el, target, ms) {
+    const t0 = performance.now();
+    const tick = now => {
+      const p = Math.min((now - t0) / ms, 1);
+      const e = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.floor(e * target).toLocaleString();
+      if (p < 1) requestAnimationFrame(tick);
+      else el.textContent = target.toLocaleString();
+    };
+    requestAnimationFrame(tick);
+  }
+  function fillBar(el, pct, delay) {
+    setTimeout(() => {
+      el.style.transition = 'width 1.3s cubic-bezier(.4,0,.2,1)';
+      el.style.width = pct + '%';
+    }, delay);
+  }
+  window.addEventListener('load', () => {
+    countUp(document.getElementById('n1'), 18492, 1300);
+    countUp(document.getElementById('n2'), 3126,  1100);
+    countUp(document.getElementById('n3'), 274,    900);
+    countUp(document.getElementById('n4'), 7,      500);
+    fillBar(document.getElementById('b1'), 74, 250);
+    fillBar(document.getElementById('b2'), 57, 350);
+    fillBar(document.getElementById('b3'), 31, 450);
+    fillBar(document.getElementById('b4'), 88, 550);
+  });
+</script>
+</body>
 </html>
