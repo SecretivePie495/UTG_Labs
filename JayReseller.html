@@ -524,145 +524,155 @@
   </div>
 
   <script>
-    // Replace this with your Google Cloud bucket URL
-    const BUCKET_URL = "https://storage.googleapis.com/media.utg-media.com/Julian_cut1.jpg";
+    // ==================== CONFIGURATION ====================
+    const BUCKET_URL = "https://storage.googleapis.com/media.utg-media.com/";
     
-    // Example file list (this should be dynamically generated via API later)
-    const files = [
+    // Set to true to use API, false to use hardcoded data
+    const USE_API = false;
+    const API_ENDPOINT = 'YOUR_API_ENDPOINT_URL'; // Replace with your actual API URL
+    
+    // Hardcoded products (used when USE_API = false)
+    const HARDCODED_PRODUCTS = [
       { 
-        name: "hoodie1.jpg", 
-        title: "VINTAGE HOODIE", 
+        name: "Julian_cut1.jpg", 
+        title: "VINTAGE PIECE", 
         price: "$45",
-        note: "Size L • Faded perfectly",
-        sold: false
-      },
-      { 
-        name: "tee1.mp4", 
-        title: "GRAPHIC TEE", 
-        price: "$25",
-        note: "90s print • Size M",
-        sold: false
-      },
-      { 
-        name: "jacket1.jpg", 
-        title: "RETRO JACKET", 
-        price: "$70",
-        note: "Rare find • Size XL",
-        sold: false
-      },
-      { 
-        name: "hoodie2.jpg", 
-        title: "COLLEGE CREW", 
-        price: "$38",
-        note: "Vintage Champion • L",
-        sold: true
-      },
-      { 
-        name: "pants1.mp4", 
-        title: "BAGGY JEANS", 
-        price: "$52",
-        note: "00s style • W32",
-        sold: false
-      },
-      { 
-        name: "shirt1.jpg", 
-        title: "FLANNEL SHIRT", 
-        price: "$35",
-        note: "Grunge era • Medium",
+        note: "Size L • Fresh drop",
         sold: false
       }
     ];
-
-    const grid = document.getElementById("productGrid");
-
-    files.forEach((file, index) => {
-      const card = document.createElement("div");
-      card.className = "card";
+    
+    // ==================== PRODUCT RENDERING ====================
+    function renderProducts(files) {
+      const grid = document.getElementById("productGrid");
+      grid.innerHTML = ''; // Clear existing products
       
-      const isVideo = file.name.endsWith(".mp4") || file.name.endsWith(".mov") || file.name.endsWith(".MOV");
-      
-      let media;
-      if (isVideo) {
-        media = `
-          <video 
-            src="${BUCKET_URL + file.name}" 
-            playsinline 
-            muted 
-            loop
-            preload="metadata"
-            data-video-id="${index}"
-          ></video>
-          <div class="play-overlay" data-video-id="${index}">
-          </div>
-          <div class="video-indicator">VIDEO</div>
-        `;
-      } else {
-        media = `<img src="${BUCKET_URL + file.name}" alt="${file.title}" loading="lazy" />`;
-      }
-
-      const soldStamp = file.sold ? '<div class="sold-stamp">SOLD</div>' : '';
-      
-      card.innerHTML = `
-        ${soldStamp}
-        <div class="media-wrapper">
-          ${media}
-        </div>
-        <div class="card-content">
-          <div class="title">${file.title}</div>
-          <div class="price-tag">${file.price}</div>
-          <div class="handwritten-note">${file.note}</div>
-          ${!file.sold ? '<a href="#" class="btn">BUY NOW</a>' : ''}
-        </div>
-      `;
-
-      grid.appendChild(card);
-    });
-
-    // Handle video playback on mobile
-    document.querySelectorAll('.play-overlay').forEach(overlay => {
-      overlay.addEventListener('click', function(e) {
-        e.stopPropagation();
-        const videoId = this.getAttribute('data-video-id');
-        const video = document.querySelector(`video[data-video-id="${videoId}"]`);
+      files.forEach((file, index) => {
+        const card = document.createElement("div");
+        card.className = "card";
         
-        if (video) {
-          if (video.paused) {
-            // Pause all other videos
-            document.querySelectorAll('video').forEach(v => {
-              if (v !== video) {
-                v.pause();
-                v.currentTime = 0;
-              }
-            });
-            
-            // Reset all play overlays
-            document.querySelectorAll('.play-overlay').forEach(o => {
-              o.classList.remove('playing');
-            });
-            
-            // Play this video
-            video.play();
-            this.classList.add('playing');
-          } else {
-            video.pause();
-            this.classList.remove('playing');
+        const isVideo = file.name.endsWith(".mp4") || file.name.endsWith(".mov") || file.name.endsWith(".MOV");
+        
+        let media;
+        if (isVideo) {
+          media = `
+            <video 
+              src="${BUCKET_URL + file.name}" 
+              playsinline 
+              muted 
+              loop
+              preload="metadata"
+              data-video-id="${index}"
+            ></video>
+            <div class="play-overlay" data-video-id="${index}">
+            </div>
+            <div class="video-indicator">VIDEO</div>
+          `;
+        } else {
+          media = `<img src="${BUCKET_URL + file.name}" alt="${file.title}" loading="lazy" />`;
+        }
+
+        const soldStamp = file.sold ? '<div class="sold-stamp">SOLD</div>' : '';
+        
+        card.innerHTML = `
+          ${soldStamp}
+          <div class="media-wrapper">
+            ${media}
+          </div>
+          <div class="card-content">
+            <div class="title">${file.title}</div>
+            <div class="price-tag">${file.price}</div>
+            <div class="handwritten-note">${file.note}</div>
+            ${!file.sold ? '<a href="#" class="btn">BUY NOW</a>' : ''}
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+      
+      // Setup video controls after rendering
+      setupVideoControls();
+    }
+    
+    // ==================== API LOADING ====================
+    async function loadProductsFromAPI() {
+      try {
+        const response = await fetch(API_ENDPOINT);
+        
+        if (!response.ok) {
+          throw new Error(`API request failed: ${response.status}`);
+        }
+        
+        const products = await response.json();
+        
+        // Expected API format:
+        // [
+        //   {
+        //     "name": "filename.jpg",
+        //     "title": "ITEM NAME",
+        //     "price": "$XX",
+        //     "note": "Description",
+        //     "sold": false
+        //   }
+        // ]
+        
+        renderProducts(products);
+      } catch (error) {
+        console.error('Error loading products from API:', error);
+        // Fallback to hardcoded products on error
+        console.log('Falling back to hardcoded products...');
+        renderProducts(HARDCODED_PRODUCTS);
+      }
+    }
+    
+    // ==================== VIDEO CONTROLS ====================
+    function setupVideoControls() {
+      // Handle video playback on mobile
+      document.querySelectorAll('.play-overlay').forEach(overlay => {
+        overlay.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const videoId = this.getAttribute('data-video-id');
+          const video = document.querySelector(`video[data-video-id="${videoId}"]`);
+          
+          if (video) {
+            if (video.paused) {
+              // Pause all other videos
+              document.querySelectorAll('video').forEach(v => {
+                if (v !== video) {
+                  v.pause();
+                  v.currentTime = 0;
+                }
+              });
+              
+              // Reset all play overlays
+              document.querySelectorAll('.play-overlay').forEach(o => {
+                o.classList.remove('playing');
+              });
+              
+              // Play this video
+              video.play();
+              this.classList.add('playing');
+            } else {
+              video.pause();
+              this.classList.remove('playing');
+            }
           }
-        }
+        });
       });
-    });
 
-    // Handle video ended event
-    document.querySelectorAll('video').forEach(video => {
-      video.addEventListener('ended', function() {
-        const videoId = this.getAttribute('data-video-id');
-        const overlay = document.querySelector(`.play-overlay[data-video-id="${videoId}"]`);
-        if (overlay) {
-          overlay.classList.remove('playing');
-        }
+      // Handle video ended event
+      document.querySelectorAll('video').forEach(video => {
+        video.addEventListener('ended', function() {
+          const videoId = this.getAttribute('data-video-id');
+          const overlay = document.querySelector(`.play-overlay[data-video-id="${videoId}"]`);
+          if (overlay) {
+            overlay.classList.remove('playing');
+          }
+        });
       });
-    });
+    }
 
-    // Add click handler for buy buttons
+    // ==================== BUY BUTTON HANDLER ====================
     document.addEventListener('click', (e) => {
       if (e.target.classList.contains('btn')) {
         e.preventDefault();
@@ -685,13 +695,23 @@
     });
 
     // Prevent accidental scrolling when interacting with videos
-    document.querySelectorAll('.media-wrapper').forEach(wrapper => {
-      wrapper.addEventListener('touchstart', function(e) {
-        if (e.target.tagName === 'VIDEO' || e.target.classList.contains('play-overlay')) {
-          e.stopPropagation();
-        }
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.media-wrapper').forEach(wrapper => {
+        wrapper.addEventListener('touchstart', function(e) {
+          if (e.target.tagName === 'VIDEO' || e.target.classList.contains('play-overlay')) {
+            e.stopPropagation();
+          }
+        });
       });
     });
+    
+    // ==================== INITIALIZE ====================
+    // Load products on page load
+    if (USE_API) {
+      loadProductsFromAPI();
+    } else {
+      renderProducts(HARDCODED_PRODUCTS);
+    }
   </script>
 </body>
 </html>
