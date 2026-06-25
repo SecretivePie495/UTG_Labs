@@ -119,25 +119,18 @@
 <div class="relative z-10 text-center max-w-4xl mx-auto flex flex-col items-center">
 <p class="font-label-caps text-label-caps text-on-surface-variant mb-12 tracking-[0.25em]">NEVER MISS A LEAD AGAIN</p>
 <div class="w-full max-w-[900px] aspect-video bg-[#111] mb-12 relative group overflow-hidden border border-white/5">
-  <video
-    class="w-full h-full object-cover"
-    controls
-    autoplay
-    muted
-    loop
-    playsinline>
-    <source
-      src="https://storage.googleapis.com/software_templates/UTG%20Labs%20Demo.mp4"
-      type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
-</div>
-<div class="absolute inset-0 flex items-center justify-center group-hover:scale-110 transition-transform duration-700">
-<div class="w-full h-full bg-cover bg-center opacity-60" data-alt="A high-end cinematic shot of a dark, minimalist office space with multiple glowing monitors displaying complex data interfaces. The lighting is low-key with sharp white accents reflecting off glass surfaces. The overall aesthetic is professional, sophisticated, and technologically advanced, aligned with a premium dark-mode laboratory theme." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDNzwv3Bp_jXimhw-MlPp1LZo28Bcv2a5wAAP0jie6_lV5UMIhsFeIQw1MRbh3zfBC00zfm3J8-O7Mb2vVx3ha0bJ8U43Co9tHPyc938rCQiDfREYqGDb3zlWQ-VqTFjoOA6Kix_5ZwXL8XmHqSBlkUajMdrDeSge_hm6fIScNALB6nTTxHoGA4AQ7eEQmi-jMVP9P7DtQF18E_fd1_fw90xizwEwMQ0_sBEcLq1zVsBA_j5uXinoviLA')"></div>
-</div>
-<div class="absolute inset-0 flex items-center justify-center">
-<span class="material-symbols-outlined text-white text-6xl opacity-80 group-hover:opacity-100 transition-opacity">play_circle</span>
-</div>
+<video
+        class="w-full h-full object-cover"
+        controls
+        autoplay
+        muted
+        loop
+        playsinline>
+<source
+            src="https://storage.googleapis.com/software_templates/UTG%20Labs%20Demo.mp4"
+            type="video/mp4">
+            Your browser does not support the video tag.
+        </source></video>
 </div>
 <h1 class="font-body-md text-[18px] text-on-surface mb-12 max-w-2xl leading-relaxed">
                 We set up and manage your entire customer support operation — Instagram, Facebook, WhatsApp — so every message gets answered in seconds.
@@ -173,9 +166,9 @@
 </section>
 <!-- Solution Section -->
 <section class="py-32 px-margin-mobile md:px-margin-desktop bg-[#0a0a0a]">
-<div class="max-w-container-max mx-auto flex flex-col md:flex-row gap-16 items-center">
-<div class="w-full md:w-1/2">
-<h2 class="font-display-lg text-display-lg mb-12">We run your inbox — you run your business.</h2>
+<div class="max-w-container-max mx-auto flex flex-col items-center">
+<div class="w-full max-w-3xl">
+<h2 class="font-display-lg text-display-lg mb-12 text-center">We run your inbox — you run your business.</h2>
 <div class="space-y-12">
 <div class="flex gap-6">
 <div class="flex-shrink-0 w-12 h-12 bg-[#111] flex items-center justify-center">
@@ -204,11 +197,6 @@
 <p class="text-on-surface-variant font-body-sm text-body-sm">We don't just answer; we qualify, book meetings, and follow up until they convert.</p>
 </div>
 </div>
-</div>
-</div>
-<div class="w-full md:w-1/2">
-<div class="aspect-square bg-[#111] relative border border-white/5 p-1">
-<div class="w-full h-full bg-cover bg-center grayscale opacity-80" data-alt="A clean, minimalist UI dashboard showing a chat interface. The interface features message bubbles from multiple social platforms like WhatsApp and Instagram. The design is hyper-modern, using grayscale tones and sharp typography. The scene is lit by a subtle glow from the digital interface in a dark, premium environment." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBHf7RJ8_-M5yICAd9QhbTIseR_kGqOuOkRL-NloZemGIJkLvKfI1btHntfkyC_FDDMmx7EpjHLaA0IO1Iy05zFR41Qt2MHphZZ-uKGfTJZOuFcQrGcoPxNnt4SWzk_05ZjRoTRJwXx8JaVFp3bRqD8u_v9Dc8DkO67i2D5e73zWFeZ1qoNpYt7zGPv_TInMJ-dMzrCCAXiirydRT8owgWne6RoOqGEcOOLsEngCPFoUt9gQOsCMA6yaQ')"></div>
 </div>
 </div>
 </div>
@@ -350,15 +338,15 @@
             });
         });
 
-        // Simple interaction for hover effects on steps
-        const steps = document.querySelectorAll('.step-number').parentElement;
-        steps.forEach(step => {
+        // Hover effect on step numbers
+        document.querySelectorAll('.step-number').forEach(num => {
+            const step = num.parentElement;
             step.addEventListener('mouseenter', () => {
-                step.querySelector('.step-number').style.opacity = '0.15';
-                step.querySelector('.step-number').style.transition = 'opacity 0.3s ease';
+                num.style.transition = 'opacity 0.3s ease';
+                num.style.opacity = '0.15';
             });
             step.addEventListener('mouseleave', () => {
-                step.querySelector('.step-number').style.opacity = '0.05';
+                num.style.opacity = '0.05';
             });
         });
     </script>
