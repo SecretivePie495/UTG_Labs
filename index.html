@@ -1,358 +1,164 @@
-<!DOCTYPE html>
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#000000" />
+        <meta name="description" content="A product of emergent.sh" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap" rel="stylesheet" />
+        <!--
+        manifest.json provides metadata used when your web app is installed on a
+        user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+        -->
+        <!--
+        Notice the use of  in the tags above.
+        It will be replaced with the URL of the `public` folder during the build.
+        Only files inside the `public` folder can be referenced from the HTML.
 
-<html class="dark" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>UTG Labs | Never Miss a Lead</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            "colors": {
-                    "secondary-container": "#4a4949",
-                    "surface-container-highest": "#343535",
-                    "on-secondary-fixed-variant": "#474646",
-                    "on-tertiary-fixed": "#1a1c1c",
-                    "background": "#0a0a0a",
-                    "on-tertiary-fixed-variant": "#454747",
-                    "on-primary-fixed": "#1a1c1c",
-                    "on-error-container": "#ffdad6",
-                    "outline": "#8e9192",
-                    "outline-variant": "#444748",
-                    "surface-dim": "#121414",
-                    "on-tertiary-container": "#636565",
-                    "on-surface": "#e3e2e2",
-                    "primary-fixed-dim": "#c6c6c7",
-                    "on-primary-fixed-variant": "#454747",
-                    "surface-container-low": "#1b1c1c",
-                    "on-secondary": "#313030",
-                    "on-secondary-fixed": "#1c1b1b",
-                    "secondary-fixed-dim": "#c8c6c5",
-                    "surface-bright": "#383939",
-                    "primary": "#ffffff",
-                    "tertiary": "#ffffff",
-                    "surface-variant": "#343535",
-                    "secondary": "#c8c6c5",
-                    "on-error": "#690005",
-                    "tertiary-fixed-dim": "#c6c6c7",
-                    "on-secondary-container": "#bab8b7",
-                    "on-surface-variant": "#c4c7c8",
-                    "surface-container-high": "#292a2a",
-                    "inverse-on-surface": "#303031",
-                    "error-container": "#93000a",
-                    "inverse-primary": "#5d5f5f",
-                    "surface-container-lowest": "#0d0e0f",
-                    "surface-tint": "#c6c6c7",
-                    "surface": "#121414",
-                    "primary-fixed": "#e2e2e2",
-                    "error": "#ffb4ab",
-                    "secondary-fixed": "#e5e2e1",
-                    "tertiary-fixed": "#e2e2e2",
-                    "on-primary-container": "#636565",
-                    "primary-container": "#e2e2e2",
-                    "on-background": "#e3e2e2",
-                    "inverse-surface": "#e3e2e2",
-                    "surface-container": "#1f2020",
-                    "on-tertiary": "#2f3131",
-                    "tertiary-container": "#e2e2e2",
-                    "on-primary": "#2f3131"
-            },
-            "borderRadius": {
-                    "DEFAULT": "0.125rem",
-                    "lg": "0.25rem",
-                    "xl": "0.5rem",
-                    "full": "0.75rem"
-            },
-            "spacing": {
-                    "margin-desktop": "64px",
-                    "unit": "8px",
-                    "margin-mobile": "20px",
-                    "container-max": "1280px",
-                    "gutter": "24px"
-            },
-            "fontFamily": {
-                    "label-caps": ["Inter", "sans-serif"],
-                    "headline-lg-mobile": ["Inter", "sans-serif"],
-                    "body-sm": ["Inter", "sans-serif"],
-                    "display-lg": ["Inter", "sans-serif"],
-                    "body-md": ["Inter", "sans-serif"],
-                    "headline-lg": ["Inter", "sans-serif"]
-            },
-            "fontSize": {
-                    "label-caps": ["12px", { "lineHeight": "1", "letterSpacing": "0.15em", "fontWeight": "700" }],
-                    "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "fontWeight": "600" }],
-                    "body-sm": ["14px", { "lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400" }],
-                    "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600" }],
-                    "body-md": ["16px", { "lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400" }],
-                    "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600" }]
-            }
-          },
-        },
-      }
-    </script>
-<style>
-        body { background-color: #0a0a0a; color: #ffffff; -webkit-font-smoothing: antialiased; }
-        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; }
-        .glass-surface { background: rgba(17, 17, 17, 0.8); backdrop-filter: blur(20px); }
-        .step-number { opacity: 0.05; font-size: 160px; line-height: 1; position: absolute; top: -40px; left: -20px; font-weight: 800; pointer-events: none; }
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-    </style>
-            <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
-         <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
-         <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
-         <link rel="icon" type="image/x-icon" href="images/favicon.ico">
-         <link rel="manifest" href="images/site.webmanifest">
+        Unlike "/favicon.ico" or "favicon.ico", "/favicon.ico" will
+        work correctly both with client-side routing and a non-root public URL.
+        Learn how to configure a non-root public URL by running `npm run build`.
+        -->
+        <title>Emergent | Fullstack App</title>
+        <script>window.addEventListener("error",function(e){if(e.error instanceof DOMException&&e.error.name==="DataCloneError"&&e.message&&e.message.includes("PerformanceServerTiming")){e.stopImmediatePropagation();e.preventDefault()}},true);</script>
+        <script src="https://assets.emergent.sh/scripts/emergent-main.js"></script>
+    <script defer src="/static/js/bundle.js"></script><script>
+if(window.self!==window.top){
+  var s=document.createElement("script");s.src="/visual-edit-overlay.js";document.head.appendChild(s);
+  window.tailwind=window.tailwind||{};tailwind.config={corePlugins:{preflight:false}};var t=document.createElement("script");t.src="https://cdn.tailwindcss.com";document.head.appendChild(t);
+}
+</script>
 </head>
-<body class="font-body-md selection:bg-primary selection:text-background">
-<!-- Top Navigation -->
-<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop py-8 max-w-container-max mx-auto bg-background/80 backdrop-blur-md">
-<div class="font-headline-lg text-headline-lg font-bold tracking-tighter text-primary">UTG Labs</div>
-<div class="hidden md:flex gap-8 items-center">
-<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="#how-it-works">Process</a>
-<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="#pricing">Pricing</a>
-<button class="bg-primary text-on-primary font-label-caps text-label-caps px-6 py-3 hover:opacity-90 transition-opacity active:scale-95 duration-150">Get Started</button>
-</div>
-</nav>
-<!-- Hero Section -->
-<section class="relative min-h-screen flex flex-col items-center justify-center pt-32 pb-16 px-margin-mobile md:px-margin-desktop overflow-hidden">
+    <body>
+        <noscript>You need to enable JavaScript to run this app.</noscript>
+        <div id="root"></div>
+        <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
 
-<div class="relative z-10 text-center max-w-4xl mx-auto flex flex-col items-center">
-<p class="font-label-caps text-label-caps text-on-surface-variant mb-12 tracking-[0.25em]">NEVER MISS A LEAD AGAIN</p>
-<div class="w-full max-w-[900px] aspect-video bg-[#111] mb-12 relative group overflow-hidden border border-white/5">
-<video
-        class="w-full h-full object-cover"
-        controls
-        autoplay
-        muted
-        loop
-        playsinline>
-<source
-            src="https://storage.googleapis.com/software_templates/UTG%20Labs%20Demo.mp4"
-            type="video/mp4">
-            Your browser does not support the video tag.
-        </source></video>
-</div>
-<h1 class="font-body-md text-[18px] text-on-surface mb-12 max-w-2xl leading-relaxed">
-                We set up and manage your entire customer support operation — Instagram, Facebook, WhatsApp — so every message gets answered in seconds.
-            </h1>
-<div class="flex flex-col md:flex-row gap-4 w-full md:w-auto">
-<button class="bg-primary text-on-primary font-label-caps text-label-caps px-10 py-5 hover:opacity-90 transition-opacity active:scale-95 duration-150 min-w-[200px]">Get Started</button>
-<button class="border border-primary text-primary font-label-caps text-label-caps px-10 py-5 hover:bg-primary hover:text-on-primary transition-all active:scale-95 duration-150 min-w-[200px]">See How It Works</button>
-</div>
-</div>
-</section>
-<!-- Problem Section -->
-<section class="py-32 px-margin-mobile md:px-margin-desktop bg-background border-t border-surface-container-highest">
-<div class="max-w-container-max mx-auto">
-<h2 class="font-display-lg text-display-lg md:text-[56px] text-center mb-24 max-w-3xl mx-auto">Every unanswered message is a lost customer.</h2>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
-<div class="flex flex-col gap-6 p-8 bg-[#111]">
-<span class="material-symbols-outlined text-outline text-3xl">timer_off</span>
-<h3 class="font-headline-lg text-headline-lg">Slow responses lose leads</h3>
-<p class="text-on-surface-variant font-body-sm text-body-sm">Customers expect immediate attention or they move to the next competitor.</p>
-</div>
-<div class="flex flex-col gap-6 p-8 bg-[#111]">
-<span class="material-symbols-outlined text-outline text-3xl">schedule</span>
-<h3 class="font-headline-lg text-headline-lg">You can't be online 24/7</h3>
-<p class="text-on-surface-variant font-body-sm text-body-sm">Scale shouldn't depend on your personal sleeping schedule or bandwidth.</p>
-</div>
-<div class="flex flex-col gap-6 p-8 bg-[#111]">
-<span class="material-symbols-outlined text-outline text-3xl">payments</span>
-<h3 class="font-headline-lg text-headline-lg">Hiring a team is expensive</h3>
-<p class="text-on-surface-variant font-body-sm text-body-sm">Avoid the overhead of management, benefits, and local staffing costs.</p>
-</div>
-</div>
-</div>
-</section>
-<!-- Solution Section -->
-<section class="py-32 px-margin-mobile md:px-margin-desktop bg-[#0a0a0a]">
-<div class="max-w-container-max mx-auto flex flex-col items-center">
-<div class="w-full max-w-3xl">
-<h2 class="font-display-lg text-display-lg mb-12 text-center">We run your inbox — you run your business.</h2>
-<div class="space-y-12">
-<div class="flex gap-6">
-<div class="flex-shrink-0 w-12 h-12 bg-[#111] flex items-center justify-center">
-<span class="material-symbols-outlined text-primary">auto_awesome</span>
-</div>
-<div>
-<h4 class="font-headline-lg text-[20px] font-bold mb-2">AI drafts replies instantly</h4>
-<p class="text-on-surface-variant font-body-sm text-body-sm">Our proprietary model learns your brand voice to draft perfect responses in milliseconds.</p>
-</div>
-</div>
-<div class="flex gap-6">
-<div class="flex-shrink-0 w-12 h-12 bg-[#111] flex items-center justify-center">
-<span class="material-symbols-outlined text-primary">support_agent</span>
-</div>
-<div>
-<h4 class="font-headline-lg text-[20px] font-bold mb-2">Real humans review and send</h4>
-<p class="text-on-surface-variant font-body-sm text-body-sm">Every automated draft is double-checked by professional operators for 100% accuracy.</p>
-</div>
-</div>
-<div class="flex gap-6">
-<div class="flex-shrink-0 w-12 h-12 bg-[#111] flex items-center justify-center">
-<span class="material-symbols-outlined text-primary">hub</span>
-</div>
-<div>
-<h4 class="font-headline-lg text-[20px] font-bold mb-2">Lead capture &amp; followup</h4>
-<p class="text-on-surface-variant font-body-sm text-body-sm">We don't just answer; we qualify, book meetings, and follow up until they convert.</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<!-- How It Works -->
-<section class="py-32 px-margin-mobile md:px-margin-desktop bg-background" id="how-it-works">
-<div class="max-w-container-max mx-auto">
-<h2 class="font-display-lg text-display-lg text-center mb-32">Up and running in 48 hours.</h2>
-<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter relative">
-<div class="relative p-8 pt-12 overflow-hidden">
-<span class="step-number text-primary">1</span>
-<h3 class="font-headline-lg text-[20px] font-bold mb-4 relative z-10">Connect channels</h3>
-<p class="text-on-surface-variant font-body-sm text-body-sm relative z-10">Grant access to your social profiles and existing support documentation.</p>
-</div>
-<div class="relative p-8 pt-12 overflow-hidden">
-<span class="step-number text-primary">2</span>
-<h3 class="font-headline-lg text-[20px] font-bold mb-4 relative z-10">AI configuration</h3>
-<p class="text-on-surface-variant font-body-sm text-body-sm relative z-10">We train your custom assistant on your pricing, policies, and tone of voice.</p>
-</div>
-<div class="relative p-8 pt-12 overflow-hidden">
-<span class="step-number text-primary">3</span>
-<h3 class="font-headline-lg text-[20px] font-bold mb-4 relative z-10">Instant drafts</h3>
-<p class="text-on-surface-variant font-body-sm text-body-sm relative z-10">Our system begins monitoring 24/7, preparing drafts for every single inquiry.</p>
-</div>
-<div class="relative p-8 pt-12 overflow-hidden">
-<span class="step-number text-primary">4</span>
-<h3 class="font-headline-lg text-[20px] font-bold mb-4 relative z-10">Approval &amp; Sending</h3>
-<p class="text-on-surface-variant font-body-sm text-body-sm relative z-10">Our team hits send on qualified drafts, ensuring white-glove service at scale.</p>
-</div>
-</div>
-</div>
-</section>
-<!-- Social Proof -->
-<section class="py-32 px-margin-mobile md:px-margin-desktop bg-[#111]">
-<div class="max-w-container-max mx-auto">
-<h2 class="font-headline-lg text-headline-lg text-center mb-24 max-w-2xl mx-auto">Built for businesses that can't afford to miss a message.</h2>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-16">
-<blockquote class="text-center italic text-on-surface-variant font-body-md text-[18px]">
-                    "Since UTG Labs took over our Instagram DMs, our lead-to-call conversion rate has doubled. Every message is answered within 60 seconds."
-                </blockquote>
-<blockquote class="text-center italic text-on-surface-variant font-body-md text-[18px]">
-                    "I finally stopped worrying about my WhatsApp at 2 AM. The team and the AI handle everything with incredible precision."
-                </blockquote>
-<blockquote class="text-center italic text-on-surface-variant font-body-md text-[18px]">
-                    "Professional, seamless, and incredibly fast setup. They understood our brand voice better than we did."
-                </blockquote>
-</div>
-</div>
-</section>
-<!-- Pricing Section -->
-<section class="py-32 px-margin-mobile md:px-margin-desktop bg-background" id="pricing">
-<div class="max-w-container-max mx-auto">
-<h2 class="font-display-lg text-display-lg text-center mb-24">Simple, transparent pricing.</h2>
-<div class="flex flex-col md:flex-row justify-center gap-gutter">
-<!-- Starter -->
-<div class="w-full md:w-[400px] bg-[#111] p-12 flex flex-col">
-<h3 class="font-label-caps text-label-caps mb-8 text-on-surface-variant">STARTER</h3>
-<div class="mb-8">
-<p class="font-display-lg text-display-lg">$1,500</p>
-<p class="text-on-surface-variant font-label-caps text-label-caps">SETUP FEE</p>
-</div>
-<div class="mb-12">
-<p class="font-headline-lg text-headline-lg">$500 <span class="text-on-surface-variant text-body-sm font-body-sm">/ MONTH</span></p>
-</div>
-<ul class="space-y-4 mb-12 flex-grow">
-<li class="flex items-center gap-3 text-body-sm font-body-sm text-on-surface-variant">
-<span class="material-symbols-outlined text-[18px] text-primary">check</span>
-                            Instagram &amp; Facebook
-                        </li>
-<li class="flex items-center gap-3 text-body-sm font-body-sm text-on-surface-variant">
-<span class="material-symbols-outlined text-[18px] text-primary">check</span>
-                            24/7 AI-Human Hybrid Support
-                        </li>
-<li class="flex items-center gap-3 text-body-sm font-body-sm text-on-surface-variant">
-<span class="material-symbols-outlined text-[18px] text-primary">check</span>
-                            Lead Capture (up to 200/mo)
-                        </li>
-</ul>
-<button class="w-full border border-primary text-primary font-label-caps text-label-caps py-5 hover:bg-primary hover:text-on-primary transition-all active:scale-95 duration-150">Get Started</button>
-</div>
-<!-- Growth -->
-<div class="w-full md:w-[400px] bg-[#111] p-12 flex flex-col border border-primary">
-<h3 class="font-label-caps text-label-caps mb-8 text-primary">GROWTH</h3>
-<div class="mb-8">
-<p class="font-display-lg text-display-lg">$2,500</p>
-<p class="text-on-surface-variant font-label-caps text-label-caps">SETUP FEE</p>
-</div>
-<div class="mb-12">
-<p class="font-headline-lg text-headline-lg">$1,000 <span class="text-on-surface-variant text-body-sm font-body-sm">/ MONTH</span></p>
-</div>
-<ul class="space-y-4 mb-12 flex-grow">
-<li class="flex items-center gap-3 text-body-sm font-body-sm text-on-surface">
-<span class="material-symbols-outlined text-[18px] text-primary">check</span>
-                            Instagram, Facebook, WhatsApp
-                        </li>
-<li class="flex items-center gap-3 text-body-sm font-body-sm text-on-surface">
-<span class="material-symbols-outlined text-[18px] text-primary">check</span>
-                            Unlimited Lead Capture
-                        </li>
-<li class="flex items-center gap-3 text-body-sm font-body-sm text-on-surface">
-<span class="material-symbols-outlined text-[18px] text-primary">check</span>
-                            CRM Integration
-                        </li>
-<li class="flex items-center gap-3 text-body-sm font-body-sm text-on-surface">
-<span class="material-symbols-outlined text-[18px] text-primary">check</span>
-                            Proactive Outbound Follow-ups
-                        </li>
-</ul>
-<button class="w-full bg-primary text-on-primary font-label-caps text-label-caps py-5 hover:opacity-90 transition-opacity active:scale-95 duration-150">Get Started</button>
-</div>
-</div>
-</div>
-</section>
-<!-- Final CTA -->
-<section class="py-48 px-margin-mobile md:px-margin-desktop bg-background text-center relative overflow-hidden">
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
 
-<div class="relative z-10 max-w-3xl mx-auto">
-<h2 class="font-display-lg text-display-lg md:text-[64px] mb-8">Ready to never miss a lead again?</h2>
-<p class="text-on-surface-variant font-body-md text-body-md mb-16">Setup takes 48 hours. Cancel anytime.</p>
-<button class="bg-primary text-on-primary font-label-caps text-label-caps px-12 py-6 text-[14px] hover:opacity-90 transition-opacity active:scale-95 duration-150">Book a Free Call</button>
-</div>
-</section>
-<!-- Footer -->
-<footer class="w-full px-margin-desktop py-16 flex flex-col md:flex-row justify-between items-center max-w-container-max mx-auto border-t border-surface-container-highest">
-<div class="flex flex-col items-center md:items-start gap-4">
-<div class="font-headline-lg text-headline-lg font-bold tracking-tighter text-primary">UTG Labs</div>
-<p class="font-label-caps text-label-caps text-on-surface-variant">utglabs.com</p>
-</div>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-8 md:mt-0">© 2024 UTG Labs. All rights reserved.</p>
-</footer>
-<script>
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+        <a
+            id="emergent-badge"
+            target="_blank"
+            href="https://app.emergent.sh/?utm_source=emergent-badge"
+            style="
+                display: inline-flex !important;
+                box-sizing: border-box;
+                width: 178px;
+                height: 40px;
+                padding: 8px 12px 8px 12px;
+                align-items: center !important;
+                gap: 8px;
+                border-radius: 50px !important;
+                background: #000 !important;
+                position: fixed !important;
+                bottom: 16px;
+                right: 16px;
+                text-decoration: none;
+                font-family: -apple-system, BlinkMacSystemFont,
+                    &quot;Segoe UI&quot;, Roboto, Oxygen, Ubuntu, Cantarell,
+                    &quot;Open Sans&quot;, &quot;Helvetica Neue&quot;,
+                    sans-serif !important;
+                font-size: 12px !important;
+                z-index: 9999 !important;
+            "
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M15.5702 8.13142C15.7729 8.0412 16.0007 8.18878 15.9892 8.4103C15.8374 11.3192 14.0965 14.0405 11.2531 15.3065C8.40964 16.5725 5.2224 16.0453 2.95912 14.2117C2.78676 14.072 2.82955 13.804 3.03219 13.7137L4.95677 12.8568C5.04866 12.8159 5.15446 12.823 5.24204 12.8725C6.73377 13.7153 8.59176 13.8649 10.2772 13.1145C11.9626 12.3641 13.0947 10.8833 13.4665 9.21075C13.4883 9.11256 13.5539 9.02918 13.6457 8.98827L15.5702 8.13142Z" fill="white"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M15.3066 4.74698L15.5067 5.19653C15.5759 5.35178 15.5061 5.53366 15.3508 5.60278L1.29992 11.8586C1.14467 11.9278 0.962794 11.8579 0.893675 11.7027L0.701732 11.2716L0.693457 11.2531C-1.10317 7.21778 0.711626 2.49007 4.74692 0.693443C8.78221 -1.10318 13.51 0.711693 15.3066 4.74698ZM2.82356 8.55367C2.63552 8.63739 2.41991 8.51617 2.40853 8.31065C2.28373 6.05724 3.53858 3.85787 5.72286 2.88536C7.90715 1.91286 10.3813 2.45199 11.9724 4.05256C12.1175 4.19854 12.0633 4.43988 11.8753 4.5236L2.82356 8.55367Z" fill="white"/>
+            </svg>
+            <p
+                style="
+                    color: #FFF !important;
+                    font-family: 'Inter', sans-serif !important;
+                    font-size: 13px !important;
+                    font-style: normal !important;
+                    font-weight: 600 !important;
+                    line-height: 20px !important;
+                    margin: 0 !important;
+                    white-space: nowrap !important;
+                "
+            >
+                Made with Emergent
+            </p>
+        </a>
+        <script>
+            !(function (t, e) {
+                var o, n, p, r;
+                e.__SV ||
+                    ((window.posthog = e),
+                    (e._i = []),
+                    (e.init = function (i, s, a) {
+                        function g(t, e) {
+                            var o = e.split(".");
+                            2 == o.length && ((t = t[o[0]]), (e = o[1])),
+                                (t[e] = function () {
+                                    t.push(
+                                        [e].concat(
+                                            Array.prototype.slice.call(
+                                                arguments,
+                                                0,
+                                            ),
+                                        ),
+                                    );
+                                });
+                        }
+                        ((p = t.createElement("script")).type =
+                            "text/javascript"),
+                            (p.crossOrigin = "anonymous"),
+                            (p.async = !0),
+                            (p.src =
+                                s.api_host.replace(
+                                    ".i.posthog.com",
+                                    "-assets.i.posthog.com",
+                                ) + "/static/array.js"),
+                            (r =
+                                t.getElementsByTagName(
+                                    "script",
+                                )[0]).parentNode.insertBefore(p, r);
+                        var u = e;
+                        for (
+                            void 0 !== a ? (u = e[a] = []) : (a = "posthog"),
+                                u.people = u.people || [],
+                                u.toString = function (t) {
+                                    var e = "posthog";
+                                    return (
+                                        "posthog" !== a && (e += "." + a),
+                                        t || (e += " (stub)"),
+                                        e
+                                    );
+                                },
+                                u.people.toString = function () {
+                                    return u.toString(1) + ".people (stub)";
+                                },
+                                o =
+                                    "init me ws ys ps bs capture je Di ks register register_once register_for_session unregister unregister_for_session Ps getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSurveysLoaded onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey canRenderSurveyAsync identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty Es $s createPersonProfile Is opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing Ss debug xs getPageViewId captureTraceFeedback captureTraceMetric".split(
+                                        " ",
+                                    ),
+                                n = 0;
+                            n < o.length;
+                            n++
+                        )
+                            g(u, o[n]);
+                        e._i.push([i, s, a]);
+                    }),
+                    (e.__SV = 1));
+            })(document, window.posthog || []);
+            posthog.init("phc_xAvL2Iq4tFmANRE7kzbKwaSqp1HJjN7x48s3vr0CMjs", {
+                api_host: "https://us.i.posthog.com",
+                person_profiles: "identified_only", // or 'always' to create profiles for anonymous users as well,
+                session_recording: {
+                    recordCrossOriginIframes: true,
+                    capturePerformance: false,
+                },
             });
-        });
-
-        // Hover effect on step numbers
-        document.querySelectorAll('.step-number').forEach(num => {
-            const step = num.parentElement;
-            step.addEventListener('mouseenter', () => {
-                num.style.transition = 'opacity 0.3s ease';
-                num.style.opacity = '0.15';
-            });
-            step.addEventListener('mouseleave', () => {
-                num.style.opacity = '0.05';
-            });
-        });
-    </script>
-</body></html>
+        </script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a1373837ad48477a',t:'MTc4Mjc2MDEwMw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
