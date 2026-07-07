@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Pricing — UTG Labs</title>
+  <meta name="description" content="Done-for-you customer support management for businesses. AI-powered replies on Instagram, Facebook, and WhatsApp."/>
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0a;
+      --surface: #111111;
+      --border: #1f1f1f;
+      --border-highlight: #2a2a2a;
+      --text: #f5f5f5;
+      --muted: #888;
+      --accent: #ffffff;
+      --accent-dim: rgba(255,255,255,0.08);
+      --green: #22c55e;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 40px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: rgba(10,10,10,0.9);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+    }
+
+    .nav-logo {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.3px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    .btn-nav {
+      background: var(--text);
+      color: var(--bg);
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    .btn-nav:hover { opacity: 0.85; color: var(--bg); }
+
+    /* HERO */
+    .hero {
+      text-align: center;
+      padding: 80px 24px 60px;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent-dim);
+      border: 1px solid var(--border-highlight);
+      border-radius: 100px;
+      padding: 5px 14px;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 24px;
+      letter-spacing: 0.3px;
+    }
+
+    .hero-badge .dot {
+      width: 6px;
+      height: 6px;
+      background: var(--green);
+      border-radius: 50%;
+    }
+
+    h1 {
+      font-size: clamp(32px, 5vw, 48px);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      margin-bottom: 16px;
+    }
+
+    .hero p {
+      font-size: 17px;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* PRICING GRID */
+    .pricing-section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px 100px;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      transition: border-color 0.2s;
+      position: relative;
+    }
+
+    .card:hover { border-color: var(--border-highlight); }
+
+    .card.featured {
+      border-color: rgba(255,255,255,0.15);
+      background: #141414;
+    }
+
+    .badge-featured {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--text);
+      color: var(--bg);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 100px;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+
+    .card-header {}
+
+    .plan-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 12px;
+    }
+
+    .price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+    }
+
+    .price-amount {
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: -1px;
+      line-height: 1;
+    }
+
+    .price-period {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .price-setup {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .price-setup span {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .card-divider {
+      height: 1px;
+      background: var(--border);
+    }
+
+    .features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .features li .check {
+      color: var(--green);
+      font-size: 14px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .btn {
+      display: block;
+      text-align: center;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--text);
+      color: var(--bg);
+    }
+
+    .btn-primary:hover { opacity: 0.88; }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border-highlight);
+    }
+
+    .btn-secondary:hover { border-color: rgba(255,255,255,0.3); }
+
+    /* COMPARISON NOTE */
+    .compare-note {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .compare-note a {
+      color: var(--text);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    /* FAQ */
+    .faq-section {
+      max-width: 680px;
+      margin: 0 auto 100px;
+      padding: 0 24px;
+    }
+
+    .faq-section h2 {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 32px;
+      text-align: center;
+    }
+
+    .faq-item {
+      border-top: 1px solid var(--border);
+      padding: 20px 0;
+    }
+
+    .faq-item:last-child { border-bottom: 1px solid var(--border); }
+
+    .faq-q {
+      font-size: 15px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .faq-a {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    footer p { font-size: 13px; color: var(--muted); }
+    footer a { color: var(--muted); text-decoration: none; font-size: 13px; }
+    footer a:hover { color: var(--text); }
+
+    @media (max-width: 640px) {
+      nav { padding: 16px 20px; }
+      .hero { padding: 60px 20px 48px; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      footer { padding: 24px 20px; flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="nav-logo">UTG Labs</a>
+    <div class="nav-links">
+      <a href="https://user.utglabs.com/hc/help" target="_blank">Help Center</a>
+      <a href="https://buy.stripe.com/eVqfZgbmtdfmfqNax7es004" class="btn-nav">Get Started</a>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      Done-for-you customer support
+    </div>
+    <h1>Simple, transparent pricing</h1>
+    <p>Every message answered in seconds. AI that drafts replies in any language. You stay focused on your business.</p>
+  </div>
+
+  <div class="pricing-section">
+    <div class="pricing-grid">
+
+      <!-- SELF SERVE -->
+      <div class="card">
+        <div class="card-header">
+          <div class="plan-name">Self-Serve</div>
+          <div class="price-row">
+            <span class="price-amount">$67</span>
+            <span class="price-period">/mo</span>
+          </div>
+          <div class="price-setup">No setup fee</div>
+        </div>
+        <div class="card-divider"></div>
+        <ul class="features">
+          <li><span class="check">✓</span> 1 channel (Instagram, Facebook, or WhatsApp)</li>
+          <li><span class="check">✓</span> AI drafts on every incoming message</li>
+          <li><span class="check">✓</span> Unified inbox dashboard</li>
+          <li><span class="check">✓</span> Help Center access</li>
+          <li><span class="check">✓</span> Self-setup — you connect your accounts</li>
+        </ul>
+        <a href="https://buy.stripe.com/eVqfZgbmtdfmfqNax7es004" class="btn btn-secondary" target="_blank">Get started</a>
+      </div>
+
+      <!-- STARTER -->
+      <div class="card featured">
+        <div class="badge-featured">MOST POPULAR</div>
+        <div class="card-header">
+          <div class="plan-name">Starter</div>
+          <div class="price-row">
+            <span class="price-amount">$500</span>
+            <span class="price-period">/mo</span>
+          </div>
+          <div class="price-setup">+ <span>$1,500</span> one-time setup</div>
+        </div>
+        <div class="card-divider"></div>
+        <ul class="features">
+          <li><span class="check">✓</span> 1 channel, done-for-you setup</li>
+          <li><span class="check">✓</span> AI trained in your brand voice</li>
+          <li><span class="check">✓</span> Ad lead tagging + auto follow-up</li>
+          <li><span class="check">✓</span> Multilingual AI replies</li>
+          <li><span class="check">✓</span> Live in 48 hours</li>
+          <li><span class="check">✓</span> Ongoing support</li>
+        </ul>
+        <a href="mailto:udo.donyekwere@gmail.com?subject=UTG Labs Starter Plan" class="btn btn-primary">Book a call</a>
+      </div>
+
+      <!-- GROWTH -->
+      <div class="card">
+        <div class="card-header">
+          <div class="plan-name">Growth</div>
+          <div class="price-row">
+            <span class="price-amount">$1,000</span>
+            <span class="price-period">/mo</span>
+          </div>
+          <div class="price-setup">+ <span>$2,500</span> one-time setup</div>
+        </div>
+        <div class="card-divider"></div>
+        <ul class="features">
+          <li><span class="check">✓</span> 1–2 channels, done-for-you</li>
+          <li><span class="check">✓</span> Everything in Starter</li>
+          <li><span class="check">✓</span> Team access for agents</li>
+          <li><span class="check">✓</span> Advanced lead organization</li>
+          <li><span class="check">✓</span> Priority setup</li>
+        </ul>
+        <a href="mailto:udo.donyekwere@gmail.com?subject=UTG Labs Growth Plan" class="btn btn-secondary">Book a call</a>
+      </div>
+
+      <!-- PRO -->
+      <div class="card">
+        <div class="card-header">
+          <div class="plan-name">Pro</div>
+          <div class="price-row">
+            <span class="price-amount">$1,500</span>
+            <span class="price-period">/mo</span>
+          </div>
+          <div class="price-setup">+ <span>$4,000</span> one-time setup</div>
+        </div>
+        <div class="card-divider"></div>
+        <ul class="features">
+          <li><span class="check">✓</span> 2–3 channels, done-for-you</li>
+          <li><span class="check">✓</span> Everything in Growth</li>
+          <li><span class="check">✓</span> Full AI customization</li>
+          <li><span class="check">✓</span> Custom automations</li>
+          <li><span class="check">✓</span> Dedicated support</li>
+        </ul>
+        <a href="mailto:udo.donyekwere@gmail.com?subject=UTG Labs Pro Plan" class="btn btn-secondary">Book a call</a>
+      </div>
+
+    </div>
+
+    <p class="compare-note">
+      High volume? 500+ messages/month or 3+ channels? <a href="mailto:udo.donyekwere@gmail.com?subject=UTG Labs Enterprise">Talk to us about Enterprise →</a>
+    </p>
+  </div>
+
+  <div class="faq-section">
+    <h2>Common questions</h2>
+
+    <div class="faq-item">
+      <div class="faq-q">How fast is setup?</div>
+      <div class="faq-a">Done-for-you plans are live within 48 hours of getting access to your accounts. Self-Serve you can set up yourself in under an hour using our Help Center.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Do I need to be technical?</div>
+      <div class="faq-a">No. On done-for-you plans, we handle everything — connecting accounts, building the AI, setting up automations. You just log in and see your conversations organized.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Is this a chatbot?</div>
+      <div class="faq-a">No. The AI drafts a reply the second a customer messages. A real human reviews it before sending. Customers always get a personal response — they never know AI helped draft it.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">What platforms do you support?</div>
+      <div class="faq-a">Instagram DMs, Facebook Messenger, and WhatsApp. Email support is available on Growth and above.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Can I cancel anytime?</div>
+      <div class="faq-a">Yes. Month-to-month on all plans. No long-term contracts.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">What if I want to reply myself sometimes?</div>
+      <div class="faq-a">You can take over any conversation at any time. Add a "manual" label to a conversation and the AI steps aside — you're always in control.</div>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2026 UTG Labs. All rights reserved.</p>
+    <div style="display:flex;gap:20px;">
+      <a href="/privacy.html">Privacy</a>
+      <a href="/terms.html">Terms</a>
+      <a href="https://user.utglabs.com/hc/help" target="_blank">Help Center</a>
+    </div>
+  </footer>
+
+</body>
+</html>
