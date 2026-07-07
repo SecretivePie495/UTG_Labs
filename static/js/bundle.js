@@ -3487,6 +3487,14 @@ var _jsxFileName = "/app/frontend/src/components/PricingSection.jsx";
 
 
 const TIERS = [{
+  name: "Self-Serve",
+  channels: "1 channel",
+  setup: "No setup fee",
+  monthly: "$67",
+  who: "Small businesses who want to self-setup and manage their own inbox.",
+  features: ["1 channel (IG, FB, or WhatsApp)", "AI drafts on every message", "Unified inbox dashboard", "Help Center access", "Self-setup — you connect your accounts"],
+  stripeUrl: "https://buy.stripe.com/eVqfZgbmtdfmfqNax7es004"
+}, {
   name: "Starter",
   channels: "1 channel",
   setup: "$1,500",
@@ -3502,7 +3510,7 @@ const TIERS = [{
   features: ["Up to 2 channels managed", "AI drafting + custom voice training", "Hot-lead routing to your phone", "Weekly performance reports", "Priority response SLA"],
   featured: true
 }, {
-  name: "Scale",
+  name: "Pro",
   channels: "2–3 channels",
   setup: "$4,000",
   monthly: "$1,500",
@@ -3510,10 +3518,10 @@ const TIERS = [{
   features: ["Up to 3 channels managed", "Dedicated reply pod", "Team assignment & escalation rules", "Advanced lead scoring", "Bi-weekly strategy calls"]
 }, {
   name: "Enterprise",
-  channels: "Custom",
-  setup: "Custom",
-  monthly: "Custom",
-  who: "Franchises, agencies, and companies > 10k DMs/mo.",
+  channels: "3+ channels",
+  setup: "$5,000",
+  monthly: "$2,000",
+  who: "Franchises, agencies, and companies with 500+ DMs/mo.",
   features: ["Unlimited channels & locations", "Custom integrations (CRM, ERP)", "Dedicated account manager", "White-label inbox option", "Custom SLAs"]
 }];
 function PricingSection({
@@ -3903,12 +3911,12 @@ function PriceCard({
       lineNumber: 134,
       columnNumber: 7
     }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxDEV)(react_router_dom__WEBPACK_IMPORTED_MODULE_0__.Link, {
-      to: "/apply",
+      to: tier.stripeUrl || "/apply",
       "data-testid": `pricing-cta-${tier.name.toLowerCase()}`,
       className: `mt-2 inline-flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium rounded-sm transition-colors
           ${tier.featured ? "bg-black text-white hover:bg-neutral-800" : "border border-[#27272a] text-white hover:border-white"}
         `,
-      children: [tier.name === "Enterprise" ? "Talk to us" : "Apply for a spot", /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxDEV)(lucide_react__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      children: [tier.name === "Self-Serve" ? "Get started" : tier.name === "Enterprise" ? "Talk to us" : "Apply for a spot", /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxDEV)(lucide_react__WEBPACK_IMPORTED_MODULE_1__["default"], {
         size: 14,
         strokeWidth: 2,
         "x-file-name": "PricingSection",
