@@ -38,6 +38,121 @@ var _jsxFileName = "/app/frontend/src/App.js";
 
 
 
+const FEATURE_SECTIONS = [
+  {
+    category: "Channels & Inbox",
+    desc: "Manage every customer conversation from one place.",
+    items: [
+      { title: "Instagram DMs", body: "Every DM from your Instagram account flows into your inbox instantly. No switching apps." },
+      { title: "Facebook Messenger", body: "Page messages and comments land directly in your dashboard alongside every other channel." },
+      { title: "WhatsApp", body: "Connect your WhatsApp Business number and manage chats alongside IG and Facebook." },
+      { title: "Unified inbox", body: "All channels, one screen. See every conversation across all platforms in a single feed." },
+    ]
+  },
+  {
+    category: "AI & Automation",
+    desc: "Work smarter on every conversation.",
+    items: [
+      { title: "AI reply drafting", body: "The moment a customer messages, an AI-drafted reply is waiting for you — trained on your business, your offers, your voice." },
+      { title: "Multilingual support", body: "Customer messages in Spanish, Arabic, Portuguese, Mandarin? AI translates the message and drafts the reply in their language automatically." },
+      { title: "Ad lead auto-tagging", body: "Leads from your ads are detected and tagged the instant they message. Hot leads get flagged so nothing slips through." },
+      { title: "Automation rules", body: "Set triggers and actions — auto-assign conversations, send follow-ups, escalate based on keywords or wait time." },
+    ]
+  },
+  {
+    category: "Team & Collaboration",
+    desc: "Built for teams that move fast.",
+    items: [
+      { title: "Agent assignment", body: "Assign any conversation to a specific agent. Everyone knows exactly what they own." },
+      { title: "Private notes", body: "Leave internal notes on any conversation — visible to your team only, never the customer." },
+      { title: "Labels & organization", body: "Tag conversations by type, priority, or status. Filter your inbox in seconds." },
+      { title: "Collision detection", body: "See when a teammate is already viewing a conversation — no double replies." },
+    ]
+  },
+  {
+    category: "Reporting & Analytics",
+    desc: "Measure what's actually working.",
+    items: [
+      { title: "Live overview", body: "See open conversations, agent activity, and response times — all live, all in one dashboard." },
+      { title: "Conversation reports", body: "Track volume, resolution time, and response time across any date range." },
+      { title: "Agent performance", body: "See how each agent is performing — messages handled, response speed, conversations resolved." },
+      { title: "CSAT scores", body: "Automatically collect customer satisfaction ratings after conversations close." },
+    ]
+  },
+  {
+    category: "Self-Service & Help Center",
+    desc: "Let customers help themselves before they message.",
+    items: [
+      { title: "Help Center", body: "Publish articles your customers can search before they reach out — reduces repeat questions." },
+      { title: "Multilingual articles", body: "Write your Help Center in multiple languages so every customer can find answers in their language." },
+      { title: "AI-powered search", body: "Captain AI surfaces the right article based on what the customer is typing — before they even ask." },
+      { title: "Custom domain", body: "Your Help Center lives on your domain. Fully white-labeled, fully yours." },
+    ]
+  },
+];
+
+function FeaturesPage() {
+  const jsx = react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV;
+  const Link = react_router_dom__WEBPACK_IMPORTED_MODULE_1__.Link;
+  return jsx("main", {
+    style: { background: "#0a0a0a", color: "#f5f5f5", minHeight: "100vh" },
+    children: [
+      jsx("section", {
+        style: { borderBottom: "1px solid #1f1f23", padding: "80px 0 64px", textAlign: "center", position: "relative", overflow: "hidden" },
+        children: jsx("div", {
+          style: { maxWidth: 720, margin: "0 auto", padding: "0 24px" },
+          children: [
+            jsx("p", { style: { fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: "#888", marginBottom: 20, fontFamily: "monospace" }, children: "Platform" }, void 0, false),
+            jsx("h1", { style: { fontSize: "clamp(36px,5vw,56px)", fontWeight: 800, lineHeight: 1.05, letterSpacing: "-2px", marginBottom: 20 }, children: "Everything your support team needs" }, void 0, false),
+            jsx("p", { style: { fontSize: 18, color: "#888", lineHeight: 1.6, maxWidth: 520, margin: "0 auto 36px" }, children: "One platform. Every channel. AI that works before you even open a conversation." }, void 0, false),
+            jsx(Link, { to: "/apply", style: { display: "inline-flex", alignItems: "center", gap: 8, background: "#fff", color: "#000", padding: "12px 28px", borderRadius: 4, fontWeight: 600, fontSize: 14, textDecoration: "none" }, children: "Apply for a spot" }, void 0, false),
+          ]
+        }, void 0, true)
+      }, void 0, false),
+      jsx("div", {
+        style: { maxWidth: 1200, margin: "0 auto", padding: "0 24px 100px" },
+        children: FEATURE_SECTIONS.map((section, si) =>
+          jsx("div", {
+            style: { borderBottom: "1px solid #1f1f23", padding: "72px 0" },
+            children: [
+              jsx("div", { style: { marginBottom: 48 }, children: [
+                jsx("p", { style: { fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: "#888", marginBottom: 8, fontFamily: "monospace" }, children: section.category }, void 0, false),
+                jsx("h2", { style: { fontSize: 28, fontWeight: 700, letterSpacing: "-0.5px", marginBottom: 8 }, children: section.desc }, void 0, false),
+              ]}, void 0, true),
+              jsx("div", {
+                style: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16 },
+                children: section.items.map((item, ii) =>
+                  jsx("div", {
+                    style: { background: "#111", border: "1px solid #1f1f23", borderRadius: 12, padding: 24 },
+                    children: [
+                      jsx("h3", { style: { fontSize: 15, fontWeight: 600, marginBottom: 8 }, children: item.title }, void 0, false),
+                      jsx("p", { style: { fontSize: 14, color: "#888", lineHeight: 1.6 }, children: item.body }, void 0, false),
+                    ]
+                  }, ii, true)
+                )
+              }, void 0, false)
+            ]
+          }, si, true)
+        )
+      }, void 0, false),
+      jsx("section", {
+        style: { borderTop: "1px solid #1f1f23", padding: "80px 24px", textAlign: "center" },
+        children: jsx("div", {
+          style: { maxWidth: 600, margin: "0 auto" },
+          children: [
+            jsx("h2", { style: { fontSize: 36, fontWeight: 800, letterSpacing: "-1px", marginBottom: 16 }, children: "Ready to see it live?" }, void 0, false),
+            jsx("p", { style: { fontSize: 16, color: "#888", marginBottom: 32, lineHeight: 1.6 }, children: "We set up your inbox, connect your channels, and have you live in 48 hours." }, void 0, false),
+            jsx("div", { style: { display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }, children: [
+              jsx(Link, { to: "/apply", style: { background: "#fff", color: "#000", padding: "12px 28px", borderRadius: 4, fontWeight: 600, fontSize: 14, textDecoration: "none" }, children: "Apply for a spot" }, void 0, false),
+              jsx(Link, { to: "/pricing", style: { border: "1px solid #2a2a2a", color: "#fff", padding: "12px 28px", borderRadius: 4, fontWeight: 600, fontSize: 14, textDecoration: "none" }, children: "See pricing" }, void 0, false),
+            ]}, void 0, true)
+          ]
+        }, void 0, true)
+      }, void 0, false),
+    ]
+  }, void 0, true);
+}
+
 function App() {
   return /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)("div", {
     className: "App",
@@ -64,6 +179,9 @@ function App() {
         columnNumber: 9
       }, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.Routes, {
         children: [/*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.Route, {
+          path: "/features",
+          element: /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)(FeaturesPage, {}, void 0, false, {}, this)
+        }, void 0, false, {}, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.Route, {
           path: "/",
           element: /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV)(_pages_Home__WEBPACK_IMPORTED_MODULE_5__["default"], {}, void 0, false, {
             fileName: _jsxFileName,
@@ -2062,10 +2180,10 @@ function Footer() {
               "x-id": "Footer_37_14",
               "x-dynamic": "false",
               children: /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxDEV)(react_router_dom__WEBPACK_IMPORTED_MODULE_0__.Link, {
-                "data-testid": "footer-link-home",
-                to: "/",
+                "data-testid": "footer-link-features",
+                to: "/features",
                 className: "text-neutral-300 hover:text-white",
-                children: "Home"
+                children: "Features"
               }, void 0, false, {
                 fileName: _jsxFileName,
                 lineNumber: 37,
@@ -2082,6 +2200,13 @@ function Footer() {
               "x-component": "li",
               "x-id": "Footer_38_14",
               "x-dynamic": "false",
+              children: /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxDEV)(react_router_dom__WEBPACK_IMPORTED_MODULE_0__.Link, {
+                "data-testid": "footer-link-home",
+                to: "/",
+                className: "text-neutral-300 hover:text-white",
+                children: "Home"
+              }, void 0, false, {}, this)
+            }, void 0, false, {}, this), /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxDEV)("li", {
               children: /*#__PURE__*/(0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxDEV)(react_router_dom__WEBPACK_IMPORTED_MODULE_0__.Link, {
                 "data-testid": "footer-link-how",
                 to: "/how-it-works",
@@ -3212,6 +3337,9 @@ var _jsxFileName = "/app/frontend/src/components/Nav.jsx",
 
 const LOGO_URL = "https://user.utglabs.com/brand-assets/logo_thumbnail.png";
 const links = [{
+  to: "/features",
+  label: "Features"
+}, {
   to: "/how-it-works",
   label: "How it works"
 }, {
