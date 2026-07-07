@@ -38,55 +38,68 @@ var _jsxFileName = "/app/frontend/src/App.js";
 
 
 
+var _fi = __webpack_require__("./node_modules/lucide-react/dist/esm/icons/inbox.js");
+var _fs = __webpack_require__("./node_modules/lucide-react/dist/esm/icons/sparkles.js");
+var _fl = __webpack_require__("./node_modules/lucide-react/dist/esm/icons/languages.js");
+var _ft = __webpack_require__("./node_modules/lucide-react/dist/esm/icons/tag.js");
+var _fu = __webpack_require__("./node_modules/lucide-react/dist/esm/icons/users.js");
+var _fb = __webpack_require__("./node_modules/lucide-react/dist/esm/icons/brain.js");
+var _fig = __webpack_require__("./node_modules/lucide-react/dist/esm/icons/instagram.js");
+var _ffb = __webpack_require__("./node_modules/lucide-react/dist/esm/icons/facebook.js");
+var _fmc = __webpack_require__("./node_modules/lucide-react/dist/esm/icons/message-circle.js");
+var _fti = __webpack_require__("./node_modules/lucide-react/dist/esm/icons/timer.js");
+var _fpl = __webpack_require__("./node_modules/lucide-react/dist/esm/icons/plug.js");
+var _fck = __webpack_require__("./node_modules/lucide-react/dist/esm/icons/check.js");
+
 const FEATURE_SECTIONS = [
   {
     category: "Channels & Inbox",
-    desc: "Manage every customer conversation from one place.",
+    desc: "All your customer messages. One place.",
     items: [
-      { title: "Instagram DMs", body: "Every DM from your Instagram account flows into your inbox instantly. No switching apps." },
-      { title: "Facebook Messenger", body: "Page messages and comments land directly in your dashboard alongside every other channel." },
-      { title: "WhatsApp", body: "Connect your WhatsApp Business number and manage chats alongside IG and Facebook." },
-      { title: "Unified inbox", body: "All channels, one screen. See every conversation across all platforms in a single feed." },
+      { icon: _fig["default"], title: "Instagram DMs", body: "Every DM from your Instagram business account flows in the moment it's sent. No app switching, no missed messages." },
+      { icon: _ffb["default"], title: "Facebook Messenger", body: "Page messages land directly in your dashboard. Facebook Messenger conversations sit right next to your Instagram DMs." },
+      { icon: _fmc["default"], title: "WhatsApp", body: "Connect your WhatsApp Business number. Customers text your number — it shows up alongside every other channel." },
+      { icon: _fi["default"], title: "Unified inbox", body: "500 messages across 3 channels? One screen. Every conversation organized, labeled, and tracked in real time." },
     ]
   },
   {
     category: "AI & Automation",
-    desc: "Work smarter on every conversation.",
+    desc: "AI that works the second a customer messages.",
     items: [
-      { title: "AI reply drafting", body: "The moment a customer messages, an AI-drafted reply is waiting for you — trained on your business, your offers, your voice." },
-      { title: "Multilingual support", body: "Customer messages in Spanish, Arabic, Portuguese, Mandarin? AI translates the message and drafts the reply in their language automatically." },
-      { title: "Ad lead auto-tagging", body: "Leads from your ads are detected and tagged the instant they message. Hot leads get flagged so nothing slips through." },
-      { title: "Automation rules", body: "Set triggers and actions — auto-assign conversations, send follow-ups, escalate based on keywords or wait time." },
+      { icon: _fs["default"], title: "AI reply drafting", body: "Before you even open the conversation, a full reply is already drafted — trained on your business, your offers, your voice. You review, you send." },
+      { icon: _fl["default"], title: "Any language, automatically", body: "Message comes in Spanish? Portuguese? Arabic? AI translates it for you and drafts the reply back in their language. Zero manual effort." },
+      { icon: _ft["default"], title: "Ad lead auto-tagging", body: "When someone messages after seeing your ad, they're instantly tagged as a hot lead. No lead falls through because someone forgot to follow up." },
+      { icon: _fb["default"], title: "Automation rules", body: "Set triggers and actions — assign by keyword, escalate after no reply, send a follow-up 24 hours after no response. It runs itself." },
     ]
   },
   {
     category: "Team & Collaboration",
     desc: "Built for teams that move fast.",
     items: [
-      { title: "Agent assignment", body: "Assign any conversation to a specific agent. Everyone knows exactly what they own." },
-      { title: "Private notes", body: "Leave internal notes on any conversation — visible to your team only, never the customer." },
-      { title: "Labels & organization", body: "Tag conversations by type, priority, or status. Filter your inbox in seconds." },
-      { title: "Collision detection", body: "See when a teammate is already viewing a conversation — no double replies." },
+      { icon: _fu["default"], title: "Agent assignment", body: "Assign any conversation to a specific team member. Everyone knows exactly what they own — no \"I thought you handled it.\"" },
+      { icon: _fck["default"], title: "Private notes", body: "Leave internal context on any conversation — your team sees it, the customer never does. Critical for handing off leads." },
+      { icon: _ft["default"], title: "Labels & filters", body: "Tag conversations by type, stage, or priority. Filter your inbox to see only what matters right now." },
+      { icon: _fpl["default"], title: "Collision detection", body: "See when a teammate is already in a conversation. No double replies. No confused customers." },
     ]
   },
   {
     category: "Reporting & Analytics",
-    desc: "Measure what's actually working.",
+    desc: "Know what's working and what's not.",
     items: [
-      { title: "Live overview", body: "See open conversations, agent activity, and response times — all live, all in one dashboard." },
-      { title: "Conversation reports", body: "Track volume, resolution time, and response time across any date range." },
-      { title: "Agent performance", body: "See how each agent is performing — messages handled, response speed, conversations resolved." },
-      { title: "CSAT scores", body: "Automatically collect customer satisfaction ratings after conversations close." },
+      { icon: _fi["default"], title: "Live overview", body: "See exactly how many conversations are open, who's handling what, and how fast your team is responding — all live." },
+      { icon: _fs["default"], title: "Conversation reports", body: "Volume, resolution time, response time. Filter by date range, agent, or channel. Know your numbers." },
+      { icon: _fu["default"], title: "Agent performance", body: "How many conversations did each agent handle this week? What's their average response time? All visible in one report." },
+      { icon: _fck["default"], title: "CSAT scores", body: "After a conversation closes, customers get a quick satisfaction prompt. Track it over time to spot patterns." },
     ]
   },
   {
     category: "Self-Service & Help Center",
-    desc: "Let customers help themselves before they message.",
+    desc: "Answer questions before they're asked.",
     items: [
-      { title: "Help Center", body: "Publish articles your customers can search before they reach out — reduces repeat questions." },
-      { title: "Multilingual articles", body: "Write your Help Center in multiple languages so every customer can find answers in their language." },
-      { title: "AI-powered search", body: "Captain AI surfaces the right article based on what the customer is typing — before they even ask." },
-      { title: "Custom domain", body: "Your Help Center lives on your domain. Fully white-labeled, fully yours." },
+      { icon: _fb["default"], title: "Help Center", body: "Publish articles your customers can find on their own. Fewer repeat questions. Less inbox volume. Same happy customers." },
+      { icon: _fl["default"], title: "Multilingual articles", body: "Write your Help Center in English and Spanish (or any language). Every customer finds answers in their language." },
+      { icon: _fs["default"], title: "Captain AI search", body: "Captain AI scans your Help Center and drafts answers based on your own articles. It reads your content so you don't have to repeat yourself." },
+      { icon: _fpl["default"], title: "Custom domain", body: "Your Help Center lives on your domain — user.utglabs.com/hc/help — not ours. Fully white-labeled, fully yours." },
     ]
   },
 ];
@@ -94,39 +107,66 @@ const FEATURE_SECTIONS = [
 function FeaturesPage() {
   const jsx = react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxDEV;
   const Link = react_router_dom__WEBPACK_IMPORTED_MODULE_1__.Link;
+  const iconStyle = { width: 20, height: 20, strokeWidth: 1.5, color: "#888", flexShrink: 0 };
   return jsx("main", {
     style: { background: "#0a0a0a", color: "#f5f5f5", minHeight: "100vh" },
     children: [
+
       jsx("section", {
-        style: { borderBottom: "1px solid #1f1f23", padding: "80px 0 64px", textAlign: "center", position: "relative", overflow: "hidden" },
+        style: { borderBottom: "1px solid #1f1f23", padding: "80px 0 64px", textAlign: "center" },
         children: jsx("div", {
           style: { maxWidth: 720, margin: "0 auto", padding: "0 24px" },
           children: [
-            jsx("p", { style: { fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: "#888", marginBottom: 20, fontFamily: "monospace" }, children: "Platform" }, void 0, false),
+            jsx("p", { style: { fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: "#888", marginBottom: 20, fontFamily: "monospace" } , children: "Platform features" }, void 0, false),
             jsx("h1", { style: { fontSize: "clamp(36px,5vw,56px)", fontWeight: 800, lineHeight: 1.05, letterSpacing: "-2px", marginBottom: 20 }, children: "Everything your support team needs" }, void 0, false),
             jsx("p", { style: { fontSize: 18, color: "#888", lineHeight: 1.6, maxWidth: 520, margin: "0 auto 36px" }, children: "One platform. Every channel. AI that works before you even open a conversation." }, void 0, false),
             jsx(Link, { to: "/apply", style: { display: "inline-flex", alignItems: "center", gap: 8, background: "#fff", color: "#000", padding: "12px 28px", borderRadius: 4, fontWeight: 600, fontSize: 14, textDecoration: "none" }, children: "Apply for a spot" }, void 0, false),
           ]
         }, void 0, true)
       }, void 0, false),
+
       jsx("div", {
-        style: { maxWidth: 1200, margin: "0 auto", padding: "0 24px 100px" },
+        style: { borderBottom: "1px solid #1f1f23", background: "#0d0d0d", padding: "40px 0" },
+        children: jsx("div", {
+          style: { maxWidth: 1200, margin: "0 auto", padding: "0 24px", display: "flex", flexWrap: "wrap", gap: "32px 64px", justifyContent: "center", textAlign: "center" },
+          children: [
+            { label: "Channels supported", value: "3+" },
+            { label: "Setup time", value: "48 hrs" },
+            { label: "Languages", value: "Any" },
+            { label: "Messages per month", value: "500+" },
+          ].map((stat, i) =>
+            jsx("div", { children: [
+              jsx("div", { style: { fontSize: 32, fontWeight: 800, letterSpacing: "-1px" }, children: stat.value }, void 0, false),
+              jsx("div", { style: { fontSize: 13, color: "#888", marginTop: 4 }, children: stat.label }, void 0, false),
+            ]}, i, true)
+          )
+        }, void 0, true)
+      }, void 0, false),
+
+      jsx("div", {
+        style: { maxWidth: 1200, margin: "0 auto", padding: "0 24px 80px" },
         children: FEATURE_SECTIONS.map((section, si) =>
           jsx("div", {
             style: { borderBottom: "1px solid #1f1f23", padding: "72px 0" },
             children: [
               jsx("div", { style: { marginBottom: 48 }, children: [
                 jsx("p", { style: { fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: "#888", marginBottom: 8, fontFamily: "monospace" }, children: section.category }, void 0, false),
-                jsx("h2", { style: { fontSize: 28, fontWeight: 700, letterSpacing: "-0.5px", marginBottom: 8 }, children: section.desc }, void 0, false),
+                jsx("h2", { style: { fontSize: 26, fontWeight: 700, letterSpacing: "-0.5px" }, children: section.desc }, void 0, false),
               ]}, void 0, true),
               jsx("div", {
                 style: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16 },
                 children: section.items.map((item, ii) =>
                   jsx("div", {
-                    style: { background: "#111", border: "1px solid #1f1f23", borderRadius: 12, padding: 24 },
+                    style: { background: "#111", border: "1px solid #1f1f23", borderRadius: 12, padding: 24, display: "flex", flexDirection: "column", gap: 14 },
                     children: [
-                      jsx("h3", { style: { fontSize: 15, fontWeight: 600, marginBottom: 8 }, children: item.title }, void 0, false),
-                      jsx("p", { style: { fontSize: 14, color: "#888", lineHeight: 1.6 }, children: item.body }, void 0, false),
+                      jsx("div", {
+                        style: { width: 36, height: 36, background: "#1a1a1a", borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center" },
+                        children: jsx(item.icon, iconStyle, void 0, false)
+                      }, void 0, false),
+                      jsx("div", { children: [
+                        jsx("h3", { style: { fontSize: 15, fontWeight: 600, marginBottom: 6 }, children: item.title }, void 0, false),
+                        jsx("p", { style: { fontSize: 14, color: "#888", lineHeight: 1.6 }, children: item.body }, void 0, false),
+                      ]}, void 0, true),
                     ]
                   }, ii, true)
                 )
@@ -135,13 +175,29 @@ function FeaturesPage() {
           }, si, true)
         )
       }, void 0, false),
+
       jsx("section", {
-        style: { borderTop: "1px solid #1f1f23", padding: "80px 24px", textAlign: "center" },
+        style: { borderTop: "1px solid #1f1f23", borderBottom: "1px solid #1f1f23", padding: "72px 24px", background: "#0d0d0d" },
+        children: jsx("div", {
+          style: { maxWidth: 720, margin: "0 auto" },
+          children: [
+            jsx("p", { style: { fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: "#888", marginBottom: 24, fontFamily: "monospace" }, children: "Real result" }, void 0, false),
+            jsx("blockquote", {
+              style: { fontSize: "clamp(18px,2.5vw,24px)", lineHeight: 1.6, color: "#ccc", fontStyle: "normal", marginBottom: 32 },
+              children: "\"A restaurant owner came to us last month. 500 messages a week across Instagram, WhatsApp, and Facebook. 2 staff members trying to manage all of it. Leads falling through every single day. We set up their entire system in a week — one inbox, AI drafts on everything, nothing missed. They closed 3 catering contracts the following month.\""
+            }, void 0, false),
+            jsx("p", { style: { fontSize: 13, color: "#555" }, children: "— UTG Labs client, food & beverage" }, void 0, false),
+          ]
+        }, void 0, true)
+      }, void 0, false),
+
+      jsx("section", {
+        style: { padding: "80px 24px", textAlign: "center" },
         children: jsx("div", {
           style: { maxWidth: 600, margin: "0 auto" },
           children: [
             jsx("h2", { style: { fontSize: 36, fontWeight: 800, letterSpacing: "-1px", marginBottom: 16 }, children: "Ready to see it live?" }, void 0, false),
-            jsx("p", { style: { fontSize: 16, color: "#888", marginBottom: 32, lineHeight: 1.6 }, children: "We set up your inbox, connect your channels, and have you live in 48 hours." }, void 0, false),
+            jsx("p", { style: { fontSize: 16, color: "#888", marginBottom: 32, lineHeight: 1.6 }, children: "We connect your channels, build the AI in your voice, and have you live in 48 hours." }, void 0, false),
             jsx("div", { style: { display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }, children: [
               jsx(Link, { to: "/apply", style: { background: "#fff", color: "#000", padding: "12px 28px", borderRadius: 4, fontWeight: 600, fontSize: 14, textDecoration: "none" }, children: "Apply for a spot" }, void 0, false),
               jsx(Link, { to: "/pricing", style: { border: "1px solid #2a2a2a", color: "#fff", padding: "12px 28px", borderRadius: 4, fontWeight: 600, fontSize: 14, textDecoration: "none" }, children: "See pricing" }, void 0, false),
@@ -149,6 +205,7 @@ function FeaturesPage() {
           ]
         }, void 0, true)
       }, void 0, false),
+
     ]
   }, void 0, true);
 }
