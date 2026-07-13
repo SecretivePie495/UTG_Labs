@@ -631,6 +631,8 @@
     window.addEventListener('message', function(e) {
       if (e.data && e.data.event === 'appContext') {
         const name = e.data?.data?.conversation?.meta?.sender?.name;
+        document.getElementById('emptyState').querySelector('p').textContent =
+          'Received name: "' + name + '"';
         if (name && contacts[name]) {
           renderContact(name);
         }
