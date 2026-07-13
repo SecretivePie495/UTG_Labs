@@ -631,12 +631,15 @@
     window.addEventListener('message', function(e) {
       if (e.data && e.data.event === 'appContext') {
         const name = e.data?.data?.conversation?.meta?.sender?.name;
-        document.getElementById('emptyState').querySelector('p').textContent =
-          'Received name: "' + name + '"';
         if (name && contacts[name]) {
           renderContact(name);
         }
       }
+    });
+
+    // Signal to Chatwoot that the app is ready — triggers it to resend appContext
+    window.addEventListener('load', function() {
+      window.parent.postMessage('chatwoot-dashboard-app:ready', '*');
     });
 
     // For testing outside Chatwoot — show first contact
