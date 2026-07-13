@@ -629,22 +629,11 @@
 
     // Listen for Chatwoot postMessage events
     window.addEventListener('message', function(e) {
-      // Debug — show raw event in empty state
-      if (e.data) {
-        document.getElementById('emptyState').querySelector('p').textContent =
-          'Event: ' + JSON.stringify(e.data).slice(0, 200);
-      }
-
-      const eventName = e.data?.event;
-      const ctx = e.data?.data || e.data;
-
-      // Try multiple formats Chatwoot might use
-      const name = ctx?.contact?.name
-        || ctx?.currentContact?.name
-        || ctx?.conversation?.meta?.sender?.name;
-
-      if (name && contacts[name]) {
-        renderContact(name);
+      if (e.data && e.data.event === 'appContext') {
+        const name = e.data?.data?.conversation?.meta?.sender?.name;
+        if (name && contacts[name]) {
+          renderContact(name);
+        }
       }
     });
 
