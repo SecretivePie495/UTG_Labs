@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>UTG Labs Demo Guide</title>
+  <title>UTG Labs — Contact Intel</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -12,342 +12,638 @@
       color: #f5f5f5;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       height: 100vh;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
+      overflow-y: auto;
+      font-size: 13px;
     }
 
-    /* Header */
     .header {
-      padding: 14px 16px;
-      border-bottom: 1px solid #1f1f1f;
+      padding: 12px 14px;
+      border-bottom: 1px solid #1a1a1a;
       background: #0a0a0a;
       display: flex;
       align-items: center;
-      gap: 10px;
-      flex-shrink: 0;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
+    .header-left { display: flex; align-items: center; gap: 8px; }
     .badge {
       font-size: 9px;
       font-weight: 700;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.1em;
       background: #fff;
       color: #000;
-      padding: 3px 7px;
+      padding: 2px 6px;
       border-radius: 4px;
     }
-    .header-title {
-      font-size: 12px;
-      font-weight: 600;
-      color: #888;
-    }
+    .header-title { font-size: 12px; font-weight: 600; color: #666; }
 
-    /* Video section */
-    .video-wrap {
-      width: 100%;
-      background: #111;
-      border-bottom: 1px solid #1f1f1f;
-      flex-shrink: 0;
-      position: relative;
-    }
-    .video-wrap iframe {
-      width: 100%;
-      height: 180px;
-      display: block;
-    }
-    .video-placeholder {
-      height: 180px;
+    /* Empty state */
+    .empty {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      height: calc(100vh - 48px);
+      gap: 10px;
+      color: #333;
+      text-align: center;
+      padding: 24px;
     }
-    .play-circle {
+    .empty-icon { font-size: 32px; }
+    .empty p { font-size: 13px; color: #444; line-height: 1.6; }
+
+    /* Contact card */
+    .contact-card {
+      display: none;
+      flex-direction: column;
+      gap: 0;
+    }
+    .contact-card.visible { display: flex; }
+
+    /* Avatar row */
+    .avatar-row {
+      padding: 16px 14px 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid #111;
+    }
+    .avatar {
       width: 44px;
       height: 44px;
-      background: #1f1f1f;
       border-radius: 50%;
+      background: #1f1f1f;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 16px;
-      color: #666;
-    }
-    .video-placeholder p { font-size: 13px; color: #666; }
-    .video-placeholder span { font-size: 11px; color: #333; }
-
-    /* Progress */
-    .progress-track {
-      height: 2px;
-      background: #1a1a1a;
-      flex-shrink: 0;
-    }
-    .progress-bar {
-      height: 100%;
-      background: #fff;
-      transition: width 0.35s ease;
-    }
-
-    /* Steps content */
-    .steps-wrap {
-      flex: 1;
-      overflow-y: auto;
-      padding: 18px 16px 0;
-    }
-    .step-label {
-      font-size: 10px;
-      color: #444;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 6px;
-    }
-    .step-title {
-      font-size: 15px;
+      font-size: 18px;
       font-weight: 700;
-      color: #f5f5f5;
-      margin-bottom: 8px;
-      line-height: 1.3;
-    }
-    .step-body {
-      font-size: 13px;
-      color: #888;
-      line-height: 1.65;
-    }
-
-    /* Dots */
-    .dots {
-      display: flex;
-      gap: 6px;
-      justify-content: center;
-      padding: 14px 0 10px;
+      color: #fff;
       flex-shrink: 0;
     }
-    .dot {
+    .avatar-info { flex: 1; min-width: 0; }
+    .contact-name { font-size: 14px; font-weight: 700; color: #f5f5f5; }
+    .contact-biz { font-size: 12px; color: #666; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    /* Score badge */
+    .score-row {
+      padding: 10px 14px;
+      border-bottom: 1px solid #111;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .score-label { font-size: 11px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; }
+    .score-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .score-bar-track {
+      width: 80px;
+      height: 4px;
+      background: #1f1f1f;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .score-bar-fill {
+      height: 100%;
+      border-radius: 2px;
+      transition: width 0.5s ease;
+    }
+    .score-num { font-size: 12px; font-weight: 700; }
+    .score-hot { color: #ff3b30; }
+    .score-warm { color: #ff9500; }
+    .score-cool { color: #34c759; }
+
+    /* Section */
+    .section {
+      border-bottom: 1px solid #111;
+    }
+    .section-title {
+      padding: 10px 14px 6px;
+      font-size: 10px;
+      font-weight: 700;
+      color: #444;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* Info rows */
+    .info-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 6px 14px;
+    }
+    .info-icon { font-size: 12px; color: #444; width: 14px; flex-shrink: 0; margin-top: 1px; }
+    .info-content { flex: 1; min-width: 0; }
+    .info-label { font-size: 10px; color: #444; margin-bottom: 1px; }
+    .info-value { font-size: 12px; color: #ccc; line-height: 1.4; }
+
+    /* Tags */
+    .tags-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 6px 14px 12px;
+    }
+    .tag {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid #222;
+      color: #888;
+    }
+    .tag.hot { border-color: #ff3b3033; color: #ff3b30; background: #ff3b3011; }
+    .tag.orange { border-color: #ff950033; color: #ff9500; background: #ff950011; }
+    .tag.green { border-color: #34c75933; color: #34c759; background: #34c75911; }
+    .tag.blue { border-color: #007aff33; color: #007aff; background: #007aff11; }
+
+    /* AI summary */
+    .ai-box {
+      margin: 10px 14px 12px;
+      background: #111;
+      border: 1px solid #1f1f1f;
+      border-radius: 10px;
+      padding: 12px;
+    }
+    .ai-box-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+    .ai-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #007aff;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+    .ai-label { font-size: 10px; font-weight: 700; color: #007aff; text-transform: uppercase; letter-spacing: 0.08em; }
+    .ai-text { font-size: 12px; color: #888; line-height: 1.65; }
+
+    /* History */
+    .history-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 7px 14px;
+    }
+    .history-dot {
       width: 6px;
       height: 6px;
       border-radius: 50%;
       background: #2a2a2a;
-      border: none;
-      cursor: pointer;
-      padding: 0;
-      transition: background 0.2s;
-    }
-    .dot.active { background: #fff; }
-
-    /* Nav */
-    .nav {
-      display: flex;
-      gap: 8px;
-      padding: 10px 16px 16px;
       flex-shrink: 0;
+      margin-top: 4px;
     }
-    .btn-back {
-      flex: 1;
-      background: #1a1a1a;
-      border: 1px solid #2a2a2a;
-      color: #666;
+    .history-dot.active { background: #007aff; }
+    .history-text { font-size: 12px; color: #555; line-height: 1.4; }
+    .history-text strong { color: #888; font-weight: 600; }
+    .history-time { font-size: 10px; color: #333; margin-top: 2px; }
+
+    /* CTA */
+    .cta-row {
+      padding: 12px 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .cta-btn {
+      width: 100%;
       padding: 9px;
       border-radius: 8px;
       font-size: 12px;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.15s;
-    }
-    .btn-back:disabled { opacity: 0.25; cursor: default; }
-    .btn-back:not(:disabled):hover { background: #222; color: #fff; }
-    .btn-next {
-      flex: 2;
-      background: #fff;
       border: none;
-      color: #000;
-      padding: 9px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
       transition: opacity 0.15s;
     }
-    .btn-next:hover { opacity: 0.88; }
+    .cta-primary { background: #fff; color: #000; }
+    .cta-secondary { background: #1a1a1a; color: #888; border: 1px solid #222; }
+    .cta-btn:hover { opacity: 0.85; }
 
-    /* Divider */
-    .divider {
-      height: 1px;
-      background: #1a1a1a;
-      margin: 0 16px;
-      flex-shrink: 0;
-    }
-
-    /* All steps list (collapsed) */
-    .all-steps {
-      flex-shrink: 0;
-      padding: 10px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .mini-step {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 7px 10px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.15s;
-    }
-    .mini-step:hover { background: #141414; }
-    .mini-step.active { background: #141414; }
-    .mini-step-num {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: #1f1f1f;
+    .powered {
+      text-align: center;
+      padding: 10px;
       font-size: 10px;
-      font-weight: 700;
-      color: #555;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      transition: all 0.15s;
+      color: #2a2a2a;
+      border-top: 1px solid #111;
     }
-    .mini-step.active .mini-step-num,
-    .mini-step.done .mini-step-num {
-      background: #fff;
-      color: #000;
-    }
-    .mini-step-label {
-      font-size: 12px;
-      color: #555;
-      transition: color 0.15s;
-    }
-    .mini-step.active .mini-step-label { color: #f5f5f5; }
-    .mini-step.done .mini-step-label { color: #666; text-decoration: line-through; }
   </style>
 </head>
 <body>
 
   <div class="header">
-    <span class="badge">LIVE DEMO</span>
-    <span class="header-title">UTG Labs Walkthrough</span>
-  </div>
-
-  <div class="video-wrap">
-    <!-- Replace the placeholder div below with your Loom iframe when ready:
-    <iframe src="https://www.loom.com/embed/YOUR_VIDEO_ID" frameborder="0" allowfullscreen></iframe>
-    -->
-    <div class="video-placeholder">
-      <div class="play-circle">▶</div>
-      <p>Video walkthrough</p>
-      <span>Add your Loom URL to activate</span>
+    <div class="header-left">
+      <span class="badge">AI</span>
+      <span class="header-title">Contact Intel</span>
     </div>
   </div>
 
-  <div class="progress-track">
-    <div class="progress-bar" id="progressBar" style="width: 20%"></div>
+  <!-- Empty state -->
+  <div class="empty" id="emptyState">
+    <div class="empty-icon">👤</div>
+    <p>Open a conversation to see contact intelligence and lead scoring.</p>
   </div>
 
-  <div class="steps-wrap">
-    <div class="step-label" id="stepLabel">Step 1 of 5</div>
-    <div class="step-title" id="stepTitle"></div>
-    <div class="step-body" id="stepBody"></div>
+  <!-- Contact card -->
+  <div class="contact-card" id="contactCard">
+
+    <!-- Avatar -->
+    <div class="avatar-row">
+      <div class="avatar" id="contactAvatar"></div>
+      <div class="avatar-info">
+        <div class="contact-name" id="contactName"></div>
+        <div class="contact-biz" id="contactBiz"></div>
+      </div>
+    </div>
+
+    <!-- Lead score -->
+    <div class="score-row">
+      <span class="score-label">Lead Score</span>
+      <div class="score-badge">
+        <div class="score-bar-track">
+          <div class="score-bar-fill" id="scoreBar"></div>
+        </div>
+        <span class="score-num" id="scoreNum"></span>
+      </div>
+    </div>
+
+    <!-- Contact info -->
+    <div class="section">
+      <div class="section-title">Contact</div>
+      <div class="info-row">
+        <div class="info-icon">📧</div>
+        <div class="info-content">
+          <div class="info-label">Email</div>
+          <div class="info-value" id="contactEmail"></div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">📱</div>
+        <div class="info-content">
+          <div class="info-label">Phone</div>
+          <div class="info-value" id="contactPhone"></div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">📍</div>
+        <div class="info-content">
+          <div class="info-label">Location</div>
+          <div class="info-value" id="contactLocation"></div>
+        </div>
+      </div>
+      <div class="info-row" style="padding-bottom:12px">
+        <div class="info-icon">📲</div>
+        <div class="info-content">
+          <div class="info-label">Channel</div>
+          <div class="info-value" id="contactChannel"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Business info -->
+    <div class="section">
+      <div class="section-title">Business</div>
+      <div class="info-row">
+        <div class="info-icon">🏢</div>
+        <div class="info-content">
+          <div class="info-label">Industry</div>
+          <div class="info-value" id="bizIndustry"></div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">👥</div>
+        <div class="info-content">
+          <div class="info-label">Business size</div>
+          <div class="info-value" id="bizSize"></div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">📈</div>
+        <div class="info-content">
+          <div class="info-label">Est. monthly revenue</div>
+          <div class="info-value" id="bizRevenue"></div>
+        </div>
+      </div>
+      <div class="info-row" style="padding-bottom:12px">
+        <div class="info-icon">📣</div>
+        <div class="info-content">
+          <div class="info-label">Social presence</div>
+          <div class="info-value" id="bizSocial"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tags -->
+    <div class="section">
+      <div class="section-title">Tags</div>
+      <div class="tags-row" id="contactTags"></div>
+    </div>
+
+    <!-- AI Summary -->
+    <div class="section" style="padding-bottom:4px">
+      <div class="section-title">AI Summary</div>
+      <div class="ai-box">
+        <div class="ai-box-header">
+          <div class="ai-dot"></div>
+          <span class="ai-label">UTG Labs AI</span>
+        </div>
+        <div class="ai-text" id="aiSummary"></div>
+      </div>
+    </div>
+
+    <!-- Conversation history -->
+    <div class="section">
+      <div class="section-title">History</div>
+      <div id="historyItems" style="padding-bottom:8px"></div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-row">
+      <button class="cta-btn cta-primary" id="ctaMain"></button>
+      <button class="cta-btn cta-secondary">Add note</button>
+    </div>
+
+    <div class="powered">Powered by UTG Labs</div>
   </div>
-
-  <div class="dots" id="dots"></div>
-
-  <div class="nav">
-    <button class="btn-back" id="btnBack" onclick="prev()">← Back</button>
-    <button class="btn-next" id="btnNext" onclick="next()">Next →</button>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="all-steps" id="allSteps"></div>
 
   <script>
-    const steps = [
-      {
-        title: 'Your inboxes on the left',
-        body: 'The left sidebar shows all your channels — Instagram, WhatsApp, Facebook, and Email — in one place. Click any inbox to see its conversations.',
+    const contacts = {
+      "Maria Santos": {
+        biz: "Santos Taqueria",
+        email: "maria@santostaqueria.com",
+        phone: "+1 (214) 555-0101",
+        location: "Dallas, TX",
+        channel: "Instagram DM",
+        industry: "Restaurant & Food Service",
+        size: "Small business, 8–12 staff",
+        revenue: "$45,000 – $70,000/mo",
+        social: "IG: 3,800 followers · Runs paid ads",
+        score: 92,
+        tags: [
+          { label: "hot-lead", type: "hot" },
+          { label: "catering", type: "orange" },
+          { label: "high-value", type: "green" },
+        ],
+        ai: "Maria is a strong hot lead. She's inquiring about corporate catering for 200 people — this is a high-ticket opportunity likely worth $2,800–$4,500. Her restaurant runs paid ads and has an active Instagram. Respond within the hour to avoid losing this to a competitor.",
+        history: [
+          { text: "Sent catering inquiry for 200-person corporate event", time: "Just now", active: true },
+          { text: "First time contacting this business", time: "No previous conversations", active: false },
+        ],
+        cta: "Send catering quote",
       },
-      {
-        title: 'Open a conversation',
-        body: 'Click any conversation from the list. Each one is a real customer message from a different channel and business type.',
+      "James Okafor": {
+        biz: "Oak Meadow Spa",
+        email: "james@oakmeadowspa.com",
+        phone: "+1 (214) 555-0102",
+        location: "Frisco, TX",
+        channel: "Facebook Messenger",
+        industry: "Med Spa & Aesthetics",
+        size: "Solo operator, 3–5 staff",
+        revenue: "$30,000 – $55,000/mo",
+        social: "IG: 2,100 followers · FB: 890 likes · Runs ads",
+        score: 85,
+        tags: [
+          { label: "hot-lead", type: "hot" },
+          { label: "booking-intent", type: "orange" },
+          { label: "new-from-ad", type: "blue" },
+        ],
+        ai: "James is asking about lip filler pricing and same-week availability — high booking intent. Med spa clients who ask about pricing and availability in the same message convert at 60%+ when you reply fast. Offer him a specific time slot immediately.",
+        history: [
+          { text: "Asked about lip filler pricing and availability this week", time: "Just now", active: true },
+          { text: "No previous conversations", time: "First contact", active: false },
+        ],
+        cta: "Book appointment",
       },
-      {
-        title: 'The AI draft is waiting',
-        body: 'See the blue private note at the bottom of the conversation? That\'s the AI reply — already written before anyone touched it. You review it, edit if needed, then send.',
+      "Priya Mehta": {
+        biz: "Lumen Skincare",
+        email: "priya@lumenskincare.com",
+        phone: "+1 (214) 555-0103",
+        location: "Plano, TX",
+        channel: "Instagram DM",
+        industry: "Beauty & Skincare",
+        size: "E-commerce, 2–4 staff",
+        revenue: "$15,000 – $30,000/mo",
+        social: "IG: 6,400 followers · Active content creator",
+        score: 68,
+        tags: [
+          { label: "returning", type: "green" },
+          { label: "follow-up", type: "blue" },
+          { label: "loyal-customer", type: "green" },
+        ],
+        ai: "Priya is a returning customer checking on a restock — she's been waiting 2 weeks which shows strong brand loyalty. This is an easy conversion: confirm the restock, offer to reserve her unit, and upsell a complementary product while you have her attention.",
+        history: [
+          { text: "Asking if Vitamin C serum is back in stock", time: "Just now", active: true },
+          { text: "Previous purchase: Hyaluronic serum bundle", time: "3 weeks ago", active: false },
+          { text: "First purchase via Instagram DM", time: "2 months ago", active: false },
+        ],
+        cta: "Reserve product for her",
       },
-      {
-        title: 'Labels tell you what\'s hot',
-        body: 'Look for the labels on each conversation — hot-lead, urgent, catering, new-from-ad. Leads from ads get tagged automatically so the most important ones rise to the top.',
+      "Derek Williams": {
+        biz: "DW Real Estate Group",
+        email: "derek@dwrealestate.com",
+        phone: "+1 (214) 555-0104",
+        location: "McKinney, TX",
+        channel: "Email",
+        industry: "Real Estate",
+        size: "Independent agent",
+        revenue: "$20,000 – $50,000/mo",
+        social: "LinkedIn: 1,200 connections · Active on Zillow",
+        score: 78,
+        tags: [
+          { label: "new-from-ad", type: "blue" },
+          { label: "hot-lead", type: "hot" },
+          { label: "showing-request", type: "orange" },
+        ],
+        ai: "Derek came in from an ad and is asking about a specific property with a showing request this weekend — high intent buyer. Respond immediately with available times. Buyers who request showings within 24 hours of first contact have a 3x higher close rate.",
+        history: [
+          { text: "Requested showing for 1847 Maple Street this weekend", time: "Just now", active: true },
+          { text: "Clicked ad for Maple Street listing", time: "2 hours ago", active: false },
+        ],
+        cta: "Schedule showing",
       },
-      {
-        title: 'Send a reply',
-        body: 'Type in the reply box at the bottom and hit send. Or copy the AI draft, edit it to match your voice, and send it as your own. The customer never sees the private draft note.',
+      "Ashley Park": {
+        biz: "A. Park Boutique",
+        email: "ashley@aparkboutique.com",
+        phone: "+1 (214) 555-0105",
+        location: "Allen, TX",
+        channel: "Instagram DM",
+        industry: "Fashion & Retail",
+        size: "Small boutique, 2–3 staff",
+        revenue: "$12,000 – $25,000/mo",
+        social: "IG: 8,900 followers · High engagement · Runs ads",
+        score: 72,
+        tags: [
+          { label: "new-from-ad", type: "blue" },
+          { label: "product-inquiry", type: "orange" },
+        ],
+        ai: "Ashley saw the red wrap dress on Instagram and is looking for a specific size — she's already sold on the product. This is a low-friction conversion: confirm stock, offer shipping or in-store pickup, and mention any current promotions to push her to purchase now.",
+        history: [
+          { text: "Asking about red wrap dress in size medium", time: "Just now", active: true },
+          { text: "No previous conversations", time: "First contact", active: false },
+        ],
+        cta: "Confirm stock & close sale",
       },
-    ];
+      "Carlos Rivera": {
+        biz: "Riviera Events & Venue",
+        email: "carlos@rivieraevents.com",
+        phone: "+1 (214) 555-0106",
+        location: "Irving, TX",
+        channel: "WhatsApp",
+        industry: "Events & Hospitality",
+        size: "Mid-size operation, 10–20 staff",
+        revenue: "$60,000 – $120,000/mo",
+        social: "IG: 5,200 followers · FB: 2,100 likes · Google: 4.8★",
+        score: 94,
+        tags: [
+          { label: "hot-lead", type: "hot" },
+          { label: "catering", type: "orange" },
+          { label: "high-value", type: "green" },
+          { label: "whatsapp", type: "blue" },
+        ],
+        ai: "Carlos is your highest value lead right now. A quinceañera for 150 guests in October is worth $4,500–$8,000+ depending on package. He's asking about both full planning and venue — offer the all-inclusive package first. October dates are filling up — create urgency by mentioning limited weekend availability.",
+        history: [
+          { text: "Inquired about quinceañera for 150 guests in October", time: "Just now", active: true },
+          { text: "No previous conversations", time: "First contact", active: false },
+        ],
+        cta: "Send event package pricing",
+      },
+      "Tanya Brown": {
+        biz: "Brown's Fitness Club",
+        email: "tanya@brownsfitnessclub.com",
+        phone: "+1 (214) 555-0107",
+        location: "Garland, TX",
+        channel: "Facebook Messenger",
+        industry: "Fitness & Wellness",
+        size: "Independent gym, 4–8 staff",
+        revenue: "$20,000 – $40,000/mo",
+        social: "FB: 1,400 likes · IG: 780 followers",
+        score: 80,
+        tags: [
+          { label: "hot-lead", type: "hot" },
+          { label: "family-plan", type: "green" },
+          { label: "high-value", type: "green" },
+        ],
+        ai: "Tanya is asking about a family membership for 4 people — that's a $199/mo recurring contract worth $2,388/year. Family memberships have the highest retention rate of any membership type. Offer the join fee waiver and a free tour to close this in one message.",
+        history: [
+          { text: "Asking about family membership for 4 people", time: "Just now", active: true },
+          { text: "No previous conversations", time: "First contact", active: false },
+        ],
+        cta: "Send family membership offer",
+      },
+      "Kevin Nguyen": {
+        biz: "Nguyen Family Dentistry",
+        email: "kevin@nguyendentistry.com",
+        phone: "+1 (214) 555-0108",
+        location: "Mesquite, TX",
+        channel: "WhatsApp",
+        industry: "Healthcare & Dental",
+        size: "Private practice, 5–10 staff",
+        revenue: "$35,000 – $65,000/mo",
+        social: "Google: 4.9★ (142 reviews) · Zocdoc listed",
+        score: 88,
+        tags: [
+          { label: "urgent", type: "hot" },
+          { label: "emergency", type: "hot" },
+          { label: "new-patient", type: "blue" },
+        ],
+        ai: "Kevin has a dental emergency — tooth pain since last night. This is urgent and time-sensitive. Emergency dental patients who get a fast response become long-term patients 70% of the time. Confirm an appointment time immediately and send the office address. Do not delay this reply.",
+        history: [
+          { text: "Reporting tooth pain — requesting emergency appointment", time: "Just now", active: true },
+          { text: "No previous conversations", time: "New patient", active: false },
+        ],
+        cta: "Book emergency appointment",
+      },
+    };
 
-    let current = 0;
+    function getScoreColor(score) {
+      if (score >= 85) return '#ff3b30';
+      if (score >= 70) return '#ff9500';
+      return '#34c759';
+    }
 
-    function render() {
-      const step = steps[current];
-      document.getElementById('stepLabel').textContent = `Step ${current + 1} of ${steps.length}`;
-      document.getElementById('stepTitle').textContent = step.title;
-      document.getElementById('stepBody').textContent = step.body;
-      document.getElementById('progressBar').style.width = `${((current + 1) / steps.length) * 100}%`;
+    function getScoreClass(score) {
+      if (score >= 85) return 'score-hot';
+      if (score >= 70) return 'score-warm';
+      return 'score-cool';
+    }
 
-      // Back button
-      document.getElementById('btnBack').disabled = current === 0;
+    function getInitials(name) {
+      return name.split(' ').map(n => n[0]).join('').toUpperCase();
+    }
 
-      // Next button
-      const btnNext = document.getElementById('btnNext');
-      if (current === steps.length - 1) {
-        btnNext.textContent = 'Got it ✓';
-        btnNext.onclick = finish;
-      } else {
-        btnNext.textContent = 'Next →';
-        btnNext.onclick = next;
-      }
+    function renderContact(name) {
+      const c = contacts[name];
+      if (!c) return;
 
-      // Dots
-      const dotsEl = document.getElementById('dots');
-      dotsEl.innerHTML = steps.map((_, i) =>
-        `<button class="dot ${i === current ? 'active' : ''}" onclick="goTo(${i})"></button>`
+      document.getElementById('emptyState').style.display = 'none';
+      document.getElementById('contactCard').classList.add('visible');
+
+      document.getElementById('contactAvatar').textContent = getInitials(name);
+      document.getElementById('contactName').textContent = name;
+      document.getElementById('contactBiz').textContent = c.biz;
+      document.getElementById('contactEmail').textContent = c.email;
+      document.getElementById('contactPhone').textContent = c.phone;
+      document.getElementById('contactLocation').textContent = c.location;
+      document.getElementById('contactChannel').textContent = c.channel;
+      document.getElementById('bizIndustry').textContent = c.industry;
+      document.getElementById('bizSize').textContent = c.size;
+      document.getElementById('bizRevenue').textContent = c.revenue;
+      document.getElementById('bizSocial').textContent = c.social;
+      document.getElementById('aiSummary').textContent = c.ai;
+      document.getElementById('ctaMain').textContent = c.cta;
+
+      const color = getScoreColor(c.score);
+      document.getElementById('scoreBar').style.width = c.score + '%';
+      document.getElementById('scoreBar').style.background = color;
+      document.getElementById('scoreNum').textContent = c.score + '/100';
+      document.getElementById('scoreNum').className = 'score-num ' + getScoreClass(c.score);
+
+      const tagsEl = document.getElementById('contactTags');
+      tagsEl.innerHTML = c.tags.map(t =>
+        `<span class="tag ${t.type}">${t.label}</span>`
       ).join('');
 
-      // Mini steps list
-      const allStepsEl = document.getElementById('allSteps');
-      allStepsEl.innerHTML = steps.map((s, i) =>
-        `<div class="mini-step ${i === current ? 'active' : i < current ? 'done' : ''}" onclick="goTo(${i})">
-          <div class="mini-step-num">${i < current ? '✓' : i + 1}</div>
-          <div class="mini-step-label">${s.title}</div>
+      const historyEl = document.getElementById('historyItems');
+      historyEl.innerHTML = c.history.map(h =>
+        `<div class="history-item">
+          <div class="history-dot ${h.active ? 'active' : ''}"></div>
+          <div>
+            <div class="history-text"><strong>${h.text}</strong></div>
+            <div class="history-time">${h.time}</div>
+          </div>
         </div>`
       ).join('');
     }
 
-    function next() {
-      if (current < steps.length - 1) { current++; render(); }
-    }
+    // Listen for Chatwoot postMessage events
+    window.addEventListener('message', function(e) {
+      if (e.data && e.data.event === 'appContext') {
+        const ctx = e.data.data;
+        const name = ctx?.contact?.name;
+        if (name && contacts[name]) {
+          renderContact(name);
+        }
+      }
+    });
 
-    function prev() {
-      if (current > 0) { current--; render(); }
+    // For testing outside Chatwoot — show first contact
+    const params = new URLSearchParams(window.location.search);
+    const testName = params.get('contact');
+    if (testName && contacts[testName]) {
+      renderContact(testName);
     }
-
-    function goTo(i) {
-      current = i;
-      render();
-    }
-
-    function finish() {
-      document.getElementById('stepTitle').textContent = 'You\'re all set!';
-      document.getElementById('stepBody').textContent = 'You\'ve seen what UTG Labs can do. Ready to set this up for your business?';
-      document.getElementById('btnNext').textContent = 'Apply for a spot →';
-      document.getElementById('btnNext').onclick = () => window.open('https://utglabs.com/apply', '_blank');
-      document.getElementById('btnBack').style.display = 'none';
-    }
-
-    render();
   </script>
 
 </body>
