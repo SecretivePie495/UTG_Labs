@@ -629,17 +629,21 @@
 
     // Listen for Chatwoot postMessage events
     window.addEventListener('message', function(e) {
-      if (e.data && e.data.event === 'appContext') {
-        const name = e.data?.data?.conversation?.meta?.sender?.name;
-        if (name && contacts[name]) {
-          renderContact(name);
+      try {
+        const parsed = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
+        if (parsed && parsed.event === 'appContext') {
+          const name = parsed?.data?.contact?.name
+            || parsed?.data?.conversation?.meta?.sender?.name;
+          if (name && contacts[name]) {
+            renderContact(name);
+          }
         }
-      }
+      } catch(err) {}
     });
 
-    // Signal to Chatwoot that the app is ready — triggers it to resend appContext
+    // Signal to Chatwoot to send the current conversation context
     window.addEventListener('load', function() {
-      window.parent.postMessage('chatwoot-dashboard-app:ready', '*');
+      window.parent.postMessage('chatwoot-dashboard-app:fetch-info', '*');
     });
 
     // For testing outside Chatwoot — show first contact
