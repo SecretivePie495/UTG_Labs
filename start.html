@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>UTG Labs — See It Working</title>
+  <meta name="description" content="One inbox for every customer message. AI replies already written. See the live demo." />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --purple: #6c63ff;
+      --purple-dark: #574fd6;
+      --bg: #0e0e11;
+      --card: #17181c;
+      --border: #2a2b30;
+      --text: #f0f0f0;
+      --muted: #9ca3af;
+      --green: #34c759;
+      --red: #ff3b30;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── TOP BAR ── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .logo {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #fff;
+    }
+    .logo span { color: var(--purple); }
+
+    /* ── HERO ── */
+    .hero {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 52px 24px 0;
+      text-align: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(108,99,255,0.12);
+      border: 1px solid rgba(108,99,255,0.3);
+      color: #a8a2ff;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 999px;
+      margin-bottom: 22px;
+    }
+    .eyebrow-dot {
+      width: 6px; height: 6px;
+      background: var(--purple);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    h1 {
+      font-size: clamp(28px, 6vw, 48px);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      color: #fff;
+      margin-bottom: 18px;
+    }
+    h1 em {
+      font-style: normal;
+      color: var(--purple);
+    }
+
+    .subhead {
+      font-size: clamp(15px, 3vw, 18px);
+      color: var(--muted);
+      line-height: 1.65;
+      max-width: 520px;
+      margin: 0 auto 32px;
+    }
+
+    /* ── VIDEO ── */
+    .video-wrap {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .video-container {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%;
+      background: var(--card);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+    }
+    .video-container iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      border: 0;
+    }
+    .video-placeholder {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      background: var(--card);
+    }
+    .play-btn {
+      width: 64px; height: 64px;
+      background: var(--purple);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 0 12px rgba(108,99,255,0.15);
+    }
+    .play-btn svg { margin-left: 4px; }
+    .video-placeholder p {
+      font-size: 14px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    /* ── SOCIAL PROOF BAR ── */
+    .proof-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 16px 24px;
+      font-size: 12px;
+      color: var(--muted);
+      flex-wrap: wrap;
+      text-align: center;
+    }
+    .proof-avatars {
+      display: flex;
+    }
+    .proof-avatar {
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      border: 2px solid var(--bg);
+      margin-left: -6px;
+      background: var(--purple);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .proof-avatar:first-child { margin-left: 0; }
+    .proof-avatar.c2 { background: #ff6b6b; }
+    .proof-avatar.c3 { background: #ffd93d; color: #333; }
+    .proof-avatar.c4 { background: #6bcb77; color: #333; }
+    .proof-avatar.c5 { background: #4d96ff; }
+
+    /* ── PAIN → SOLUTION ── */
+    .section {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 52px 24px 0;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--purple);
+      margin-bottom: 14px;
+    }
+
+    .section h2 {
+      font-size: clamp(22px, 4vw, 32px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 32px;
+    }
+
+    .pain-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .pain-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .pain-icon {
+      font-size: 20px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .pain-card h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .pain-card p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .pain-card.solved {
+      border-color: rgba(108,99,255,0.35);
+      background: rgba(108,99,255,0.06);
+    }
+    .pain-card.solved h3 { color: #a8a2ff; }
+
+    /* ── HOW IT WORKS ── */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+    }
+    .steps::before {
+      content: '';
+      position: absolute;
+      left: 19px;
+      top: 28px;
+      bottom: 28px;
+      width: 2px;
+      background: var(--border);
+    }
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      padding: 20px 0;
+    }
+    .step-num {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      background: var(--card);
+      border: 2px solid var(--purple);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--purple);
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+    .step-body h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+      margin-top: 8px;
+    }
+    .step-body p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ── CTA ── */
+    .cta-section {
+      max-width: 680px;
+      margin: 52px auto 0;
+      padding: 0 24px;
+    }
+
+    .cta-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 40px 32px;
+      text-align: center;
+    }
+    .cta-card h2 {
+      font-size: clamp(22px, 4vw, 30px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+    .cta-card p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: 28px;
+      max-width: 420px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--purple);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 16px 32px;
+      border-radius: 12px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+      width: 100%;
+      justify-content: center;
+      max-width: 380px;
+    }
+    .btn-primary:hover { background: var(--purple-dark); transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(0); }
+
+    .btn-note {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 12px;
+    }
+    .btn-note span { color: var(--green); font-weight: 600; }
+
+    /* ── CHANNELS STRIP ── */
+    .channels {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+    }
+    .channel-tag {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--muted);
+    }
+    .channel-dot { width: 7px; height: 7px; border-radius: 50%; }
+
+    /* ── FOOTER ── */
+    .footer {
+      text-align: center;
+      padding: 40px 24px 52px;
+      font-size: 12px;
+      color: #444;
+    }
+    .footer a { color: #555; text-decoration: none; }
+
+    /* ── MOBILE ── */
+    @media (max-width: 480px) {
+      .cta-card { padding: 28px 20px; }
+      .btn-primary { font-size: 14px; padding: 15px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="logo">UTG<span>Labs</span></div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="eyebrow">
+      <span class="eyebrow-dot"></span>
+      Live Demo — No signup required
+    </div>
+    <h1>Every customer message.<br><em>One inbox.</em> AI replies ready.</h1>
+    <p class="subhead">Stop juggling Instagram, WhatsApp, Facebook, and email in separate tabs. See exactly how local businesses manage all their customer messages — and never miss a lead again.</p>
+  </section>
+
+  <!-- VIDEO -->
+  <div class="video-wrap" style="margin-top: 32px;">
+    <div class="video-container">
+      <!-- Replace the placeholder div below with your Loom iframe when ready -->
+      <!-- <iframe src="https://www.loom.com/embed/YOUR_VIDEO_ID" allowfullscreen></iframe> -->
+      <div class="video-placeholder">
+        <div class="play-btn">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="white">
+            <path d="M6 4l12 6-12 6V4z"/>
+          </svg>
+        </div>
+        <p>90-second walkthrough — coming soon</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SOCIAL PROOF -->
+  <div class="proof-bar">
+    <div class="proof-avatars">
+      <div class="proof-avatar">R</div>
+      <div class="proof-avatar c2">M</div>
+      <div class="proof-avatar c3">T</div>
+      <div class="proof-avatar c4">J</div>
+      <div class="proof-avatar c5">A</div>
+    </div>
+    <span>Local business owners are already using this to respond faster and close more leads</span>
+  </div>
+
+  <!-- PAIN POINTS -->
+  <section class="section">
+    <p class="section-label">Sound familiar?</p>
+    <h2>The way you're managing messages right now is costing you customers.</h2>
+    <div class="pain-list">
+      <div class="pain-card">
+        <div class="pain-icon">📱</div>
+        <div>
+          <h3>You're switching between 4 different apps all day</h3>
+          <p>Instagram DMs, WhatsApp, Facebook Messenger, email — each one open in a separate tab or phone. You're burning time just navigating between them.</p>
+        </div>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">⏳</div>
+        <div>
+          <h3>Leads go cold because you reply too slow</h3>
+          <p>Someone messages you at 11am asking to book. You see it at 3pm. They already called someone else. This happens more than you realize.</p>
+        </div>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">😓</div>
+        <div>
+          <h3>You're writing the same replies over and over</h3>
+          <p>"What are your hours?" "Do you do catering?" "What's the price?" — you're typing these from scratch every single time.</p>
+        </div>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:10px; padding: 4px 0;">
+        <div style="flex:1; height:1px; background:var(--border);"></div>
+        <span style="font-size:11px; color:var(--muted); white-space:nowrap;">Here's what it looks like instead</span>
+        <div style="flex:1; height:1px; background:var(--border);"></div>
+      </div>
+
+      <div class="pain-card solved">
+        <div class="pain-icon">✦</div>
+        <div>
+          <h3>Every channel in one place — Instagram, WhatsApp, Facebook, Email</h3>
+          <p>One inbox. One login. Every message from every platform, all in one view. Nothing slips through.</p>
+        </div>
+      </div>
+      <div class="pain-card solved">
+        <div class="pain-icon">✦</div>
+        <div>
+          <h3>AI drafts the reply before you even open it</h3>
+          <p>Every incoming message comes with an AI-written reply already staged and ready. You review, edit if needed, and send. You never start from a blank page.</p>
+        </div>
+      </div>
+      <div class="pain-card solved">
+        <div class="pain-icon">✦</div>
+        <div>
+          <h3>Know exactly who's messaging you and what they're worth</h3>
+          <p>Every conversation shows you the lead score, business info, and what to say next — before you type a single word.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section">
+    <p class="section-label">How the demo works</p>
+    <h2>Jump in and see it for yourself in 3 steps.</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3>Log in to the live demo inbox</h3>
+          <p>You get access to a real inbox with 9 active conversations coming in from Instagram, WhatsApp, Facebook, and Email — all at once.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3>Open any conversation</h3>
+          <p>Click a message and see the AI reply already drafted in the notes section. Check the Contact Info panel on the right — lead score, business intel, what to say next.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h3>Type / to see your saved replies</h3>
+          <p>Click the reply box and type a slash. Your canned responses pop up — pricing, booking, follow-up — ready to send in one click.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <div class="cta-card">
+      <h2>See exactly what your inbox could look like.</h2>
+      <p>No forms. No sales call required. Just log in and explore the live demo — takes less than 5 minutes.</p>
+      <a href="https://user.utglabs.com" target="_blank" class="btn-primary">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 1.5C4.41 1.5 1.5 4.41 1.5 8S4.41 14.5 8 14.5 14.5 11.59 14.5 8 11.59 1.5 8 1.5zm3.53 5.03l-4 4a.75.75 0 01-1.06 0l-2-2a.75.75 0 111.06-1.06L7 8.94l3.47-3.47a.75.75 0 111.06 1.06z" fill="white"/>
+        </svg>
+        Enter the Live Demo
+      </a>
+      <p class="btn-note"><span>Free to explore</span> — Use email: demo@utglabs.com</p>
+
+      <div class="channels">
+        <div class="channel-tag"><span class="channel-dot" style="background:#E1306C;"></span>Instagram</div>
+        <div class="channel-tag"><span class="channel-dot" style="background:#25D366;"></span>WhatsApp</div>
+        <div class="channel-tag"><span class="channel-dot" style="background:#1877F2;"></span>Facebook</div>
+        <div class="channel-tag"><span class="channel-dot" style="background:#6c63ff;"></span>Email</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>© 2026 UTG Labs · <a href="https://utglabs.com">utglabs.com</a></p>
+  </footer>
+
+</body>
+</html>
