@@ -492,6 +492,15 @@
 
       posthog.capture('quiz_lead_captured', props);
 
+      // Fire and forget. The plan is already on screen and the lead is already
+      // in PostHog, so a failed send must not block or break either — worst case
+      // the email is missing and the answers are still there to follow up on.
+      fetch('/.netlify/functions/quiz-lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(props)
+      }).catch(function () {});
+
       deliver(tier, firstName);
     }
 
@@ -513,11 +522,10 @@
         list.appendChild(li);
       });
 
-      // Only claims what actually happens. Nothing in this page sends mail, so it
-      // must not promise an email — the follow-up is a person reading the answers.
+      // Matches what actually happens now: the plan is emailed, and a reply to it
+      // reaches a person. Don't promise more than those two things.
       document.getElementById('planFine').textContent =
-        'Someone on our team will read your answers and write back with what they would ' +
-        'change first. Usually within a day.';
+        'A copy is on its way to your inbox. Reply to it and you get me, not a queue.';
 
       document.getElementById('plan').classList.add('visible');
     }
@@ -528,8 +536,14 @@
     function selftest() {
       var sent = [];
       var identified = [];
+      var posted = [];
       posthog.capture = function (event, props) { sent.push({ event: event, props: props }); };
       posthog.identify = function (id, set) { identified.push({ id: id, set: set }); };
+      // Stub fetch so the check never sends a real email.
+      window.fetch = function (url, opts) {
+        posted.push({ url: url, body: JSON.parse(opts.body) });
+        return Promise.resolve({ ok: true });
+      };
 
       // Simulate a running experiment on Q3 so the payload-overlay path is covered
       // too — that's the path the autopilot drives, and a silent break in it would
@@ -617,9 +631,20 @@
         ['CTA click is its own event pointing somewhere loadable',
           !!ctaClick && ctaClick.props.tier === 'SOLO' && ctaClick.props.destination === '/demo-guide.html',
           ctaClick ? ctaClick.props.destination : 'missing'],
-        ['no promise of an automatic email in the delivered copy',
-          !/on its way|check your inbox|sent you|emailed/i.test(document.getElementById('planFine').textContent),
-          document.getElementById('planFine').textContent.slice(0, 40) + '…']
+        ['the plan is posted to the send function once',
+          posted.length === 1 && posted[0].url === '/.netlify/functions/quiz-lead',
+          posted.length + ' post(s)' + (posted.length ? ' → ' + posted[0].url : '')],
+        ['the send payload carries what the email needs',
+          posted.length === 1 && posted[0].body.email === 'sam@example.com'
+            && posted[0].body.first_name === 'Sam' && posted[0].body.tier === 'SOLO'
+            && ANSWER_KEYS.every(function (k) { return typeof posted[0].body[k] === 'string'; }),
+          posted.length ? Object.keys(posted[0].body).join(',') : 'nothing posted'],
+        // The copy promises an inbox copy, so a send that never fires makes the
+        // page a liar. Tie the two together rather than checking either alone.
+        ['a bad email posts nothing', posted.length === 1, posted.length + ' post(s) after 2 submits'],
+        ['inbox promise is backed by an actual send',
+          /inbox/i.test(document.getElementById('planFine').textContent) === (posted.length === 1),
+          document.getElementById('planFine').textContent.slice(0, 44) + '…']
       ];
 
       var failed = checks.filter(function (c) { return !c[1]; });
