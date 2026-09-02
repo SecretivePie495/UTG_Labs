@@ -1,5 +1,11 @@
 // Emails a quiz taker their tiered plan. The quiz page POSTs the answers here
-// on submit; Resend does the sending.
+// on submit; this function validates them and builds the message, then hands it
+// to an n8n workflow that does the actual sending.
+//
+// Why the split: n8n owns the mail credential (and can grow a Chatwoot step
+// later), but the webhook must not be callable from a browser — so it stays
+// server-side behind this function, authenticated with a shared secret, rather
+// than being fetched from the page.
 //
 // This function owns the email copy on purpose. The page never sends a body —
 // if it did, anyone could POST arbitrary HTML and this endpoint would happily
@@ -58,7 +64,8 @@ const ANSWER_FIELDS = [
   ['value_anchor', 'What a reply is worth']
 ];
 
-const FROM = process.env.QUIZ_FROM_EMAIL || 'Udo at UTG Labs <udo@utglabs.com>';
+const HOOK = process.env.N8N_QUIZ_WEBHOOK || 'https://n8n.srv1167236.hstgr.cloud/webhook/quiz-lead';
+const HOOK_SECRET = process.env.N8N_QUIZ_SECRET;
 const REPLY_TO = process.env.QUIZ_REPLY_TO || 'udo@utglabs.com';
 
 function escapeHtml(s) {
@@ -135,10 +142,9 @@ exports.handler = async (event) => {
     return { statusCode: 405, body: JSON.stringify({ error: 'POST only' }) };
   }
 
-  const key = process.env.RESEND_API_KEY;
-  if (!key) {
-    // Misconfigured rather than malformed. The page ignores this — the lead is
-    // already recorded in PostHog, so a missing key costs the email, not the lead.
+  if (!HOOK_SECRET) {
+    // Misconfigured rather than malformed. The page handles this — the lead is
+    // already in PostHog, so a missing secret costs the email, not the lead.
     return { statusCode: 503, body: JSON.stringify({ error: 'sender not configured' }) };
   }
 
@@ -164,26 +170,34 @@ exports.handler = async (event) => {
 
   const { subject, html, text } = buildEmail(firstName, tier, answers);
 
+  // The message is fully built here, so n8n is a dumb transport: it sends what
+  // it is given and never composes prospect-facing copy from raw input.
   const payload = {
-    from: FROM,
-    to: [email],
+    to: email,
     reply_to: REPLY_TO,
     subject: subject,
     html: html,
-    text: text
+    text: text,
+    first_name: firstName,
+    tier: tier,
+    answers: answers
   };
-  // Optional copy to yourself, so a new lead shows up in your own inbox too.
-  if (process.env.LEAD_NOTIFY_EMAIL) payload.bcc = [process.env.LEAD_NOTIFY_EMAIL];
+  if (process.env.LEAD_NOTIFY_EMAIL) payload.bcc = process.env.LEAD_NOTIFY_EMAIL;
 
-  const res = await fetch('https://api.resend.com/emails', {
+  // n8n on a small VPS can be slow to wake; give up rather than hold the
+  // browser's request open, since the page has already rendered the plan.
+  const res = await fetch(HOOK, {
     method: 'POST',
-    headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
+    headers: { 'Content-Type': 'application/json', 'x-quiz-secret': HOOK_SECRET },
+    body: JSON.stringify(payload),
+    signal: AbortSignal.timeout(9000)
+  }).catch((err) => {
+    console.error('n8n unreachable', err.message);
+    return null;
   });
 
-  if (!res.ok) {
-    const detail = await res.text();
-    console.error('resend failed', res.status, detail);
+  if (!res || !res.ok) {
+    if (res) console.error('n8n rejected', res.status, await res.text());
     return { statusCode: 502, body: JSON.stringify({ error: 'send failed' }) };
   }
 
