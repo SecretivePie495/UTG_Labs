@@ -369,6 +369,9 @@
       'reply_speed', 'inbound_handling', 'bottleneck', 'value_anchor'
     ];
 
+    // Mirrors TIERS / BOTTLENECKS / planSteps in netlify/functions/quiz-lead.js.
+    // The screen and the email must show the same plan, so the two copies are
+    // kept deliberately identical — change one, change the other.
     var TIERS = {
       SOLO: {
         label: 'Solo',
@@ -376,9 +379,9 @@
         lead: 'At your volume every missed message is a real percentage of the month, so the ' +
               'first job is making sure nothing lands somewhere nobody looks.',
         steps: [
-          '<strong>One inbox.</strong> Every channel you use lands in one place, so there is no app you forgot to check.',
-          '<strong>A first reply that goes out fast.</strong> Someone answers while they are still reading, not that evening.',
-          '<strong>A follow-up you do not have to remember.</strong> Anyone who goes quiet gets checked back on.'
+          { key: 'one_inbox', head: 'One inbox.', body: 'Every channel you use lands in one place, so there is no app you forgot to check.' },
+          { key: 'fast_reply', head: 'A first reply that goes out fast.', body: 'Someone answers while they are still reading, not that evening.' },
+          { key: 'followup', head: 'A follow-up you do not have to remember.', body: 'Anyone who goes quiet gets checked back on.' }
         ]
       },
       GROWING: {
@@ -387,9 +390,9 @@
         lead: 'You are getting enough volume that the problem has flipped: it is no longer ' +
               'missing messages, it is spending your day on the ones that were never going to book.',
         steps: [
-          '<strong>Qualify before it reaches you.</strong> The basics get asked and answered before it hits your desk.',
-          '<strong>Ready-to-talk gets flagged.</strong> The people worth your time surface at the top.',
-          '<strong>Everyone else still gets an answer.</strong> Nobody is ignored, and nobody eats an hour.'
+          { key: 'qualify', head: 'Qualify before it reaches you.', body: 'The basics get asked and answered before it hits your desk.' },
+          { key: 'flag_ready', head: 'Ready-to-talk gets flagged.', body: 'The people worth your time surface at the top.' },
+          { key: 'answer_everyone', head: 'Everyone else still gets an answer.', body: 'Nobody is ignored, and nobody eats an hour.' }
         ]
       },
       SCALED: {
@@ -398,12 +401,44 @@
         lead: 'At your volume the loss is not one dropped message, it is a pattern nobody has ' +
               'measured yet — and that pattern is worth real money every month.',
         steps: [
-          '<strong>Find where it drops.</strong> Response times and dropped threads, measured instead of guessed.',
-          '<strong>Cover the gap that costs the most.</strong> Usually nights, weekends, or the second message.',
-          '<strong>Keep it visible.</strong> You see what came in, what got answered, and what slipped.'
+          { key: 'measure', head: 'Find where it drops.', body: 'Response times and dropped threads, measured instead of guessed.' },
+          { key: 'coverage', head: 'Cover the gap that costs the most.', body: 'Usually nights, weekends, or the second message.' },
+          { key: 'visible', head: 'Keep it visible.', body: 'You see what came in, what got answered, and what slipped.' }
         ]
       }
     };
+
+    // Q6 is the most specific thing anyone tells us, and the tier — which comes
+    // only from Q2 volume — ignores it. This turns their answer into the first
+    // move, so the plan opens on the problem they actually named.
+    var BOTTLENECKS = [
+      { key: 'one_inbox', head: 'One place for everything.', body: 'Every channel you use lands in a single inbox, so there is no app anyone forgot to check.' },
+      { key: 'coverage', head: 'Cover the hours you are closed.', body: 'Nights and weekends get watched, so a Saturday message gets a real answer on Saturday.' },
+      { key: 'fast_reply', head: 'A reply while they are still reading.', body: 'Someone answers in minutes instead of hours, which is usually the whole difference between booked and gone.' },
+      { key: 'followup', head: 'Follow-up you never have to remember.', body: 'Anyone who goes quiet gets checked back on until they answer or say no.' }
+    ];
+
+    // Which Q6 option was picked, by index rather than text — same reason as
+    // tierFor(): a copy experiment on Q6 must not mis-route the advice.
+    function bottleneckIndex() {
+      return answers[5] ? answers[5].index : -1;
+    }
+
+    // The bottleneck fix leads, then the tier fills the rest, skipping any tier
+    // step that repeats it. Always three steps.
+    function planSteps(tier, idx) {
+      var fix = BOTTLENECKS[idx];
+      if (!fix) return TIERS[tier].steps;
+      return [fix].concat(TIERS[tier].steps.filter(function (s) {
+        return s.key !== fix.key;
+      })).slice(0, 3);
+    }
+
+    // Their own number, only if they gave one.
+    function stakesLine() {
+      var v = answers[6] ? answers[6].choice : '';
+      return v ? 'You put the cost of letting that keep happening at ' + v + ' a month.' : '';
+    }
 
     // Tier comes from Q2 ("Deals per month"), by the *index* of the option picked
     // rather than its text — so a copy experiment that rewrites Q2's wording can't
@@ -472,6 +507,9 @@
       props.tier = tier;
       props.email = email;
       props.first_name = firstName;
+      // The email needs the option's position, not its text, to pick the same
+      // opening move the screen just showed.
+      props.bottleneck_index = bottleneckIndex();
 
       // identify() on the email re-keys this person, so the seven anonymous
       // quiz_question_answered events already sitting in the funnel attach to them.
@@ -529,13 +567,17 @@
       document.getElementById('planTitle').textContent = firstName
         ? firstName + ', here’s your plan: ' + plan.title
         : 'Your plan: ' + plan.title;
-      document.getElementById('planLead').textContent = plan.lead;
+      var stakes = stakesLine();
+      document.getElementById('planLead').textContent = stakes ? plan.lead + ' ' + stakes : plan.lead;
 
       var list = document.getElementById('planSteps');
       list.textContent = '';
-      plan.steps.forEach(function (step) {
+      planSteps(tier, bottleneckIndex()).forEach(function (step) {
         var li = document.createElement('li');
-        li.innerHTML = step;
+        var strong = document.createElement('strong');
+        strong.textContent = step.head;
+        li.appendChild(strong);
+        li.appendChild(document.createTextNode(' ' + step.body));
         list.appendChild(li);
       });
 
@@ -644,8 +686,35 @@
           lead ? 'ok' : 'missing'],
         ['tiered plan is rendered', document.getElementById('plan').classList.contains('visible')
           && document.getElementById('planTitle').textContent.indexOf(TIERS.SOLO.title) !== -1
-          && document.getElementById('planSteps').children.length === TIERS.SOLO.steps.length,
+          && document.getElementById('planSteps').children.length === 3,
           document.getElementById('planTitle').textContent],
+        // The whole point of the bottleneck logic: the plan must open on the
+        // problem they picked in Q6, not on the tier's generic first move.
+        ['plan opens on the Q6 bottleneck, not the generic tier step',
+          document.getElementById('planSteps').children[0].textContent.indexOf(BOTTLENECKS[0].head) === 0
+            && document.getElementById('planSteps').children[0].textContent.indexOf(TIERS.SOLO.steps[0].head) === -1,
+          document.getElementById('planSteps').children[0].textContent.slice(0, 40)],
+        ['no step is said twice after the swap',
+          (function () {
+            var heads = [].map.call(document.getElementById('planSteps').children, function (li) {
+              return li.querySelector('strong').textContent;
+            });
+            return heads.length === 3 && new Set(heads).size === 3;
+          })(), ''],
+        ['every bottleneck x tier pair yields three distinct steps',
+          ['SOLO', 'GROWING', 'SCALED'].every(function (t) {
+            return BOTTLENECKS.every(function (fix, i) {
+              var keys = planSteps(t, i).map(function (s) { return s.key; });
+              return keys.length === 3 && new Set(keys).size === 3 && keys[0] === fix.key;
+            });
+          }), ''],
+        ['an unanswered or junk Q6 falls back to the tier plan',
+          [-1, 99, undefined].every(function (i) {
+            return planSteps('SOLO', i)[0].key === TIERS.SOLO.steps[0].key;
+          }), ''],
+        ['plan lead quotes their own Q7 figure',
+          document.getElementById('planLead').textContent.indexOf(QUESTIONS[6].options[0]) !== -1,
+          document.getElementById('planLead').textContent.slice(-60)],
         ['capture form hidden once delivered', document.getElementById('capture').style.display === 'none', ''],
         ['CTA click is its own event pointing somewhere loadable',
           !!ctaClick && ctaClick.props.tier === 'SOLO' && ctaClick.props.destination === '/demo-guide.html',
@@ -658,6 +727,11 @@
             && posted[0].body.first_name === 'Sam' && posted[0].body.tier === 'SOLO'
             && ANSWER_KEYS.every(function (k) { return typeof posted[0].body[k] === 'string'; }),
           posted.length ? Object.keys(posted[0].body).join(',') : 'nothing posted'],
+        // Without the index the email would fall back to generic tier steps and
+        // silently disagree with the plan the reader just saw on screen.
+        ['the email is told which bottleneck the screen used',
+          posted.length === 1 && posted[0].body.bottleneck_index === bottleneckIndex(),
+          posted.length ? 'index ' + posted[0].body.bottleneck_index : 'nothing posted'],
         ['a bad email posts nothing', posted.length === 1, posted.length + ' post(s) after 2 submits'],
         // The fine print is the one place the page can lie, so each send outcome
         // is asserted directly instead of relying on whichever one happened here.
