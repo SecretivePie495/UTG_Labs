@@ -136,6 +136,52 @@
     .recap div { padding: 5px 0; }
     .recap span { color: #e5e7eb; }
 
+    /* Capture */
+    .field-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #9ca3af;
+      margin: 14px 0 5px;
+    }
+    .field {
+      width: 100%;
+      background: #1e1f24;
+      color: #e5e7eb;
+      border: 1px solid #2a2b30;
+      border-radius: 8px;
+      padding: 13px 14px;
+      font: inherit;
+    }
+    .field:focus { outline: none; border-color: #6c63ff; }
+    .field-error {
+      display: none;
+      color: #f87171;
+      font-size: 13px;
+      margin: 10px 0 0;
+    }
+    .field-error.visible { display: block; }
+    #captureSubmit { margin-top: 18px; border: 0; cursor: pointer; font: inherit; font-weight: 600; }
+    .fine { font-size: 12px; color: #6b7280; margin: 12px 0 0; line-height: 1.5; }
+
+    /* Plan */
+    #plan { display: none; }
+    #plan.visible { display: block; }
+    .tier-badge {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      background: #6c63ff;
+      color: #fff;
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin-bottom: 12px;
+    }
+    .plan-steps { margin: 18px 0 22px; padding-left: 20px; color: #9ca3af; }
+    .plan-steps li { padding: 6px 0; line-height: 1.6; }
+    .plan-steps strong { color: #f3f4f6; font-weight: 600; }
+
     #selftest {
       display: none;
       font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -162,15 +208,35 @@
     </div>
 
     <div class="result" id="result">
-      <h1>Got it — that's enough to work with.</h1>
-      <p>
-        Based on what you picked, the gap is almost always the same one: messages arrive
-        faster than one person can answer them, and the ones that wait are the ones that
-        go quiet. Take a look at what a covered inbox actually looks like, then a real
-        person on our team will follow up with what we'd change for you specifically.
-      </p>
-      <a class="cta" href="https://user.utglabs.com">See the demo inbox</a>
-      <div class="recap" id="recap"></div>
+      <div id="capture">
+        <h1>Got it — that's enough to work with.</h1>
+        <p>
+          Your answers point at a specific leak, and there's a short plan for it. Tell us
+          where to send it and it shows up on the next screen.
+        </p>
+        <form id="captureForm" novalidate>
+          <label class="field-label" for="firstName">First name</label>
+          <input class="field" id="firstName" type="text" autocomplete="given-name" placeholder="Sam" />
+          <label class="field-label" for="email">Email</label>
+          <input class="field" id="email" type="email" autocomplete="email" placeholder="you@yourbusiness.com" />
+          <p class="field-error" id="captureError"></p>
+          <button class="cta" id="captureSubmit" type="submit">Show me my plan</button>
+          <p class="fine">
+            No newsletter. Someone on our team reads your answers and writes back to you
+            directly.
+          </p>
+        </form>
+        <div class="recap" id="recap"></div>
+      </div>
+
+      <div id="plan">
+        <span class="tier-badge" id="tierBadge"></span>
+        <h1 id="planTitle"></h1>
+        <p id="planLead"></p>
+        <ol class="plan-steps" id="planSteps"></ol>
+        <a class="cta" id="planCta" href="/demo-guide.html">See what this looks like set up</a>
+        <p class="fine" id="planFine"></p>
+      </div>
     </div>
   </main>
 
@@ -229,30 +295,58 @@
     var answers = [];
     var current = 0;
 
+    // Autopilot hook. Any question's copy can be overridden by a running PostHog
+    // experiment on the flag `quiz-q<N>-copy`. Two things make this work:
+    //
+    //   1. The flag is read *lazily*, at the moment question N renders — so the
+    //      `$feature_flag_called` exposure event means "reached question N", which
+    //      is what the experiment's funnel metric measures conversion against.
+    //   2. The challenger copy lives in the flag's variant payload, not in this
+    //      file — so queueing a new challenger needs no deploy.
+    //
+    // Payload shape: { "text": "...", "options": ["...", ...] } — either key may be
+    // omitted to keep the control version of that part.
+    function variantCopy(q) {
+      if (typeof posthog === 'undefined' || !posthog.getFeatureFlag) return q;
+
+      var variant = posthog.getFeatureFlag('quiz-q' + q.n + '-copy');
+      if (!variant || variant === 'control') return q;
+
+      var payload = posthog.getFeatureFlagPayload('quiz-q' + q.n + '-copy');
+      if (!payload) return q;
+
+      return {
+        n: q.n,
+        label: q.label,
+        text: payload.text || q.text,
+        options: (payload.options && payload.options.length) ? payload.options : q.options
+      };
+    }
+
     // Forward-only by design: there is no back button, so each question can only be
     // answered once per session and no per-question dedupe state is needed. A page
     // refresh restarts at Q1 and re-enters the funnel, which is normal quiz behavior.
     function render() {
-      var q = QUESTIONS[current];
+      var q = variantCopy(QUESTIONS[current]);
       document.getElementById('stepCount').textContent = 'Question ' + q.n + ' of ' + QUESTIONS.length;
       document.getElementById('question').textContent = q.text;
       document.getElementById('progress').style.width = (current / QUESTIONS.length * 100) + '%';
 
       var box = document.getElementById('options');
       box.textContent = '';
-      q.options.forEach(function (opt) {
+      q.options.forEach(function (opt, i) {
         var b = document.createElement('button');
         b.className = 'option';
         b.type = 'button';
         b.textContent = opt;
-        b.addEventListener('click', function () { answer(opt); });
+        b.addEventListener('click', function () { answer(opt, i); });
         box.appendChild(b);
       });
     }
 
-    function answer(choice) {
+    function answer(choice, index) {
       var q = QUESTIONS[current];
-      answers.push({ label: q.label, choice: choice });
+      answers.push({ label: q.label, choice: choice, index: index });
 
       posthog.capture('quiz_question_answered', {
         question_number: q.n,
@@ -266,6 +360,67 @@
       } else {
         finish();
       }
+    }
+
+    // Named property keys for the answers, so downstream events and person
+    // properties read as fields rather than "answer 1..7". Order matches QUESTIONS.
+    var ANSWER_KEYS = [
+      'business_type', 'deals_per_month', 'avg_deal_size',
+      'reply_speed', 'inbound_handling', 'bottleneck', 'value_anchor'
+    ];
+
+    var TIERS = {
+      SOLO: {
+        label: 'Solo',
+        title: 'Stop the Bleeding',
+        lead: 'At your volume every missed message is a real percentage of the month, so the ' +
+              'first job is making sure nothing lands somewhere nobody looks.',
+        steps: [
+          '<strong>One inbox.</strong> Every channel you use lands in one place, so there is no app you forgot to check.',
+          '<strong>A first reply that goes out fast.</strong> Someone answers while they are still reading, not that evening.',
+          '<strong>A follow-up you do not have to remember.</strong> Anyone who goes quiet gets checked back on.'
+        ]
+      },
+      GROWING: {
+        label: 'Growing',
+        title: 'Filter Before You Talk',
+        lead: 'You are getting enough volume that the problem has flipped: it is no longer ' +
+              'missing messages, it is spending your day on the ones that were never going to book.',
+        steps: [
+          '<strong>Qualify before it reaches you.</strong> The basics get asked and answered before it hits your desk.',
+          '<strong>Ready-to-talk gets flagged.</strong> The people worth your time surface at the top.',
+          '<strong>Everyone else still gets an answer.</strong> Nobody is ignored, and nobody eats an hour.'
+        ]
+      },
+      SCALED: {
+        label: 'Scaled',
+        title: 'See the Leak',
+        lead: 'At your volume the loss is not one dropped message, it is a pattern nobody has ' +
+              'measured yet — and that pattern is worth real money every month.',
+        steps: [
+          '<strong>Find where it drops.</strong> Response times and dropped threads, measured instead of guessed.',
+          '<strong>Cover the gap that costs the most.</strong> Usually nights, weekends, or the second message.',
+          '<strong>Keep it visible.</strong> You see what came in, what got answered, and what slipped.'
+        ]
+      }
+    };
+
+    // Tier comes from Q2 ("Deals per month"), by the *index* of the option picked
+    // rather than its text — so a copy experiment that rewrites Q2's wording can't
+    // silently break tiering. Anything past the third bucket is still SCALED.
+    function tierFor() {
+      var i = answers[1] ? answers[1].index : 1;
+      if (i <= 0) return 'SOLO';
+      if (i === 1) return 'GROWING';
+      return 'SCALED';
+    }
+
+    function answerProps() {
+      var props = {};
+      ANSWER_KEYS.forEach(function (key, i) {
+        props[key] = answers[i] ? answers[i].choice : null;
+      });
+      return props;
     }
 
     function finish() {
@@ -283,6 +438,88 @@
       });
 
       document.getElementById('result').classList.add('visible');
+
+      // Finished the quiz — still anonymous, no contact details yet. Kept separate
+      // from quiz_lead_captured so finisher -> lead is a measurable conversion
+      // instead of one indistinguishable step.
+      var props = answerProps();
+      props.tier = tierFor();
+      posthog.capture('quiz_completed', props);
+    }
+
+    function validEmail(v) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
+    }
+
+    function showError(msg) {
+      var el = document.getElementById('captureError');
+      el.textContent = msg;
+      el.classList.add('visible');
+    }
+
+    function capture(e) {
+      if (e) e.preventDefault();
+
+      var firstName = document.getElementById('firstName').value.trim();
+      var email = document.getElementById('email').value.trim();
+
+      if (!firstName) return showError('What should we call you?');
+      if (!validEmail(email)) return showError("That email doesn't look right — mind checking it?");
+      document.getElementById('captureError').classList.remove('visible');
+
+      var tier = tierFor();
+      var props = answerProps();
+      props.tier = tier;
+      props.email = email;
+      props.first_name = firstName;
+
+      // identify() on the email re-keys this person, so the seven anonymous
+      // quiz_question_answered events already sitting in the funnel attach to them.
+      // The same values go on as person properties, which is the upsert — one row
+      // per lead, updated rather than duplicated if they take the quiz again.
+      posthog.identify(email, {
+        email: email,
+        first_name: firstName,
+        quiz_tier: tier,
+        business_type: props.business_type,
+        deals_per_month: props.deals_per_month,
+        avg_deal_size: props.avg_deal_size,
+        reply_speed: props.reply_speed,
+        inbound_handling: props.inbound_handling,
+        bottleneck: props.bottleneck,
+        value_anchor: props.value_anchor
+      });
+
+      posthog.capture('quiz_lead_captured', props);
+
+      deliver(tier, firstName);
+    }
+
+    function deliver(tier, firstName) {
+      var plan = TIERS[tier];
+
+      document.getElementById('capture').style.display = 'none';
+      document.getElementById('tierBadge').textContent = plan.label;
+      document.getElementById('planTitle').textContent = firstName
+        ? firstName + ', here’s your plan: ' + plan.title
+        : 'Your plan: ' + plan.title;
+      document.getElementById('planLead').textContent = plan.lead;
+
+      var list = document.getElementById('planSteps');
+      list.textContent = '';
+      plan.steps.forEach(function (step) {
+        var li = document.createElement('li');
+        li.innerHTML = step;
+        list.appendChild(li);
+      });
+
+      // Only claims what actually happens. Nothing in this page sends mail, so it
+      // must not promise an email — the follow-up is a person reading the answers.
+      document.getElementById('planFine').textContent =
+        'Someone on our team will read your answers and write back with what they would ' +
+        'change first. Usually within a day.';
+
+      document.getElementById('plan').classList.add('visible');
     }
 
     // Self-check: `?selftest=1` stubs capture, clicks the first option of every
@@ -290,24 +527,99 @@
     // each, in order, on the event name the scout reads. Fails loudly in the DOM.
     function selftest() {
       var sent = [];
+      var identified = [];
       posthog.capture = function (event, props) { sent.push({ event: event, props: props }); };
+      posthog.identify = function (id, set) { identified.push({ id: id, set: set }); };
 
+      // Simulate a running experiment on Q3 so the payload-overlay path is covered
+      // too — that's the path the autopilot drives, and a silent break in it would
+      // look like a normal quiz while every challenger quietly failed to render.
+      var CHALLENGER = { text: 'Challenger copy for Q3', options: ['Challenger A', 'Challenger B'] };
+      posthog.getFeatureFlag = function (key) { return key === 'quiz-q3-copy' ? 'test' : 'control'; };
+      posthog.getFeatureFlagPayload = function (key) { return key === 'quiz-q3-copy' ? CHALLENGER : null; };
+
+      var rendered = [];
       for (var i = 0; i < QUESTIONS.length; i++) {
         var first = document.querySelector('#options .option');
         if (!first) throw new Error('no option rendered at question index ' + i);
+        rendered.push({
+          text: document.getElementById('question').textContent,
+          options: Array.prototype.map.call(
+            document.querySelectorAll('#options .option'),
+            function (b) { return b.textContent; }
+          )
+        });
         first.click();
       }
 
-      var numbers = sent.map(function (s) { return s.props.question_number; });
-      var names = sent.map(function (s) { return s.event; });
+      var answered = sent.filter(function (s) { return s.event === 'quiz_question_answered'; });
+      var numbers = answered.map(function (s) { return s.props.question_number; });
+      var names = answered.map(function (s) { return s.event; });
       var expected = QUESTIONS.map(function (q) { return q.n; });
 
+      var completed = sent.filter(function (s) { return s.event === 'quiz_completed'; })[0];
+
+      // Walk the capture path: a bad email must be refused, a good one must
+      // identify the person, fire the lead event, and render the tiered plan.
+      document.getElementById('firstName').value = 'Sam';
+      document.getElementById('email').value = 'not-an-email';
+      capture(null);
+      // Snapshot both signals now — the next (valid) submit clears the error again.
+      var refusedBadEmail = !sent.some(function (s) { return s.event === 'quiz_lead_captured'; })
+        && document.getElementById('captureError').classList.contains('visible')
+        && !document.getElementById('plan').classList.contains('visible');
+
+      document.getElementById('email').value = 'sam@example.com';
+      capture(null);
+      var lead = sent.filter(function (s) { return s.event === 'quiz_lead_captured'; })[0];
+
+      var cta = document.getElementById('planCta');
+      cta.addEventListener('click', function (e) { e.preventDefault(); }, true);
+      cta.click();
+      var ctaClick = sent.filter(function (s) { return s.event === 'quiz_cta_clicked'; })[0];
+
       var checks = [
-        ['one capture per question', sent.length === QUESTIONS.length, sent.length + ' captures'],
+        ['one capture per question', answered.length === QUESTIONS.length, answered.length + ' captures'],
         ['question_number is 1..7 in order', numbers.join() === expected.join(), '[' + numbers.join() + ']'],
         ['every event named quiz_question_answered', names.every(function (n) { return n === 'quiz_question_answered'; }), names.join()],
         ['answers recorded for each step', answers.length === QUESTIONS.length, answers.length + ' answers'],
-        ['result screen shown at the end', document.getElementById('result').classList.contains('visible'), '']
+        ['result screen shown at the end', document.getElementById('result').classList.contains('visible'), ''],
+        ['experiment payload overrides Q3 copy',
+          rendered[2].text === CHALLENGER.text && rendered[2].options.join() === CHALLENGER.options.join(),
+          rendered[2].text],
+        // Index into `answered`, not `sent` — the stub also catches posthog's own
+        // autocapture/pageview events, so positions in `sent` are not the quiz's.
+        ['challenger answer is what gets captured', answered[2].props.answer === CHALLENGER.options[0], answered[2].props.answer],
+        ['steps without an experiment keep control copy',
+          rendered[3].text === QUESTIONS[3].text && rendered[5].text === QUESTIONS[5].text,
+          rendered[3].text],
+        ['quiz_completed fires once at the end', !!completed && sent.filter(function (s) {
+          return s.event === 'quiz_completed'; }).length === 1, completed ? 'fired' : 'missing'],
+        ['quiz_completed carries all 7 named answers', !!completed && ANSWER_KEYS.every(function (k) {
+          return typeof completed.props[k] === 'string' && completed.props[k].length > 0; }),
+          completed ? Object.keys(completed.props).join(',') : ''],
+        ['tier computed from Q2 index', !!completed && completed.props.tier === 'SOLO',
+          completed ? completed.props.tier : ''],
+        ['bad email is refused', refusedBadEmail, refusedBadEmail ? 'shown an error, no lead sent' : 'leaked through'],
+        ['identify() re-keys the person on their email',
+          identified.length === 1 && identified[0].id === 'sam@example.com'
+            && identified[0].set.quiz_tier === 'SOLO' && identified[0].set.first_name === 'Sam',
+          identified.length ? identified[0].id : 'never called'],
+        ['quiz_lead_captured carries contact + answers + tier',
+          !!lead && lead.props.email === 'sam@example.com' && lead.props.first_name === 'Sam'
+            && lead.props.tier === 'SOLO' && lead.props.bottleneck === QUESTIONS[5].options[0],
+          lead ? 'ok' : 'missing'],
+        ['tiered plan is rendered', document.getElementById('plan').classList.contains('visible')
+          && document.getElementById('planTitle').textContent.indexOf(TIERS.SOLO.title) !== -1
+          && document.getElementById('planSteps').children.length === TIERS.SOLO.steps.length,
+          document.getElementById('planTitle').textContent],
+        ['capture form hidden once delivered', document.getElementById('capture').style.display === 'none', ''],
+        ['CTA click is its own event pointing somewhere loadable',
+          !!ctaClick && ctaClick.props.tier === 'SOLO' && ctaClick.props.destination === '/demo-guide.html',
+          ctaClick ? ctaClick.props.destination : 'missing'],
+        ['no promise of an automatic email in the delivered copy',
+          !/on its way|check your inbox|sent you|emailed/i.test(document.getElementById('planFine').textContent),
+          document.getElementById('planFine').textContent.slice(0, 40) + '…']
       ];
 
       var failed = checks.filter(function (c) { return !c[1]; });
@@ -323,8 +635,33 @@
       return window.__selftestPassed;
     }
 
-    render();
-    if (new URLSearchParams(location.search).get('selftest') === '1') selftest();
+    // Wait for flags before the first paint so an experiment's copy is never
+    // flashed over with the control version. Falls back on a timer in case
+    // PostHog is blocked or slow — the quiz must render either way.
+    var started = false;
+    function start() {
+      if (started) return;
+      started = true;
+      render();
+
+      document.getElementById('captureForm').addEventListener('submit', capture);
+
+      // Separate from quiz_completed and quiz_lead_captured so the last hop is
+      // measurable on its own — a lead who never clicks through is a different
+      // problem from a finisher who never leaves an email.
+      document.getElementById('planCta').addEventListener('click', function () {
+        posthog.capture('quiz_cta_clicked', { tier: tierFor(), destination: this.getAttribute('href') });
+      });
+
+      if (new URLSearchParams(location.search).get('selftest') === '1') selftest();
+    }
+
+    if (new URLSearchParams(location.search).get('selftest') === '1') {
+      start();
+    } else {
+      if (typeof posthog !== 'undefined' && posthog.onFeatureFlags) posthog.onFeatureFlags(start);
+      setTimeout(start, 1500);
+    }
   </script>
 </body>
 </html>
