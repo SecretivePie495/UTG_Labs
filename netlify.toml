@@ -1,0 +1,10 @@
+# The site has no build step, so Netlify publishes the repo root as-is — which
+# otherwise serves netlify/functions/*.js as readable static files alongside
+# running them as functions. The function itself keeps no secrets, but its
+# source names the n8n webhook it forwards to, and that URL should not be
+# published. Functions stay reachable at /.netlify/functions/<name>.
+[[redirects]]
+  from = "/netlify/*"
+  to = "/index.html"
+  status = 404
+  force = true
