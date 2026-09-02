@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>UTG Labs — How much are you losing in your inbox?</title>
+
+  <script src="https://us-assets.i.posthog.com/static/array.js"></script>
+  <script>
+    posthog.init('phc_CLDVjGFPxbWnSHeunXF2mxgaejPBy48oLLbcxVWsB6Gd', {
+      api_host: 'https://us.i.posthog.com',
+      defaults: '2026-05-30'
+    });
+  </script>
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #17181C;
+      color: #e5e7eb;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      font-size: 15px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      padding: 14px 18px;
+      border-bottom: 1px solid #2a2b30;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .badge {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      background: #6c63ff;
+      color: #fff;
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+    .header-title { font-size: 12px; font-weight: 600; color: #9ca3af; }
+
+    /* Progress */
+    .progress-track {
+      height: 3px;
+      background: #2a2b30;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0;
+      background: #6c63ff;
+      transition: width 0.3s ease;
+    }
+
+    /* Stage */
+    .stage {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      max-width: 560px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 32px 20px 48px;
+    }
+
+    .step-count {
+      font-size: 11px;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    .question {
+      font-size: 24px;
+      font-weight: 600;
+      color: #f3f4f6;
+      line-height: 1.3;
+      margin-bottom: 22px;
+    }
+
+    .options { display: flex; flex-direction: column; gap: 9px; }
+    .option {
+      width: 100%;
+      text-align: left;
+      background: #1e1f24;
+      color: #e5e7eb;
+      border: 1px solid #2a2b30;
+      border-radius: 8px;
+      padding: 15px 16px;
+      font: inherit;
+      cursor: pointer;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+    .option:hover { border-color: #6c63ff; background: #232430; }
+    .option:focus-visible { outline: 2px solid #6c63ff; outline-offset: 2px; }
+
+    /* Result */
+    .result { display: none; }
+    .result.visible { display: block; }
+    .result h1 {
+      font-size: 26px;
+      font-weight: 600;
+      color: #f3f4f6;
+      line-height: 1.3;
+      margin-bottom: 12px;
+    }
+    .result p {
+      color: #9ca3af;
+      line-height: 1.65;
+      margin-bottom: 18px;
+    }
+    .cta {
+      display: inline-block;
+      background: #6c63ff;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 14px 24px;
+      border-radius: 8px;
+    }
+    .cta:hover { background: #5b52e8; }
+
+    .recap {
+      margin: 22px 0 0;
+      border-top: 1px solid #2a2b30;
+      padding-top: 16px;
+      font-size: 13px;
+      color: #9ca3af;
+    }
+    .recap div { padding: 5px 0; }
+    .recap span { color: #e5e7eb; }
+
+    #selftest {
+      display: none;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 12px;
+      white-space: pre-wrap;
+      padding: 14px 20px;
+      border-top: 1px solid #2a2b30;
+    }
+    #selftest.visible { display: block; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <span class="badge">UTG LABS</span>
+    <span class="header-title">Inbox Leak Check</span>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="progress"></div></div>
+
+  <main class="stage">
+    <div id="quiz">
+      <div class="step-count" id="stepCount"></div>
+      <h1 class="question" id="question"></h1>
+      <div class="options" id="options"></div>
+    </div>
+
+    <div class="result" id="result">
+      <h1>Got it — that's enough to work with.</h1>
+      <p>
+        Based on what you picked, the gap is almost always the same one: messages arrive
+        faster than one person can answer them, and the ones that wait are the ones that
+        go quiet. Take a look at what a covered inbox actually looks like, then a real
+        person on our team will follow up with what we'd change for you specifically.
+      </p>
+      <a class="cta" href="https://user.utglabs.com">See the demo inbox</a>
+      <div class="recap" id="recap"></div>
+    </div>
+  </main>
+
+  <pre id="selftest"></pre>
+
+  <script>
+    // Step order and property values mirror the funnel insight AcIkRijy
+    // ("UTG Labs Quiz Funnel (7 steps)") and the signals-scout-utg-quiz-dropoff
+    // scout: one `quiz_question_answered` event per answer, carrying
+    // `question_number` 1-7. Renaming or reordering these breaks both.
+    var QUESTIONS = [
+      {
+        n: 1,
+        label: 'Business type',
+        text: 'What kind of business do you run?',
+        options: ['Cleaning', 'Med spa or beauty', 'Events or weddings', 'Fitness or coaching', 'Real estate', 'Other service business']
+      },
+      {
+        n: 2,
+        label: 'Deals per month',
+        text: 'How many new clients do you close in a typical month?',
+        options: ['0–5', '6–15', '16–40', 'More than 40']
+      },
+      {
+        n: 3,
+        label: 'Avg deal size',
+        text: "What's a typical client worth to you?",
+        options: ['Under $500', '$500–$2,000', '$2,000–$10,000', 'More than $10,000']
+      },
+      {
+        n: 4,
+        label: 'Reply speed',
+        text: 'When someone messages you, how fast do they usually hear back?',
+        options: ['Within minutes', 'Within an hour', 'Same day', 'Next day or later']
+      },
+      {
+        n: 5,
+        label: 'Inbound handling',
+        text: 'Who handles incoming messages right now?',
+        options: ['Just me', 'Me and one other person', 'A small team', 'Nobody consistently']
+      },
+      {
+        n: 6,
+        label: 'Bottleneck',
+        text: 'Where does it actually break down?',
+        options: ['Messages spread across too many apps', 'Nights and weekends go uncovered', 'Leads go cold before I reply', 'Follow-up never happens']
+      },
+      {
+        n: 7,
+        label: 'Value anchor',
+        text: 'If none of that slipped again, what would that be worth per month?',
+        options: ['Under $500', '$500–$1,500', '$1,500–$3,000', 'More than $3,000']
+      }
+    ];
+
+    var answers = [];
+    var current = 0;
+
+    // Forward-only by design: there is no back button, so each question can only be
+    // answered once per session and no per-question dedupe state is needed. A page
+    // refresh restarts at Q1 and re-enters the funnel, which is normal quiz behavior.
+    function render() {
+      var q = QUESTIONS[current];
+      document.getElementById('stepCount').textContent = 'Question ' + q.n + ' of ' + QUESTIONS.length;
+      document.getElementById('question').textContent = q.text;
+      document.getElementById('progress').style.width = (current / QUESTIONS.length * 100) + '%';
+
+      var box = document.getElementById('options');
+      box.textContent = '';
+      q.options.forEach(function (opt) {
+        var b = document.createElement('button');
+        b.className = 'option';
+        b.type = 'button';
+        b.textContent = opt;
+        b.addEventListener('click', function () { answer(opt); });
+        box.appendChild(b);
+      });
+    }
+
+    function answer(choice) {
+      var q = QUESTIONS[current];
+      answers.push({ label: q.label, choice: choice });
+
+      posthog.capture('quiz_question_answered', {
+        question_number: q.n,
+        question_label: q.label,
+        answer: choice
+      });
+
+      current += 1;
+      if (current < QUESTIONS.length) {
+        render();
+      } else {
+        finish();
+      }
+    }
+
+    function finish() {
+      document.getElementById('progress').style.width = '100%';
+      document.getElementById('quiz').style.display = 'none';
+
+      var recap = document.getElementById('recap');
+      answers.forEach(function (a) {
+        var row = document.createElement('div');
+        row.textContent = a.label + ': ';
+        var val = document.createElement('span');
+        val.textContent = a.choice;
+        row.appendChild(val);
+        recap.appendChild(row);
+      });
+
+      document.getElementById('result').classList.add('visible');
+    }
+
+    // Self-check: `?selftest=1` stubs capture, clicks the first option of every
+    // question, and asserts the funnel receives question_number 1..7 exactly once
+    // each, in order, on the event name the scout reads. Fails loudly in the DOM.
+    function selftest() {
+      var sent = [];
+      posthog.capture = function (event, props) { sent.push({ event: event, props: props }); };
+
+      for (var i = 0; i < QUESTIONS.length; i++) {
+        var first = document.querySelector('#options .option');
+        if (!first) throw new Error('no option rendered at question index ' + i);
+        first.click();
+      }
+
+      var numbers = sent.map(function (s) { return s.props.question_number; });
+      var names = sent.map(function (s) { return s.event; });
+      var expected = QUESTIONS.map(function (q) { return q.n; });
+
+      var checks = [
+        ['one capture per question', sent.length === QUESTIONS.length, sent.length + ' captures'],
+        ['question_number is 1..7 in order', numbers.join() === expected.join(), '[' + numbers.join() + ']'],
+        ['every event named quiz_question_answered', names.every(function (n) { return n === 'quiz_question_answered'; }), names.join()],
+        ['answers recorded for each step', answers.length === QUESTIONS.length, answers.length + ' answers'],
+        ['result screen shown at the end', document.getElementById('result').classList.contains('visible'), '']
+      ];
+
+      var failed = checks.filter(function (c) { return !c[1]; });
+      var out = checks.map(function (c) {
+        return (c[1] ? 'PASS  ' : 'FAIL  ') + c[0] + (c[2] ? '  → ' + c[2] : '');
+      }).join('\n');
+      out += '\n\n' + (failed.length ? failed.length + ' CHECK(S) FAILED' : 'ALL CHECKS PASSED');
+
+      var el = document.getElementById('selftest');
+      el.textContent = out;
+      el.classList.add('visible');
+      window.__selftestPassed = failed.length === 0;
+      return window.__selftestPassed;
+    }
+
+    render();
+    if (new URLSearchParams(location.search).get('selftest') === '1') selftest();
+  </script>
+</body>
+</html>
