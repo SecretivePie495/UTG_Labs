@@ -234,7 +234,10 @@
         <h1 id="planTitle"></h1>
         <p id="planLead"></p>
         <ol class="plan-steps" id="planSteps"></ol>
-        <a class="cta" id="planCta" href="/demo-guide.html">See what this looks like set up</a>
+        <!-- Opens in a new tab so the plan stays behind them, and so the
+             quiz_cta_clicked event has time to flush before the page changes. -->
+        <a class="cta" id="planCta" href="https://www.instagram.com/udo_dagreat/"
+           target="_blank" rel="noopener">See this working on real inboxes</a>
         <p class="fine" id="planFine"></p>
       </div>
     </div>
@@ -648,9 +651,15 @@
         return document.getElementById('planFine').textContent;
       }
 
+      // The CTA is target="_blank" now, and preventDefault does not stop a new
+      // window from opening, so the target is dropped for the duration of the
+      // synthetic click. The real attribute is asserted separately below.
       var cta = document.getElementById('planCta');
+      var ctaTarget = cta.target;
+      cta.target = '';
       cta.addEventListener('click', function (e) { e.preventDefault(); }, true);
       cta.click();
+      cta.target = ctaTarget;
       var ctaClick = sent.filter(function (s) { return s.event === 'quiz_cta_clicked'; })[0];
 
       var checks = [
@@ -717,8 +726,15 @@
           document.getElementById('planLead').textContent.slice(-60)],
         ['capture form hidden once delivered', document.getElementById('capture').style.display === 'none', ''],
         ['CTA click is its own event pointing somewhere loadable',
-          !!ctaClick && ctaClick.props.tier === 'SOLO' && ctaClick.props.destination === '/demo-guide.html',
+          !!ctaClick && ctaClick.props.tier === 'SOLO'
+            && ctaClick.props.destination === 'https://www.instagram.com/udo_dagreat/',
           ctaClick ? ctaClick.props.destination : 'missing'],
+        // Off-site CTA: a new tab keeps the plan (and the event) alive, and
+        // noopener is required whenever target is _blank.
+        ['the Instagram CTA opens in a new tab with noopener',
+          document.getElementById('planCta').target === '_blank'
+            && /noopener/.test(document.getElementById('planCta').rel),
+          document.getElementById('planCta').target + ' / ' + document.getElementById('planCta').rel],
         ['the plan is posted to the send function once',
           posted.length === 1 && posted[0].url === '/.netlify/functions/quiz-lead',
           posted.length + ' post(s)' + (posted.length ? ' → ' + posted[0].url : '')],
