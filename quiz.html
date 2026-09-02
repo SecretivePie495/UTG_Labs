@@ -492,16 +492,33 @@
 
       posthog.capture('quiz_lead_captured', props);
 
-      // Fire and forget. The plan is already on screen and the lead is already
-      // in PostHog, so a failed send must not block or break either — worst case
-      // the email is missing and the answers are still there to follow up on.
+      // The plan renders immediately either way — a slow or broken send must not
+      // hold up the screen, and the lead is already in PostHog regardless. The
+      // only thing the result changes is the fine print, so the page never claims
+      // an email that didn't actually go out.
+      deliver(tier, firstName);
+
       fetch('/.netlify/functions/quiz-lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(props)
-      }).catch(function () {});
+      }).then(function (res) {
+        setFine(res && res.ok);
+      }).catch(function () {
+        setFine(false);
+      });
+    }
 
-      deliver(tier, firstName);
+    // The fine print states only what is true. `null` = the send is still in
+    // flight, `false` = it failed or no sender is configured, so the page falls
+    // back to the promise a person can keep by hand.
+    function setFine(sentOk) {
+      document.getElementById('planFine').textContent =
+        sentOk === null
+          ? 'Sending you a copy now.'
+          : sentOk
+            ? 'A copy is on its way to your inbox. Reply to it and you get me, not a queue.'
+            : 'Your answers are with me. I’ll read them and write back myself, usually within a day.';
     }
 
     function deliver(tier, firstName) {
@@ -522,10 +539,7 @@
         list.appendChild(li);
       });
 
-      // Matches what actually happens now: the plan is emailed, and a reply to it
-      // reaches a person. Don't promise more than those two things.
-      document.getElementById('planFine').textContent =
-        'A copy is on its way to your inbox. Reply to it and you get me, not a queue.';
+      setFine(null);
 
       document.getElementById('plan').classList.add('visible');
     }
@@ -587,6 +601,11 @@
       capture(null);
       var lead = sent.filter(function (s) { return s.event === 'quiz_lead_captured'; })[0];
 
+      function fineText(sentOk) {
+        setFine(sentOk);
+        return document.getElementById('planFine').textContent;
+      }
+
       var cta = document.getElementById('planCta');
       cta.addEventListener('click', function (e) { e.preventDefault(); }, true);
       cta.click();
@@ -639,12 +658,14 @@
             && posted[0].body.first_name === 'Sam' && posted[0].body.tier === 'SOLO'
             && ANSWER_KEYS.every(function (k) { return typeof posted[0].body[k] === 'string'; }),
           posted.length ? Object.keys(posted[0].body).join(',') : 'nothing posted'],
-        // The copy promises an inbox copy, so a send that never fires makes the
-        // page a liar. Tie the two together rather than checking either alone.
         ['a bad email posts nothing', posted.length === 1, posted.length + ' post(s) after 2 submits'],
-        ['inbox promise is backed by an actual send',
-          /inbox/i.test(document.getElementById('planFine').textContent) === (posted.length === 1),
-          document.getElementById('planFine').textContent.slice(0, 44) + '…']
+        // The fine print is the one place the page can lie, so each send outcome
+        // is asserted directly instead of relying on whichever one happened here.
+        ['fine print promises the inbox only when the send succeeded',
+          /inbox/i.test(fineText(true))
+            && !/inbox|on its way/i.test(fineText(false))
+            && !/inbox|on its way/i.test(fineText(null)),
+          fineText(false)]
       ];
 
       var failed = checks.filter(function (c) { return !c[1]; });
