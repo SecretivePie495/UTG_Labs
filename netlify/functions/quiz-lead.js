@@ -200,8 +200,23 @@ exports.handler = async (event) => {
     return null;
   });
 
-  if (!res || !res.ok) {
-    if (res) console.error('n8n rejected', res.status, await res.text());
+  if (!res) return { statusCode: 502, body: JSON.stringify({ error: 'send failed' }) };
+
+  // n8n answers 200 even when the workflow throws before reaching its Respond
+  // node, so the status alone cannot be trusted. Only the Respond OK node emits
+  // {"ok":true}; an empty body means the send died upstream of it. The page uses
+  // our status to decide whether to promise an inbox delivery, so a false 200
+  // here becomes a lie on screen.
+  const reply = await res.text();
+  let confirmed = false;
+  try {
+    confirmed = JSON.parse(reply).ok === true;
+  } catch (err) {
+    confirmed = false;
+  }
+
+  if (!res.ok || !confirmed) {
+    console.error('n8n did not confirm the send', res.status, reply.slice(0, 200));
     return { statusCode: 502, body: JSON.stringify({ error: 'send failed' }) };
   }
 
