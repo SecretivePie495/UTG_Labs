@@ -64,9 +64,8 @@ const ANSWER_FIELDS = [
   ['value_anchor', 'What a reply is worth']
 ];
 
-const HOOK = process.env.N8N_QUIZ_WEBHOOK || 'https://n8n.srv1167236.hstgr.cloud/webhook/quiz-lead';
-const HOOK_SECRET = process.env.N8N_QUIZ_SECRET;
-const REPLY_TO = process.env.QUIZ_REPLY_TO || 'udo@utglabs.com';
+const DEFAULT_HOOK = 'https://n8n.srv1167236.hstgr.cloud/webhook/quiz-lead';
+const DEFAULT_REPLY_TO = 'udo@utglabs.com';
 
 function escapeHtml(s) {
   return String(s)
@@ -142,7 +141,12 @@ exports.handler = async (event) => {
     return { statusCode: 405, body: JSON.stringify({ error: 'POST only' }) };
   }
 
-  if (!HOOK_SECRET) {
+  // Read per request rather than at module load, so a changed env var takes
+  // effect without waiting for a cold start.
+  const hook = process.env.N8N_QUIZ_WEBHOOK || DEFAULT_HOOK;
+  const hookSecret = process.env.N8N_QUIZ_SECRET;
+
+  if (!hookSecret) {
     // Misconfigured rather than malformed. The page handles this — the lead is
     // already in PostHog, so a missing secret costs the email, not the lead.
     return { statusCode: 503, body: JSON.stringify({ error: 'sender not configured' }) };
@@ -174,7 +178,7 @@ exports.handler = async (event) => {
   // it is given and never composes prospect-facing copy from raw input.
   const payload = {
     to: email,
-    reply_to: REPLY_TO,
+    reply_to: process.env.QUIZ_REPLY_TO || DEFAULT_REPLY_TO,
     subject: subject,
     html: html,
     text: text,
@@ -186,9 +190,9 @@ exports.handler = async (event) => {
 
   // n8n on a small VPS can be slow to wake; give up rather than hold the
   // browser's request open, since the page has already rendered the plan.
-  const res = await fetch(HOOK, {
+  const res = await fetch(hook, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-quiz-secret': HOOK_SECRET },
+    headers: { 'Content-Type': 'application/json', 'x-quiz-secret': hookSecret },
     body: JSON.stringify(payload),
     signal: AbortSignal.timeout(9000)
   }).catch((err) => {
