@@ -93,6 +93,13 @@ const ANSWER_FIELDS = [
 const DEFAULT_HOOK = 'https://n8n.srv1167236.hstgr.cloud/webhook/quiz-lead';
 const DEFAULT_REPLY_TO = 'udo@utglabs.com';
 
+// A lead is worth knowing about the moment it lands, so the blind copy is on by
+// default rather than waiting on an env var — an unset variable used to mean the
+// lead arrived and nobody was told. Goes to the same address prospects reply to,
+// which has to be monitored anyway for the funnel to work at all. Override with
+// LEAD_NOTIFY_EMAIL, or set it to "off" to stop the copies.
+const DEFAULT_NOTIFY = 'udo@utglabs.com';
+
 function escapeHtml(s) {
   return String(s)
     .replace(/&/g, '&amp;')
@@ -100,6 +107,14 @@ function escapeHtml(s) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
+}
+
+// Empty string means "send no copy". Anything else is the address to blind
+// copy, defaulting to DEFAULT_NOTIFY so the copy happens without configuration.
+function notifyAddress(configured) {
+  const v = (configured || '').trim();
+  if (!v) return DEFAULT_NOTIFY;
+  return v.toLowerCase() === 'off' ? '' : v;
 }
 
 function validEmail(v) {
@@ -228,7 +243,8 @@ exports.handler = async (event) => {
     tier: tier,
     answers: answers
   };
-  if (process.env.LEAD_NOTIFY_EMAIL) payload.bcc = process.env.LEAD_NOTIFY_EMAIL;
+  const notify = notifyAddress(process.env.LEAD_NOTIFY_EMAIL);
+  if (notify) payload.bcc = notify;
 
   // n8n on a small VPS can be slow to wake; give up rather than hold the
   // browser's request open, since the page has already rendered the plan.
@@ -266,18 +282,27 @@ exports.handler = async (event) => {
 };
 
 // Exported for the self-check below and nothing else.
-exports._internals = { buildEmail, validEmail, cleanText, planSteps, TIERS, BOTTLENECKS };
+exports._internals = { buildEmail, validEmail, cleanText, planSteps, notifyAddress, TIERS, BOTTLENECKS };
 
 // One runnable check: `node netlify/functions/quiz-lead.js`
 if (require.main === module) {
   const assert = require('assert');
-  const { buildEmail, validEmail, cleanText, planSteps } = exports._internals;
+  const { buildEmail, validEmail, cleanText, planSteps, notifyAddress } = exports._internals;
   const ALL_TIERS = ['SOLO', 'GROWING', 'SCALED'];
 
   assert.ok(validEmail('sam@example.com'));
   assert.ok(!validEmail('not-an-email'));
   assert.ok(!validEmail('a@b.c'));
   assert.ok(!validEmail('a'.repeat(250) + '@example.com'));
+
+  // A missing env var must still notify — that silence is how a lead gets missed.
+  assert.strictEqual(notifyAddress(undefined), 'udo@utglabs.com');
+  assert.strictEqual(notifyAddress(''), 'udo@utglabs.com');
+  assert.strictEqual(notifyAddress('  '), 'udo@utglabs.com');
+  assert.strictEqual(notifyAddress('sam@example.com'), 'sam@example.com');
+  assert.strictEqual(notifyAddress(' sam@example.com '), 'sam@example.com');
+  assert.strictEqual(notifyAddress('off'), '', 'opt out is possible');
+  assert.strictEqual(notifyAddress('OFF'), '');
 
   assert.strictEqual(cleanText(' hi\nthere ', 40), 'hi there');
   assert.strictEqual(cleanText('x'.repeat(200), 10), 'x'.repeat(10));
