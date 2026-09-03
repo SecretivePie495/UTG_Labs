@@ -14,6 +14,12 @@
 # way to scope a redirect to a specific domain is to use the full URL in the
 # `from` field. A fresh, uncached host gives Instagram a guaranteed-new preview.
 [[redirects]]
+  from = "https://quiz.utglabs.com/robots.txt"
+  to = "/robots.txt"
+  status = 200
+  force = false
+
+[[redirects]]
   from = "https://quiz.utglabs.com/*"
   to = "/quiz.html"
   status = 200
