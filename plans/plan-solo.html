@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Stop the Bleeding</title>
+<style>
+  @page { size: Letter; margin: 1.6cm; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #1a1a1a;
+    line-height: 1.5;
+  }
+  .title-bar {
+    padding-bottom: 14px;
+    border-bottom: 3px solid #e5484d;
+    margin-bottom: 22px;
+  }
+  .tag {
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #e5484d;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.5px; }
+  .sub { font-size: 15px; color: #555; margin-top: 4px; }
+  h2 {
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: #1a1a1a;
+    margin: 22px 0 10px;
+  }
+  .stakes {
+    background: #fff5f5;
+    border-left: 4px solid #e5484d;
+    padding: 14px 18px;
+    font-size: 16px;
+    border-radius: 4px;
+  }
+  .stakes strong { color: #b4231f; }
+  .moves { list-style: none; }
+  .moves li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+  }
+  .box {
+    margin-top: 28px;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    padding: 18px;
+  }
+  .box h3 { font-size: 13px; font-weight: 700; margin-bottom: 10px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+  th { background: #f7f7f7; }
+  td { height: 24px; }
+  .iphone {
+    margin-top: 24px;
+    background: #f4f6f8;
+    border: 1px solid #e2e6ea;
+    border-radius: 8px;
+    padding: 18px;
+  }
+  .iphone h2 { margin-top: 0; }
+  .path { font-size: 14px; background: #1a1a1a; color: #fff; padding: 10px 14px; border-radius: 6px; }
+  .path b { color: #ff8f94; }
+  .s-tbl { margin-top: 12px; }
+  .s-tbl th { background: #e5484d; color: #fff; }
+  .s-tbl td code {
+    background: #1a1a1a; color: #fff; padding: 2px 6px; border-radius: 4px;
+    font-size: 12px; font-weight: 700;
+  }
+  .s-tbl td { font-size: 12px; line-height: 1.4; height: auto; }
+  .note { font-size: 11px; color: #888; margin-top: 10px; font-style: italic; }
+  .cta {
+    margin-top: 26px;
+    text-align: center;
+    padding: 16px;
+    background: #1a1a1a;
+    color: #fff;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .signoff { text-align: center; color: #888; font-size: 13px; margin-top: 14px; }
+</style>
+</head>
+<body>
+  <div class="title-bar">
+    <div class="tag">Your Plan</div>
+    <h1>Stop the Bleeding</h1>
+    <div class="sub">One lead left unanswered is a no you never even heard.</div>
+  </div>
+
+  <h2>The Stakes</h2>
+  <div class="stakes">
+    At <strong>$[avg_deal_size]/deal</strong>, missing one lead this month costs you
+    <strong>$[avg_deal_size]</strong> — over a year, that's
+    <strong>$[avg_deal_size x 12]</strong>. Lost from replies alone.
+  </div>
+
+  <h2>Your 3 Moves</h2>
+  <ul class="moves">
+    <li><strong>1.</strong><span>Any message older than <strong>2 hours</strong> with no reply gets checked first, before everything else on your list.</span></li>
+    <li><strong>2.</strong><span>Set the expectation up front: "Thanks for reaching out — I personally read every message. You'll hear back by <strong>[specific time]</strong>."</span></li>
+    <li><strong>3.</strong><span>Never let a lead sit silent. If it's urgent or after hours, give them an alternate contact so nobody waits with no answer.</span></li>
+  </ul>
+
+  <h2>Your Exercise</h2>
+  <div class="box">
+    <h3>Track one day of replies. Watch the gap.</h3>
+    <table>
+      <tr><th>Lead / source</th><th>Time received</th><th>Time replied</th><th>Gap</th></tr>
+      <tr><td></td><td></td><td></td><td></td></tr>
+      <tr><td></td><td></td><td></td><td></td></tr>
+      <tr><td></td><td></td><td></td><td></td></tr>
+      <tr><td></td><td></td><td></td><td></td></tr>
+    </table>
+  </div>
+
+  <div class="iphone">
+    <h2>Set It Up on Your iPhone</h2>
+    <div class="path">Settings <b>›</b> General <b>›</b> Keyboard <b>›</b> Text Replacement <b>›</b> tap <b>+</b></div>
+    <p style="font-size:13px;margin-top:10px;">Type the <b>Shortcut</b> field, and your phone fills in the <b>Phrase</b> — one reply in two keystrokes.</p>
+    <table class="s-tbl">
+      <tr><th style="width:80px;">Type</th><th>It sends (phrase)</th></tr>
+      <tr><td><code>;ack</code></td><td>Hey [name]! Got your message — I personally read and reply to everything. You'll hear back by end of day. If it's urgent, reply URGENT.</td></tr>
+      <tr><td><code>;book</code></td><td>Would love to sort you out. Got 15 minutes later today or tomorrow? Just send a time that works and I'll be there.</td></tr>
+      <tr><td><code>;after</code></td><td>Just saw this — I'm wrapping up for the night. You're top of my list first thing tomorrow. — Udo</td></tr>
+      <tr><td><code>;price</code></td><td>Happy to talk numbers. Each project is scoped to what you actually need, so give me 5 minutes to understand it and I'll send you a straight number — no surprises.</td></tr>
+      <tr><td><code>;done</code></td><td>Sorted ✅ Everything you need is in your messages/email. Questions anytime. — Udo</td></tr>
+    </table>
+    <div class="note">These are starting points — of course you can change them to what you need. Make them yours.</div>
+  </div>
+
+  <div class="cta">Want a live 15-min look at your real inbox? No pitch. Just reply to this email.</div>
+  <div class="signoff">— Udo, UTG Labs</div>
+</body>
+</html>

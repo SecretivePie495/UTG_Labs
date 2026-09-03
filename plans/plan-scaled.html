@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>See the Leak</title>
+<style>
+  @page { size: Letter; margin: 1.6cm; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #1a1a1a;
+    line-height: 1.5;
+  }
+  .title-bar {
+    padding-bottom: 14px;
+    border-bottom: 3px solid #e5484d;
+    margin-bottom: 22px;
+  }
+  .tag {
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #e5484d;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.5px; }
+  .sub { font-size: 15px; color: #555; margin-top: 4px; }
+  h2 {
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: #1a1a1a;
+    margin: 22px 0 10px;
+  }
+  .stakes {
+    background: #fff5f5;
+    border-left: 4px solid #e5484d;
+    padding: 14px 18px;
+    font-size: 16px;
+    border-radius: 4px;
+  }
+  .stakes strong { color: #b4231f; }
+  .moves { list-style: none; }
+  .moves li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+  }
+  .box {
+    margin-top: 28px;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    padding: 18px;
+  }
+  .box h3 { font-size: 13px; font-weight: 700; margin-bottom: 10px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+  th { background: #f7f7f7; }
+  td { height: 24px; }
+  .iphone {
+    margin-top: 24px;
+    background: #f4f6f8;
+    border: 1px solid #e2e6ea;
+    border-radius: 8px;
+    padding: 18px;
+  }
+  .iphone h2 { margin-top: 0; }
+  .path { font-size: 14px; background: #1a1a1a; color: #fff; padding: 10px 14px; border-radius: 6px; }
+  .path b { color: #ff8f94; }
+  .s-tbl { margin-top: 12px; }
+  .s-tbl th { background: #e5484d; color: #fff; }
+  .s-tbl td code {
+    background: #1a1a1a; color: #fff; padding: 2px 6px; border-radius: 4px;
+    font-size: 12px; font-weight: 700;
+  }
+  .s-tbl td { font-size: 12px; line-height: 1.4; height: auto; }
+  .note { font-size: 11px; color: #888; margin-top: 10px; font-style: italic; }
+  .cta {
+    margin-top: 26px;
+    text-align: center;
+    padding: 16px;
+    background: #1a1a1a;
+    color: #fff;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .signoff { text-align: center; color: #888; font-size: 13px; margin-top: 14px; }
+</style>
+</head>
+<body>
+  <div class="title-bar">
+    <div class="tag">Your Plan</div>
+    <h1>See the Leak</h1>
+    <div class="sub">The loss isn't one dropped message. It's a pattern nobody has measured yet.</div>
+  </div>
+
+  <h2>The Stakes</h2>
+  <div class="stakes">
+    At <strong>$[deals_per_month]+ deals/mo</strong>, a 10% response leak is
+    <strong>$[rough_calc]/month</strong> you can't see. That pattern is worth real
+    money every month.
+  </div>
+
+  <h2>Your 3 Moves</h2>
+  <ul class="moves">
+    <li><strong>1.</strong><span><strong>Build the tracker.</strong> Lead source, time received, time responded, response gap, closed? Log it for one week.</span></li>
+    <li><strong>2.</strong><span><strong>Triage.</strong> High-intent (asked about pricing/booking) → fastest responder on the team. General inquiry → next in rotation.</span></li>
+    <li><strong>3.</strong><span><strong>Measure the leak weekly.</strong> Find which channel or person is slowest, then close it.</span></li>
+  </ul>
+
+  <h2>Your Exercise</h2>
+  <div class="box">
+    <h3>Log one week. The slowest row is where the money goes.</h3>
+    <table>
+      <tr><th>Lead source</th><th>Response gap</th><th>Closed?</th></tr>
+      <tr><td></td><td></td><td></td></tr>
+      <tr><td></td><td></td><td></td></tr>
+      <tr><td></td><td></td><td></td></tr>
+      <tr><td></td><td></td><td></td></tr>
+      <tr><td></td><td></td><td></td></tr>
+    </table>
+  </div>
+
+  <div class="iphone">
+    <h2>Set It Up on Your iPhone</h2>
+    <div class="path">Settings <b>›</b> General <b>›</b> Keyboard <b>›</b> Text Replacement <b>›</b> tap <b>+</b></div>
+    <p style="font-size:13px;margin-top:10px;">Type the <b>Shortcut</b> field, and your phone fills in the <b>Phrase</b> — route the leak without fumbling.</p>
+    <table class="s-tbl">
+      <tr><th style="width:80px;">Type</th><th>It sends (phrase)</th></tr>
+      <tr><td><code>;log</code></td><td>[name] reached out about [topic] at [time]. High intent (asked about pricing). I replied at [time]. Flag if slower than [2h].</td></tr>
+      <tr><td><code>;hi</code></td><td>Thanks [name] — this looks like one to move on. Putting you with [person], our fastest. You'll hear from us shortly. — Udo</td></tr>
+      <tr><td><code>;gen</code></td><td>Good to hear from you. General inquiry over here — routing you to [person], you'll get a full answer shortly.</td></tr>
+      <tr><td><code>;cover</code></td><td>Escalate: [name] has been quiet since [time] on [topic]. Nights/weekends gap — cover now.</td></tr>
+    </table>
+    <div class="note">These are starting points — of course you can change them to what you need. Make them yours.</div>
+  </div>
+
+  <div class="cta">Want a live 15-min look at your real inbox — see the leak in your actual data? No pitch. Just reply to this email.</div>
+  <div class="signoff">— Udo, UTG Labs</div>
+</body>
+</html>
