@@ -1,0 +1,10 @@
+# Dependencies — Netlify installs these from package.json at deploy time.
+node_modules/
+
+# OS noise
+.DS_Store
+
+# Local environment
+.netlify/
+.env
+.env.*

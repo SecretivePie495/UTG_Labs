@@ -1,6 +1,20 @@
 // Emails a quiz taker their tiered plan. The quiz page POSTs the answers here
-// on submit; this function validates them and builds the message, then hands it
-// to an n8n workflow that does the actual sending.
+// on submit; this function validates them, builds the message, renders the
+// personalized one-page plan as a PDF, and sends it straight to Resend.
+//
+// This function owns the email copy on purpose. The page never sends a body —
+// if it did, anyone could POST arbitrary HTML and this endpoint would happily
+// send it from the utglabs.com domain. The tier copy is therefore duplicated
+// between here and quiz.html's TIERS; keep the two in sync when copy changes.
+//
+// ponytail: no rate limit. The endpoint is public, so someone could pump
+// templated mail at an address they typed. Content is fixed and honest so the
+// blast radius is small. Add Netlify rate limiting or a Turnstile token if it
+// ever gets abused.
+
+// Layout for the attached plan PDF. It receives the plan copy already built in
+// this file, so pdf generation only owns how it looks.
+const { buildDoc, renderPdf } = require('./lib/plan-pdf')._internals;
 //
 // Why the split: n8n owns the mail credential (and can grow a Chatwoot step
 // later), but the webhook must not be callable from a browser — so it stays
@@ -90,7 +104,7 @@ const ANSWER_FIELDS = [
   ['value_anchor', 'What a reply is worth']
 ];
 
-const DEFAULT_HOOK = 'https://n8n.srv1167236.hstgr.cloud/webhook/quiz-lead';
+const DEFAULT_FROM = 'Udo at UTG Labs <udo@utglabs.com>';
 const DEFAULT_REPLY_TO = 'udo@utglabs.com';
 
 // A lead is worth knowing about the moment it lands, so the blind copy is on by
@@ -195,12 +209,12 @@ exports.handler = async (event) => {
 
   // Read per request rather than at module load, so a changed env var takes
   // effect without waiting for a cold start.
-  const hook = process.env.N8N_QUIZ_WEBHOOK || DEFAULT_HOOK;
-  const hookSecret = process.env.N8N_QUIZ_SECRET;
+  const apiKey = process.env.RESEND_API_KEY;
+  const from = process.env.QUIZ_FROM_EMAIL || DEFAULT_FROM;
 
-  if (!hookSecret) {
+  if (!apiKey) {
     // Misconfigured rather than malformed. The page handles this — the lead is
-    // already in PostHog, so a missing secret costs the email, not the lead.
+    // already in PostHog, so a missing key costs the email, not the lead.
     return { statusCode: 503, body: JSON.stringify({ error: 'sender not configured' }) };
   }
 
@@ -230,51 +244,54 @@ exports.handler = async (event) => {
   const bottleneckIndex = Number.isInteger(body.bottleneck_index) ? body.bottleneck_index : -1;
 
   const { subject, html, text } = buildEmail(firstName, tier, answers, bottleneckIndex);
+  const plan = TIERS[tier];
+  const steps = planSteps(tier, bottleneckIndex);
+  const stakes = stakesLine(answers);
 
-  // The message is fully built here, so n8n is a dumb transport: it sends what
-  // it is given and never composes prospect-facing copy from raw input.
   const payload = {
-    to: email,
-    reply_to: process.env.QUIZ_REPLY_TO || DEFAULT_REPLY_TO,
+    from: from,
+    to: [email],
+    reply_to: [process.env.QUIZ_REPLY_TO || DEFAULT_REPLY_TO],
     subject: subject,
     html: html,
-    text: text,
-    first_name: firstName,
-    tier: tier,
-    answers: answers
+    text: text
   };
   const notify = notifyAddress(process.env.LEAD_NOTIFY_EMAIL);
-  if (notify) payload.bcc = notify;
+  if (notify) payload.bcc = [notify];
 
-  // n8n on a small VPS can be slow to wake; give up rather than hold the
-  // browser's request open, since the page has already rendered the plan.
-  const res = await fetch(hook, {
+  // Personalized one-page plan, rendered and attached. If rendering fails the
+  // email still goes out — the fine print and the promise don't depend on it.
+  try {
+    const pdf = await renderPdf(buildDoc({
+      title: plan.title,
+      lead: plan.lead,
+      steps: steps,
+      stakes: stakes,
+      firstName: firstName
+    }));
+    payload.attachments = [{
+      filename: `${tier.toLowerCase()}-plan.pdf`,
+      content: pdf.toString('base64')
+    }];
+  } catch (err) {
+    console.error('plan pdf render failed', err.message);
+  }
+
+  const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-quiz-secret': hookSecret },
+    headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
     signal: AbortSignal.timeout(9000)
   }).catch((err) => {
-    console.error('n8n unreachable', err.message);
+    console.error('resend unreachable', err.message);
     return null;
   });
 
   if (!res) return { statusCode: 502, body: JSON.stringify({ error: 'send failed' }) };
 
-  // n8n answers 200 even when the workflow throws before reaching its Respond
-  // node, so the status alone cannot be trusted. Only the Respond OK node emits
-  // {"ok":true}; an empty body means the send died upstream of it. The page uses
-  // our status to decide whether to promise an inbox delivery, so a false 200
-  // here becomes a lie on screen.
-  const reply = await res.text();
-  let confirmed = false;
-  try {
-    confirmed = JSON.parse(reply).ok === true;
-  } catch (err) {
-    confirmed = false;
-  }
-
-  if (!res.ok || !confirmed) {
-    console.error('n8n did not confirm the send', res.status, reply.slice(0, 200));
+  if (!res.ok) {
+    const detail = await res.text();
+    console.error('resend rejected', res.status, detail);
     return { statusCode: 502, body: JSON.stringify({ error: 'send failed' }) };
   }
 
@@ -369,5 +386,25 @@ if (require.main === module) {
     }
   }
 
-  console.log('quiz-lead: all checks passed');
+  // The attached PDF is built from the same plan copy as the email, so it must
+  // render for every tier and carry their personalized figure. Render is async,
+  // so this check is deferred to the end.
+  const { buildDoc, renderPdf } = require('./lib/plan-pdf')._internals;
+
+  Promise.all(ALL_TIERS.map(async (tier) => {
+    const steps = planSteps(tier, 0);
+    const pdf = await renderPdf(buildDoc({
+      title: TIERS[tier].title,
+      lead: TIERS[tier].lead,
+      steps: steps,
+      stakes: stakesLine({ value_anchor: '$1,500–$3,000' }),
+      firstName: 'Sam'
+    }));
+    assert.ok(Buffer.isBuffer(pdf) && pdf.slice(0, 4).toString() === '%PDF', `${tier} renders a PDF`);
+  })).then(() => {
+    console.log('quiz-lead: all checks passed');
+  }).catch((err) => {
+    console.error(err);
+    process.exit(1);
+  });
 }
