@@ -134,6 +134,12 @@ const ANSWER_FIELDS = [
 const DEFAULT_FROM = 'Udo at UTG Labs <udo@utglabs.com>';
 const DEFAULT_REPLY_TO = 'udo.donyekwere@gmail.com';
 
+// Optional Google Sheets webhook. When LEAD_SHEET_URL is set, each lead is
+// appended to that sheet (see netlify/apps-script/sheet-lead-logger.gs) after
+// the email is sent. Logging is best-effort: a sheet that is down or the env
+// var being unset must never block or fail the send, so the response does not
+// depend on it — the lead is still emailed and BCC'd either way.
+
 // A lead is worth knowing about the moment it lands, so the blind copy is on by
 // default rather than waiting on an env var — an unset variable used to mean the
 // lead arrived and nobody was told. Goes to the address the owner actually
@@ -176,6 +182,28 @@ function stakesLine(answers) {
   return answers.value_anchor
     ? `You put the cost of letting that keep happening at ${answers.value_anchor} a month.`
     : '';
+}
+
+// Best-effort append of the lead to the configured Google Sheet. Returns
+// nothing and throws nothing to the caller: any reachability or parse problem
+// is logged and swallowed, so a sheet hiccup cannot fail the request after the
+// email is already on its way.
+async function logLead(sheetUrl, row) {
+  if (!sheetUrl) return;
+  try {
+    const res = await fetch(sheetUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(row),
+      signal: AbortSignal.timeout(6000)
+    });
+    if (!res.ok) {
+      const detail = await res.text();
+      console.error('lead sheet rejected', res.status, detail);
+    }
+  } catch (err) {
+    console.error('lead sheet unreachable', err.message);
+  }
 }
 
 function buildEmail(firstName, tier, answers, bottleneckIndex) {
@@ -323,16 +351,26 @@ exports.handler = async (event) => {
     return { statusCode: 502, body: JSON.stringify({ error: 'send failed' }) };
   }
 
+  // Email is sent; now log the lead to the sheet if one is configured. This is
+  // fire-and-forget: logLead swallows its own errors, so a slow or offline
+  // sheet delays nothing and can't turn a delivered lead into a 500.
+  await logLead(process.env.LEAD_SHEET_URL, {
+    email: email,
+    first_name: firstName,
+    tier: tier,
+    ...answers
+  });
+
   return { statusCode: 200, body: JSON.stringify({ ok: true }) };
 };
 
 // Exported for the self-check below and nothing else.
-exports._internals = { buildEmail, validEmail, cleanText, planSteps, notifyAddress, TIERS, BOTTLENECKS };
+exports._internals = { buildEmail, validEmail, cleanText, planSteps, notifyAddress, logLead, TIERS, BOTTLENECKS };
 
 // One runnable check: `node netlify/functions/quiz-lead.js`
 if (require.main === module) {
   const assert = require('assert');
-  const { buildEmail, validEmail, cleanText, planSteps, notifyAddress } = exports._internals;
+  const { buildEmail, validEmail, cleanText, planSteps, notifyAddress, logLead } = exports._internals;
   const ALL_TIERS = ['SOLO', 'GROWING', 'SCALED'];
 
   assert.ok(validEmail('sam@example.com'));
@@ -430,6 +468,12 @@ if (require.main === module) {
       shortcuts: SHORTCUTS[tier]
     }));
     assert.ok(Buffer.isBuffer(pdf) && pdf.slice(0, 4).toString() === '%PDF', `${tier} renders a PDF`);
+
+    // Lead logging is best-effort: no sheet configured is a silent no-op, and an
+    // unreachable sheet must neither throw nor hang the caller.
+    const row = { email: 'sam@example.com', first_name: 'Sam', tier };
+    await logLead(undefined, row);
+    await logLead('http://127.0.0.1:1', row); // unreachable port -> swallowed
   })).then(() => {
     console.log('quiz-lead: all checks passed');
   }).catch((err) => {
