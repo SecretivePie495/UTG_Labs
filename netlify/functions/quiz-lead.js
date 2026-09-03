@@ -105,14 +105,14 @@ const ANSWER_FIELDS = [
 ];
 
 const DEFAULT_FROM = 'Udo at UTG Labs <udo@utglabs.com>';
-const DEFAULT_REPLY_TO = 'udo@utglabs.com';
+const DEFAULT_REPLY_TO = 'udo.donyekwere@gmail.com';
 
 // A lead is worth knowing about the moment it lands, so the blind copy is on by
 // default rather than waiting on an env var — an unset variable used to mean the
-// lead arrived and nobody was told. Goes to the same address prospects reply to,
-// which has to be monitored anyway for the funnel to work at all. Override with
-// LEAD_NOTIFY_EMAIL, or set it to "off" to stop the copies.
-const DEFAULT_NOTIFY = 'udo@utglabs.com';
+// lead arrived and nobody was told. Goes to the address the owner actually
+// reads, which has to be monitored anyway for the funnel to work at all.
+// Override with LEAD_NOTIFY_EMAIL, or set it to "off" to stop the copies.
+const DEFAULT_NOTIFY = 'udo.donyekwere@gmail.com';
 
 function escapeHtml(s) {
   return String(s)
@@ -313,9 +313,9 @@ if (require.main === module) {
   assert.ok(!validEmail('a'.repeat(250) + '@example.com'));
 
   // A missing env var must still notify — that silence is how a lead gets missed.
-  assert.strictEqual(notifyAddress(undefined), 'udo@utglabs.com');
-  assert.strictEqual(notifyAddress(''), 'udo@utglabs.com');
-  assert.strictEqual(notifyAddress('  '), 'udo@utglabs.com');
+  assert.strictEqual(notifyAddress(undefined), 'udo.donyekwere@gmail.com');
+  assert.strictEqual(notifyAddress(''), 'udo.donyekwere@gmail.com');
+  assert.strictEqual(notifyAddress('  '), 'udo.donyekwere@gmail.com');
   assert.strictEqual(notifyAddress('sam@example.com'), 'sam@example.com');
   assert.strictEqual(notifyAddress(' sam@example.com '), 'sam@example.com');
   assert.strictEqual(notifyAddress('off'), '', 'opt out is possible');
