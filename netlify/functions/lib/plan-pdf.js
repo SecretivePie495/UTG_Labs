@@ -57,9 +57,49 @@ function stepStack(steps) {
   );
 }
 
+// The text-replacement shortcuts are a two-column table of "type" and "it
+// sends". A light table with the shortcut in a bold mono style matches the
+// original plan templates' "Set It Up on Your iPhone" section.
+function shortcutTable(shortcuts) {
+  if (!shortcuts || !shortcuts.length) return [];
+  return [
+    { text: 'Set It Up on Your Phone', fontSize: 13, bold: true, color: PURPLE, characterSpacing: 1, margin: [0, 22, 0, 6] },
+    { text: 'Settings › General › Keyboard › Text Replacement › tap +', fontSize: 10, color: DARK, margin: [0, 0, 0, 10] },
+    {
+      layout: {
+        hLineWidth: () => 1,
+        vLineWidth: () => 1,
+        hLineColor: () => '#E2E6EA',
+        vLineColor: () => '#E2E6EA',
+        paddingLeft: () => 8,
+        paddingRight: () => 8,
+        paddingTop: () => 6,
+        paddingBottom: () => 6,
+        fillColor: (rowIndex) => (rowIndex === 0 ? '#E5484D' : null)
+      },
+      table: {
+        headerRows: 1,
+        widths: ['auto', '*'],
+        body: [
+          [
+            { text: 'Type', bold: true, color: '#FFFFFF', fontSize: 11 },
+            { text: 'It sends (phrase)', bold: true, color: '#FFFFFF', fontSize: 11 }
+          ],
+          ...shortcuts.map(([type, phrase]) => [
+            { text: type, bold: true, color: DARK, fontSize: 10.5, font: 'Roboto' },
+            { text: phrase, color: GRAY, fontSize: 10, lineHeight: 1.35 }
+          ])
+        ]
+      },
+      margin: [0, 6, 0, 0]
+    },
+    { text: 'These are starting points — make them yours.', fontSize: 9.5, color: '#888888', italic: true, margin: [0, 8, 0, 0] }
+  ];
+}
+
 // Build the full doc-definition. All copy is trusted/honest content produced by
 // quiz-lead.js (already HTML-escaped for email; here it's plain text in a PDF).
-function buildDoc({ title, lead, steps, stakes, firstName }) {
+function buildDoc({ title, lead, steps, stakes, firstName, shortcuts }) {
   const nameLine = firstName
     ? `${firstName}, here’s your plan:`
     : 'Here’s your plan:';
@@ -113,6 +153,8 @@ function buildDoc({ title, lead, steps, stakes, firstName }) {
       { text: 'Your 3 Moves', fontSize: 13, bold: true, color: PURPLE, characterSpacing: 1, margin: [0, 0, 0, 10] },
       ...stepStack(steps),
 
+      ...shortcutTable(shortcuts),
+
       // Footer
       {
         margin: [0, 22, 0, 0],
@@ -159,7 +201,7 @@ function renderPdf(docDefinition) {
   });
 }
 
-exports._internals = { buildDoc, renderPdf, stepStack };
+exports._internals = { buildDoc, renderPdf, stepStack, shortcutTable };
 
 if (require.main === module) {
   const assert = require('assert');
@@ -173,12 +215,18 @@ if (require.main === module) {
       { head: 'A follow-up you do not have to remember.', body: 'Anyone who goes quiet gets checked back on.' }
     ],
     stakes: 'You put the cost at $1,250 a month.',
-    firstName: 'Sam'
+    firstName: 'Sam',
+    shortcuts: [
+      [';ack', 'Got your message. Reply by end of day.'],
+      [';book', 'Would today or tomorrow work for a quick call?']
+    ]
   });
 
   assert.ok(JSON.stringify(doc).includes('Stop the Bleeding'), 'tier title present');
   assert.ok(JSON.stringify(doc).includes('Sam, here’s your plan:'), 'personalized name line');
   assert.ok(JSON.stringify(doc).includes('$1,250'), 'their figure is in the doc');
+  assert.ok(JSON.stringify(doc).includes('Set It Up on Your Phone'), 'text-replacement section present');
+  assert.ok(JSON.stringify(doc).includes(';ack'), 'shortcuts table carries the type+phrase pairs');
 
   // No stakes line means no callout rendered at all.
   const bare = buildDoc({
@@ -186,9 +234,11 @@ if (require.main === module) {
     lead: 'The loss is a pattern.', 
     steps: [{ head: 'H.', body: 'b.' }],
     stakes: '',
-    firstName: ''
+    firstName: '',
+    shortcuts: []
   });
   assert.ok(!JSON.stringify(bare).includes('You put the cost'), 'no stakes callout when none given');
+  assert.ok(!JSON.stringify(bare).includes('Set It Up on Your Phone'), 'no shortcuts section when none given');
 
   // And it renders to a real PDF.
   renderPdf(doc).then((buf) => {

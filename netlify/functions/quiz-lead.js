@@ -84,6 +84,33 @@ const BOTTLENECKS = [
   { key: 'followup', head: 'Follow-up you never have to remember.', body: 'Anyone who goes quiet gets checked back on until they answer or say no.' }
 ];
 
+// The iPhone text-replacement shortcuts, keyed by tier — the same ones the
+// original plan templates carried in their "Set It Up on Your iPhone" section.
+// Each is a [type, phrase] pair rendered as a table on the attached PDF, so the
+// lead gets the copy-paste snippets without having to type prompts out.
+const SHORTCUTS = {
+  SOLO: [
+    [';ack', 'Hey [name]! Got your message — I personally read and reply to everything. You’ll hear back by end of day. If it’s urgent, reply URGENT.'],
+    [';book', 'Would love to sort you out. Got 15 minutes later today or tomorrow? Just send a time that works and I’ll be there.'],
+    [';after', 'Just saw this — I’m wrapping up for the night. You’re top of my list first thing tomorrow. — Udo'],
+    [';price', 'Happy to talk numbers. Each project is scoped to what you actually need, so give me 5 minutes to understand it and I’ll send you a straight number — no surprises.'],
+    [';done', 'Sorted. Everything you need is in your messages/email. Questions anytime. — Udo']
+  ],
+  GROWING: [
+    [';qual', 'Quick questions so I can help you faster: 1) What’s your timeline to get started? 2) What’s your budget range for this? 3) Have you worked with a [coach/agency] before?'],
+    [';book', 'Those answers help a lot. Looks like a fit — here’s my calendar, grab 15 minutes and we’ll map it out.'],
+    [';nurture', 'No rush at all. When you’ve got more clarity on timing, reply here and we’ll pick it back up. In the meantime, start with this: [tip]. — Udo'],
+    [';escalate', 'Real lead. [name] answered all 3 with specifics — book them and route to me.'],
+    [';filter', 'Appreciate it! Just to save you time — we’re best for someone ready to start within [90 days]. If that’s you, tell me more and I’ll get you sorted.']
+  ],
+  SCALED: [
+    [';log', '[name] reached out about [topic] at [time]. High intent (asked about pricing). I replied at [time]. Flag if slower than [2h].'],
+    [';hi', 'Thanks [name] — this looks like one to move on. Putting you with [person], our fastest. You’ll hear from us shortly. — Udo'],
+    [';gen', 'Good to hear from you. General inquiry over here — routing you to [person], you’ll get a full answer shortly.'],
+    [';cover', 'Escalate: [name] has been quiet since [time] on [topic]. Nights/weekends gap — cover now.']
+  ]
+};
+
 // The bottleneck fix leads, then the tier fills the rest — skipping any tier
 // step that repeats what the bottleneck step already said. Always three steps.
 function planSteps(tier, bottleneckIndex) {
@@ -267,7 +294,8 @@ exports.handler = async (event) => {
       lead: plan.lead,
       steps: steps,
       stakes: stakes,
-      firstName: firstName
+      firstName: firstName,
+      shortcuts: SHORTCUTS[tier]
     }));
     payload.attachments = [{
       filename: `${tier.toLowerCase()}-plan.pdf`,
@@ -398,7 +426,8 @@ if (require.main === module) {
       lead: TIERS[tier].lead,
       steps: steps,
       stakes: stakesLine({ value_anchor: '$1,500–$3,000' }),
-      firstName: 'Sam'
+      firstName: 'Sam',
+      shortcuts: SHORTCUTS[tier]
     }));
     assert.ok(Buffer.isBuffer(pdf) && pdf.slice(0, 4).toString() === '%PDF', `${tier} renders a PDF`);
   })).then(() => {
