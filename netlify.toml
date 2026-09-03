@@ -9,20 +9,18 @@
   status = 404
   force = true
 
-# quiz.utglabs.com serves the quiz, not the homepage. The subdomain is a fresh,
-# uncached host for Instagram, so its root lands directly on the quiz page with
-# the correct Open Graph tags (updating utglabs.com/quiz* URLs won't refresh an
-# already-cached Instagram DM preview, but a new host has no cache to serve).
+# quiz.utglabs.com serves the quiz, not the homepage. Netlify's redirect
+# conditions do NOT support Host (only Role/Language/Country), so the correct
+# way to scope a redirect to a specific domain is to use the full URL in the
+# `from` field. A fresh, uncached host gives Instagram a guaranteed-new preview.
 [[redirects]]
-  from = "/"
+  from = "https://quiz.utglabs.com/*"
   to = "/quiz.html"
   status = 200
   force = true
-  conditions = { Host = ["quiz.utglabs.com"] }
 
 [[redirects]]
-  from = "/*"
+  from = "https://quiz.utglabs.com"
   to = "/quiz.html"
   status = 200
   force = true
-  conditions = { Host = ["quiz.utglabs.com"] }
